@@ -1,6 +1,8 @@
 import type { LucideIcon } from "lucide-react";
+
 import {
   AlertTriangle,
+  BarChart3,
   Building2,
   ClipboardCheck,
   ClipboardList,
@@ -132,6 +134,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     ],
   },
   {
+    key: "reports-shortcut",
+    label: "Reports",
+    href: "/documents-reports/reports",
+    icon: BarChart3,
+  },
+  {
     key: "helpdesk",
     label: "Helpdesk",
     href: "/helpdesk",
@@ -189,16 +197,6 @@ export const NAVIGATION_PAGES: NavigationPage[] = NAVIGATION_ITEMS.flatMap((item
 
 export function isNavigationHrefActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
-}
-
-export function isChildNavigationHrefActive(pathname: string, parentHref: string, childHref: string) {
-  if (pathname === childHref) return true;
-
-  if (childHref === parentHref) {
-    return false;
-  }
-
-  return pathname.startsWith(`${childHref}/`);
 }
 
 export function getNavigationPageByPath(pathname: string) {

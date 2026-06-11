@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 export interface PageBreadcrumbItem {
@@ -7,55 +8,28 @@ export interface PageBreadcrumbItem {
   href?: string;
 }
 
-export function PageBreadcrumb({
-  items,
-  dark = false,
-}: {
-  items: PageBreadcrumbItem[];
-  dark?: boolean;
-}) {
+export function PageBreadcrumb({ items }: { items: PageBreadcrumbItem[] }) {
   return (
-    <nav className="flex min-w-0 items-center gap-1 text-xs font-medium" aria-label="Breadcrumb">
-      <Link
-        href="/dashboard"
-        className={cn(
-          "inline-flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors",
-          dark ? "text-slate-400 hover:text-blue-200" : "text-slate-500 hover:text-blue-700",
-        )}
-      >
-        <Home className="h-3.5 w-3.5" />
-        Home
+    <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-1 text-xs font-bold text-slate-500 dark:text-slate-400">
+      <Link href="/dashboard" prefetch={false} className="flex items-center gap-1 rounded text-slate-500 hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300" aria-label="Dashboard">
+        <Home className="h-3.5 w-3.5" aria-hidden="true" />
       </Link>
-
-      {items.length ? (
-        <ChevronRight className={cn("h-3.5 w-3.5", dark ? "text-slate-600" : "text-slate-300")} />
-      ) : null}
-
+      {items.length ? <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" /> : null}
       {items.map((item, index) => {
         const active = index === items.length - 1;
+        const content = <span className={cn("truncate", active && "text-blue-700 dark:text-blue-300")}>{item.label}</span>;
 
         return (
-          <div key={`${item.label}-${index}`} className="flex min-w-0 items-center gap-1">
+          <span key={`${item.label}-${index}`} className="flex min-w-0 items-center gap-1">
             {item.href && !active ? (
-              <Link
-                href={item.href}
-                className={cn(
-                  "truncate rounded-md px-1.5 py-1 transition-colors",
-                  dark ? "text-slate-400 hover:text-blue-200" : "text-slate-500 hover:text-blue-700",
-                )}
-              >
+              <Link href={item.href} prefetch={false} className="min-w-0 truncate hover:text-blue-700 dark:hover:text-blue-300">
                 {item.label}
               </Link>
             ) : (
-              <span className={cn("truncate px-1.5 py-1", dark ? "text-slate-200" : "text-slate-700")}>
-                {item.label}
-              </span>
+              content
             )}
-
-            {!active ? (
-              <ChevronRight className={cn("h-3.5 w-3.5", dark ? "text-slate-600" : "text-slate-300")} />
-            ) : null}
-          </div>
+            {!active ? <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" /> : null}
+          </span>
         );
       })}
     </nav>

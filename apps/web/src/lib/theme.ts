@@ -14,7 +14,6 @@ function canUseDOM() {
 
 export function getSystemTheme(): AppTheme {
   if (!canUseDOM()) return "light";
-
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
@@ -33,13 +32,10 @@ export function getStoredThemePreference(): { theme: AppTheme; source: ThemeSour
 
 export function getCurrentDocumentTheme(): AppTheme {
   if (!canUseDOM()) return "light";
-
   const theme = document.documentElement.dataset.theme;
-
   if (theme === "light" || theme === "dark") {
     return theme;
   }
-
   return getStoredThemePreference().theme;
 }
 
@@ -61,8 +57,6 @@ export function setManualTheme(theme: AppTheme) {
 
 export function syncThemeFromPreference() {
   const preference = getStoredThemePreference();
-
   applyTheme(preference.theme, preference.source);
-
   return preference;
 }

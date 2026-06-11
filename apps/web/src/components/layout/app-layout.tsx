@@ -1,10 +1,11 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
-import { APP_INFO } from "@/lib/app-info";
+import { APP_INFO } from "@/lib/dashboard-data";
 import {
   applyTheme,
   getStoredThemePreference,
@@ -115,6 +116,8 @@ function notifyThemeChange() {
 }
 
 export function AppLayout({ children, contentClassName }: AppLayoutProps) {
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   const sidebarCollapsed = useSyncExternalStore(
     subscribeToSidebarCollapsed,
     getSidebarCollapsedSnapshot,
@@ -129,8 +132,6 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
 
   const { theme, source: themeSource } =
     parseThemePreferenceSnapshot(themePreferenceSnapshot);
-
-  const isDark = theme === "dark";
 
   useEffect(() => {
     applyTheme(theme, themeSource);
@@ -151,36 +152,46 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
   return (
     <div
       className={cn(
-        "flex min-h-screen transition-colors",
-        isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-950",
+        "min-h-screen overflow-hidden transition-colors duration-300",
+        theme === "dark"
+          ? "app-theme-dark bg-slate-950 text-slate-200"
+          : "app-theme-light bg-slate-50 text-slate-950",
       )}
     >
-      <Sidebar
-        collapsed={sidebarCollapsed}
-        mobileOpen={false}
+      <Topbar
+        appInfo={APP_INFO}
+        sidebarCollapsed={sidebarCollapsed}
         theme={theme}
-        onCollapsedChange={handleSidebarCollapsedChange}
-        onMobileOpenChange={() => {}}
+        onMobileMenuClick={() => setMobileSidebarOpen(true)}
+        onThemeToggle={handleThemeToggle}
       />
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar
-          appInfo={APP_INFO}
-          theme={theme}
-          onMobileMenuClick={() => {}}
-          onThemeToggle={handleThemeToggle}
-        />
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        mobileOpen={mobileSidebarOpen}
+        theme={theme}
+        onCollapsedChange={handleSidebarCollapsedChange}
+        onMobileOpenChange={setMobileSidebarOpen}
+      />
 
-        <main
+      <main
+        className={cn(
+          "min-w-0 pt-[var(--app-header-height)] transition-[padding] duration-300 ease-out lg:pl-[280px]",
+          theme === "dark"
+            ? "main-theme-dark bg-slate-950 text-slate-200"
+            : "main-theme-light bg-slate-50 text-slate-950",
+          sidebarCollapsed && "lg:pl-20",
+        )}
+      >
+        <div
           className={cn(
-            "min-w-0 flex-1 overflow-x-hidden transition-colors",
-            isDark ? "bg-slate-950" : "bg-slate-50",
+            "mx-auto w-full max-w-[1760px] min-w-0 px-3 py-3 sm:px-4 lg:px-4 2xl:px-5",
             contentClassName,
           )}
         >
           {children}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
