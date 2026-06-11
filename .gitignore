@@ -1,0 +1,15 @@
+﻿node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+storage/local-dev/raw-uploads/**
+storage/local-dev/processed/**
+storage/local-dev/temp/**
+!storage/local-dev/**/.gitkeep
+
