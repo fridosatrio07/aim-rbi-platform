@@ -1,0 +1,304 @@
+warning: in the working copy of 'apps/web/src/components/layout/sidebar.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/apps/web/src/components/layout/sidebar.tsx b/apps/web/src/components/layout/sidebar.tsx[m
+[1mindex 7a3bfbc..a46b612 100644[m
+[1m--- a/apps/web/src/components/layout/sidebar.tsx[m
+[1m+++ b/apps/web/src/components/layout/sidebar.tsx[m
+[36m@@ -1,7 +1,12 @@[m
+ "use client";[m
+ [m
+ import Link from "next/link";[m
+[31m-import { ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  ChevronDown,[m
+[32m+[m[32m  ChevronRight,[m
+[32m+[m[32m  ChevronsLeft,[m
+[32m+[m[32m  ChevronsRight,[m
+[32m+[m[32m} from "lucide-react";[m
+ import { usePathname } from "next/navigation";[m
+ import { useMemo, useState } from "react";[m
+ [m
+[36m@@ -9,7 +14,7 @@[m [mimport {[m
+   DEFAULT_OPEN_NAVIGATION_KEYS,[m
+   isNavigationHrefActive,[m
+   NAVIGATION_ITEMS,[m
+[31m-  type NavigationItem[m
+[32m+[m[32m  type NavigationItem,[m
+ } from "@/lib/navigation-data";[m
+ import { toStaticAssetHref } from "@/lib/static-navigation";[m
+ import { cn } from "@/lib/utils";[m
+[36m@@ -36,27 +41,36 @@[m [mfunction SucofindoLogo({ compact = false }: { compact?: boolean }) {[m
+   return ([m
+     <div[m
+       className={cn([m
+[31m-        "flex shrink-0 items-center justify-center rounded-lg bg-white/95 shadow-sm ring-1 ring-white/70",[m
+[31m-        compact ? "h-11 w-12 p-1.5" : "h-14 w-20 p-2"[m
+[32m+[m[32m        "grid shrink-0 place-items-center rounded-xl bg-white shadow-[0_16px_30px_rgba(15,23,42,0.22)] ring-1 ring-white/40",[m
+[32m+[m[32m        compact ? "h-12 w-12" : "h-[68px] w-[88px]",[m
+       )}[m
+     >[m
+       {/* eslint-disable-next-line @next/next/no-img-element */}[m
+       <img[m
+         src={toStaticAssetHref("/images/logo-sucofindo.png")}[m
+         alt="SUCOFINDO"[m
+[31m-        width={compact ? 48 : 92}[m
+[31m-        height={compact ? 34 : 64}[m
+[31m-        className="h-full w-full object-contain"[m
+[32m+[m[32m        className={cn("object-contain", compact ? "h-9 w-9" : "h-[54px] w-[72px]")}[m
+       />[m
+     </div>[m
+   );[m
+ }[m
+ [m
+[31m-function isItemActive(pathname: string, item: NavigationItem) {[m
+[31m-  return ([m
+[31m-    isNavigationHrefActive(pathname, item.href) ||[m
+[31m-    Boolean(item.children?.some((child) => isNavigationHrefActive(pathname, child.href)))[m
+[31m-  );[m
+[32m+[m[32mfunction getActiveChildHref(pathname: string, item: NavigationItem) {[m
+[32m+[m[32m  if (!item.children?.length) {[m
+[32m+[m[32m    return undefined;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  return [...item.children][m
+[32m+[m[32m    .sort((a, b) => b.href.length - a.href.length)[m
+[32m+[m[32m    .find((child) => isNavigationHrefActive(pathname, child.href))?.href;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfunction isLeafItemActive(pathname: string, item: NavigationItem) {[m
+[32m+[m[32m  if (item.children?.length) {[m
+[32m+[m[32m    return false;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  return isNavigationHrefActive(pathname, item.href);[m
+ }[m
+ [m
+ function SidebarContent({[m
+[36m@@ -64,17 +78,18 @@[m [mfunction SidebarContent({[m
+   theme,[m
+   isMobile = false,[m
+   onCollapsedChange,[m
+[31m-  onNavigate[m
+[32m+[m[32m  onNavigate,[m
+ }: SidebarContentProps) {[m
+   const pathname = usePathname();[m
+[31m-  const [openMenuKeys, setOpenMenuKeys] = useState<string[]>(DEFAULT_OPEN_NAVIGATION_KEYS);[m
+[32m+[m[32m  const [openMenuKeys, setOpenMenuKeys] = useState(DEFAULT_OPEN_NAVIGATION_KEYS);[m
+[32m+[m
+   const effectiveCollapsed = collapsed && !isMobile;[m
+   const isDark = theme === "dark";[m
+[32m+[m
+   const activeParentKeys = useMemo([m
+     () =>[m
+[31m-      NAVIGATION_ITEMS.filter((item) =>[m
+[31m-        item.children?.some((child) => isNavigationHrefActive(pathname, child.href)),[m
+[31m-      ).map((item) => item.key),[m
+[32m+[m[32m      NAVIGATION_ITEMS.filter((item) => getActiveChildHref(pathname, item))[m
+[32m+[m[32m        .map((item) => item.key),[m
+     [pathname],[m
+   );[m
+ [m
+[36m@@ -91,66 +106,76 @@[m [mfunction SidebarContent({[m
+     }[m
+ [m
+     setOpenMenuKeys((current) =>[m
+[31m-      current.includes(item.key) ? current.filter((key) => key !== item.key) : [...current, item.key][m
+[32m+[m[32m      current.includes(item.key)[m
+[32m+[m[32m        ? current.filter((key) => key !== item.key)[m
+[32m+[m[32m        : [...current, item.key],[m
+     );[m
+   }[m
+ [m
+   return ([m
+[31m-    <div className={cn("flex min-h-0 w-full flex-col transition-colors duration-300", isDark ? "bg-slate-950 text-slate-200" : "bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-200")}>[m
+[32m+[m[32m    <aside[m
+[32m+[m[32m      className={cn([m
+[32m+[m[32m        "fixed inset-y-0 left-0 z-40 flex h-screen flex-col border-r shadow-[8px_0_32px_rgba(15,23,42,0.10)] transition-all duration-300 ease-out",[m
+[32m+[m[32m        effectiveCollapsed ? "w-[96px]" : "w-[280px]",[m
+[32m+[m[32m        isDark ? "border-slate-800 bg-slate-950" : "border-slate-200 bg-white",[m
+[32m+[m[32m      )}[m
+[32m+[m[32m    >[m
+       <div[m
+         className={cn([m
+[31m-          "relative h-[var(--app-header-height)] shrink-0 overflow-visible bg-gradient-to-br",[m
+[31m-          isDark[m
+[31m-            ? "from-slate-950 via-slate-900 to-blue-950"[m
+[31m-            : "from-blue-900 via-blue-800 to-blue-600 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950"[m
+[32m+[m[32m          "aim-top-gradient relative flex h-[var(--app-header-height)] shrink-0 items-center overflow-visible",[m
+[32m+[m[32m          effectiveCollapsed ? "justify-center px-3" : "px-5",[m
+         )}[m
+       >[m
+[31m-        <div className={cn("flex h-full items-center", effectiveCollapsed ? "justify-center px-3" : "gap-3 px-4")}>[m
+[31m-          {!effectiveCollapsed ? ([m
+[31m-            <>[m
+[31m-              <div className="flex shrink-0 flex-col items-center gap-1">[m
+[31m-                <SucofindoLogo />[m
+[31m-                <p className="max-w-[112px] text-center text-[9px] font-semibold leading-3 text-blue-50/90">[m
+[31m-                  Assuring Quality, Protecting Trust[m
+[31m-                </p>[m
+[32m+[m[32m        {!effectiveCollapsed ? ([m
+[32m+[m[32m          <div className="flex w-full items-center gap-4">[m
+[32m+[m[32m            <div className="flex flex-col items-center">[m
+[32m+[m[32m              <SucofindoLogo />[m
+[32m+[m[32m              <div className="mt-1.5 text-center text-[9px] font-semibold leading-3 text-white">[m
+[32m+[m[32m                Assuring Quality,[m
+[32m+[m[32m                <br />[m
+[32m+[m[32m                Protecting Trust[m
+               </div>[m
+[31m-              <div className="h-14 w-px shrink-0 bg-white/35" aria-hidden="true" />[m
+[31m-              <div className="min-w-0 text-white">[m
+[31m-                <p className="truncate text-[13px] font-bold leading-5">ASSET INTEGRITY</p>[m
+[31m-                <p className="truncate text-[13px] font-bold leading-5">MANAGEMENT</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m
+[32m+[m[32m            <div className="h-[64px] w-px bg-white/35" />[m
+[32m+[m
+[32m+[m[32m            <div className="min-w-0">[m
+[32m+[m[32m              <div className="text-[15px] font-extrabold uppercase leading-5 tracking-wide text-white">[m
+[32m+[m[32m                ASSET INTEGRITY[m
+               </div>[m
+[31m-            </>[m
+[31m-          ) : ([m
+[31m-            <SucofindoLogo compact />[m
+[31m-          )}[m
+[31m-        </div>[m
+[32m+[m[32m              <div className="text-[15px] font-extrabold uppercase leading-5 tracking-wide text-white">[m
+[32m+[m[32m                MANAGEMENT[m
+[32m+[m[32m              </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m          </div>[m
+[32m+[m[32m        ) : ([m
+[32m+[m[32m          <SucofindoLogo compact />[m
+[32m+[m[32m        )}[m
+ [m
+         <button[m
+           type="button"[m
+[32m+[m[32m          onClick={() => (isMobile ? onNavigate?.() : onCollapsedChange(!effectiveCollapsed))}[m
+           className={cn([m
+[31m-            "absolute z-20 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-blue-900 shadow-[0_8px_24px_rgba(15,23,42,0.18)] transition-colors hover:bg-blue-50",[m
+[31m-            isDark && "border-slate-700 bg-slate-900 text-blue-200 hover:bg-slate-800",[m
+[31m-            isMobile ? "right-3 top-4" : "-right-5 top-[calc((var(--app-header-height)-40px)/2)]"[m
+[32m+[m[32m            "absolute -right-6 top-1/2 z-[60] grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border bg-white text-blue-700 shadow-[0_16px_32px_rgba(15,23,42,0.20)] transition-colors hover:bg-blue-50",[m
+[32m+[m[32m            isDark ? "border-slate-700" : "border-slate-200",[m
+           )}[m
+[31m-          onClick={() => (isMobile ? onNavigate?.() : onCollapsedChange(!effectiveCollapsed))}[m
+           aria-label={isMobile ? "Close navigation menu" : effectiveCollapsed ? "Expand sidebar" : "Collapse sidebar"}[m
+         >[m
+[31m-          {effectiveCollapsed ? <ChevronsRight className="h-5 w-5" aria-hidden="true" /> : <ChevronsLeft className="h-5 w-5" aria-hidden="true" />}[m
+[32m+[m[32m          {effectiveCollapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}[m
+         </button>[m
+       </div>[m
+ [m
+[31m-      <nav[m
+[31m-        className={cn("min-h-0 flex-1 overflow-y-auto overflow-x-hidden py-4", effectiveCollapsed ? "px-2" : "px-3")}[m
+[31m-        aria-label="Primary navigation"[m
+[31m-      >[m
+[31m-        <ul className={cn("space-y-1.5", effectiveCollapsed && "space-y-2")}>[m
+[32m+[m[32m      <div className="aim-shell-scrollbar flex-1 overflow-y-auto px-3 py-4">[m
+[32m+[m[32m        <nav className="space-y-1" aria-label="Primary navigation">[m
+           {NAVIGATION_ITEMS.map((item) => {[m
+             const Icon = item.icon;[m
+             const hasChildren = Boolean(item.children?.length);[m
+             const isOpen = visibleOpenMenuKeys.includes(item.key);[m
+[31m-            const active = isItemActive(pathname, item);[m
+[32m+[m[32m            const activeChildHref = getActiveChildHref(pathname, item);[m
+[32m+[m[32m            const active = isLeafItemActive(pathname, item);[m
+[32m+[m
+             const rowClassName = cn([m
+[31m-              "group relative flex min-h-11 w-full min-w-0 items-center gap-3 rounded-lg text-sm font-semibold transition-colors",[m
+[32m+[m[32m              "group relative flex min-h-10 w-full min-w-0 items-center gap-2.5 rounded-lg text-[13px] font-semibold transition-colors",[m
+               effectiveCollapsed ? "justify-center px-0" : "px-3",[m
+               isDark[m
+                 ? active[m
+[36m@@ -158,39 +183,44 @@[m [mfunction SidebarContent({[m
+                   : "text-slate-300 hover:bg-white/5 hover:text-blue-200"[m
+                 : active[m
+                   ? "bg-blue-50 text-blue-700"[m
+[31m-                  : "text-slate-800 hover:bg-slate-50 hover:text-blue-700"[m
+[32m+[m[32m                  : "text-slate-800 hover:bg-slate-50 hover:text-blue-700",[m
+             );[m
+[32m+[m
+             const iconClassName = cn([m
+[31m-              "h-5 w-5 shrink-0 transition-colors",[m
+[32m+[m[32m              "h-[18px] w-[18px] shrink-0 transition-colors",[m
+               isDark[m
+                 ? active[m
+                   ? "text-blue-300"[m
+                   : "text-slate-400 group-hover:text-blue-200"[m
+                 : active[m
+                   ? "text-blue-700"[m
+[31m-                  : "text-slate-600 group-hover:text-blue-700"[m
+[32m+[m[32m                  : "text-slate-600 group-hover:text-blue-700",[m
+[32m+[m[32m            );[m
+[32m+[m
+[32m+[m[32m            const indicatorClassName = cn([m
+[32m+[m[32m              "absolute left-0 top-2 h-6 w-1 rounded-r-full",[m
+[32m+[m[32m              isDark ? "bg-blue-300" : "bg-blue-700",[m
+             );[m
+[31m-            const indicatorClassName = cn("absolute left-0 top-2 h-7 w-1 rounded-r-full", isDark ? "bg-blue-300" : "bg-blue-700");[m
+ [m
+             return ([m
+[31m-              <li key={item.key} className="min-w-0">[m
+[32m+[m[32m              <div key={item.key}>[m
+                 {hasChildren ? ([m
+                   <button[m
+                     type="button"[m
+[31m-                    className={rowClassName}[m
+                     onClick={() => toggleMenu(item)}[m
+[32m+[m[32m                    className={rowClassName}[m
+                     aria-expanded={isOpen}[m
+                     title={effectiveCollapsed ? item.label : undefined}[m
+                   >[m
+[31m-                    {active ? <span className={indicatorClassName} /> : null}[m
+[31m-                    <Icon className={iconClassName} aria-hidden="true" />[m
+[32m+[m[32m                    <Icon className={iconClassName} />[m
+[32m+[m
+                     {!effectiveCollapsed ? ([m
+                       <>[m
+                         <span className="min-w-0 flex-1 truncate text-left">{item.label}</span>[m
+                         {isOpen ? ([m
+[31m-                          <ChevronDown className={cn("h-4 w-4 shrink-0", isDark ? "text-slate-400" : "text-slate-500")} aria-hidden="true" />[m
+[32m+[m[32m                          <ChevronDown className="h-3.5 w-3.5 text-slate-400" />[m
+                         ) : ([m
+[31m-                          <ChevronRight className={cn("h-4 w-4 shrink-0", isDark ? "text-slate-400" : "text-slate-500")} aria-hidden="true" />[m
+[32m+[m[32m                          <ChevronRight className="h-3.5 w-3.5 text-slate-400" />[m
+                         )}[m
+                       </>[m
+                     ) : null}[m
+[36m@@ -198,61 +228,54 @@[m [mfunction SidebarContent({[m
+                 ) : ([m
+                   <Link[m
+                     href={item.href}[m
+[31m-                    prefetch={false}[m
+                     className={rowClassName}[m
+[31m-                    aria-current={active ? "page" : undefined}[m
+                     title={effectiveCollapsed ? item.label : undefined}[m
+                     onClick={onNavigate}[m
+                   >[m
+                     {active ? <span className={indicatorClassName} /> : null}[m
+[31m-                    <Icon className={iconClassName} aria-hidden="true" />[m
+[31m-                    {!effectiveCollapsed ? <span className="min-w-0 flex-1 truncate text-left">{item.label}</span> : null}[m
+[32m+[m[32m                    <Icon className={iconClassName} />[m
+[32m+[m[32m                    {!effectiveCollapsed ? <span className="min-w-0 flex-1 truncate">{item.label}</span> : null}[m
+                   </Link>[m
+                 )}[m
+ [m
+                 {hasChildren && isOpen && !effectiveCollapsed ? ([m
+[31m-                  <ul className={cn("ml-[23px] mt-1 space-y-1 border-l py-1 pl-4", isDark ? "border-slate-700/70" : "border-slate-200")}>[m
+[32m+[m[32m                  <div[m
+[32m+[m[32m                    className={cn([m
+[32m+[m[32m                      "ml-6 mt-1.5 space-y-0.5 border-l pl-3",[m
+[32m+[m[32m                      isDark ? "border-slate-800" : "border-slate-200",[m
+[32m+[m[32m                    )}[m
+[32m+[m[32m                  >[m
+                     {item.children?.map((child) => {[m
+[31m-                      const childActive = isNavigationHrefActive(pathname, child.href);[m
+[32m+[m[32m                      const childActive = child.href === activeChildHref;[m
+ [m
+                       return ([m
+[31m-                        <li key={child.href}>[m
+[31m-                          <Link[m
+[31m-                            href={child.href}[m
+[31m-                            prefetch={false}[m
+[31m-                            className={cn([m
+[31m-                              "group/sub relative flex min-h-9 min-w-0 items-center rounded-md px-3 text-[13px] font-medium transition-colors",[m
+[31m-

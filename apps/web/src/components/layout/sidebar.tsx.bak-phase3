@@ -52,23 +52,13 @@ function SucofindoLogo({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function getActiveChildHref(pathname: string, item: NavigationItem) {
-  if (!item.children?.length) {
-    return undefined;
-  }
-
-  return [...item.children]
-    .sort((a, b) => b.href.length - a.href.length)
-    .find((child) => isNavigationHrefActive(pathname, child.href))?.href;
+function isItemActive(pathname: string, item: NavigationItem) {
+  return (
+    isNavigationHrefActive(pathname, item.href) ||
+    Boolean(item.children?.some((child) => isNavigationHrefActive(pathname, child.href)))
+  );
 }
 
-function isLeafItemActive(pathname: string, item: NavigationItem) {
-  if (item.children?.length) {
-    return false;
-  }
-
-  return isNavigationHrefActive(pathname, item.href);
-}
 function SidebarContent({
   collapsed,
   theme,
@@ -82,8 +72,9 @@ function SidebarContent({
   const isDark = theme === "dark";
   const activeParentKeys = useMemo(
     () =>
-      NAVIGATION_ITEMS.filter((item) => getActiveChildHref(pathname, item))
-        .map((item) => item.key),
+      NAVIGATION_ITEMS.filter((item) =>
+        item.children?.some((child) => isNavigationHrefActive(pathname, child.href)),
+      ).map((item) => item.key),
     [pathname],
   );
 
@@ -157,8 +148,7 @@ function SidebarContent({
             const Icon = item.icon;
             const hasChildren = Boolean(item.children?.length);
             const isOpen = visibleOpenMenuKeys.includes(item.key);
-            const activeChildHref = getActiveChildHref(pathname, item);
-            const active = isLeafItemActive(pathname, item);
+            const active = isItemActive(pathname, item);
             const rowClassName = cn(
               "group relative flex min-h-11 w-full min-w-0 items-center gap-3 rounded-lg text-sm font-semibold transition-colors",
               effectiveCollapsed ? "justify-center px-0" : "px-3",
@@ -223,7 +213,7 @@ function SidebarContent({
                 {hasChildren && isOpen && !effectiveCollapsed ? (
                   <ul className={cn("ml-[23px] mt-1 space-y-1 border-l py-1 pl-4", isDark ? "border-slate-700/70" : "border-slate-200")}>
                     {item.children?.map((child) => {
-                      const childActive = child.href === activeChildHref;
+                      const childActive = isNavigationHrefActive(pathname, child.href);
 
                       return (
                         <li key={child.href}>
