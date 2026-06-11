@@ -1,19 +1,76 @@
-@import "tailwindcss";
-
-@custom-variant dark (&:where(.dark, .dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: 210 20% 98%;
   --foreground: 222 47% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+
+  --accent: 214 95% 93%;
+  --accent-foreground: 221 83% 25%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
   --border: 214 32% 91%;
-  --app-header-height: 116px;
+  --input: 214 32% 91%;
+  --ring: 221 83% 53%;
+
+  --radius: 0.75rem;
+  --app-header-height: 72px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --app-header-height: 96px;
+  }
 }
 
 .dark {
   color-scheme: dark;
+
   --background: 222 47% 11%;
   --foreground: 210 40% 96%;
+
+  --card: 222 47% 13%;
+  --card-foreground: 210 40% 96%;
+
+  --popover: 222 47% 13%;
+  --popover-foreground: 210 40% 96%;
+
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 47% 11%;
+
+  --secondary: 217 33% 18%;
+  --secondary-foreground: 210 40% 96%;
+
+  --muted: 217 33% 18%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 217 33% 18%;
+  --accent-foreground: 210 40% 96%;
+
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 96%;
+
   --border: 215 28% 22%;
+  --input: 215 28% 22%;
+  --ring: 217 91% 60%;
 }
 
 * {
@@ -82,7 +139,7 @@ textarea {
 }
 
 .aim-card-shadow {
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
 }
 
 .dark .aim-card-shadow {

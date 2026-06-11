@@ -1,15 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
-  BarChart3,
   Building2,
   ClipboardCheck,
   ClipboardList,
   Database,
   FileText,
   FolderKanban,
-  Gauge,
-  HardHat,
   Headphones,
   Home,
   Settings,

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   DEFAULT_OPEN_NAVIGATION_KEYS,
   isChildNavigationHrefActive,
@@ -81,15 +81,18 @@ function SidebarContent({
   const effectiveCollapsed = collapsed && !isMobile;
   const isDark = theme === "dark";
 
-  useEffect(() => {
-    const activeParentKeys = NAVIGATION_ITEMS
-      .filter((item) => item.children?.some((child) => isNavigationHrefActive(pathname, child.href)))
-      .map((item) => item.key);
+  const activeParentKeys = useMemo(
+    () =>
+      NAVIGATION_ITEMS.filter((item) =>
+        item.children?.some((child) => isNavigationHrefActive(pathname, child.href)),
+      ).map((item) => item.key),
+    [pathname],
+  );
 
-    if (!activeParentKeys.length) return;
-
-    setOpenMenuKeys((current) => Array.from(new Set([...current, ...activeParentKeys])));
-  }, [pathname]);
+  const visibleOpenMenuKeys = useMemo(
+    () => Array.from(new Set([...openMenuKeys, ...activeParentKeys])),
+    [openMenuKeys, activeParentKeys],
+  );
 
   function toggleMenu(item: NavigationItem) {
     if (effectiveCollapsed) {
@@ -169,7 +172,7 @@ function SidebarContent({
           {NAVIGATION_ITEMS.map((item) => {
             const Icon = item.icon;
             const hasChildren = Boolean(item.children?.length);
-            const isOpen = openMenuKeys.includes(item.key);
+            const isOpen = visibleOpenMenuKeys.includes(item.key);
             const active = isItemActive(pathname, item);
 
             const rowClassName = cn(
