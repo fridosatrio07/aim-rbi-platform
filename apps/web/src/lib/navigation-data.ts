@@ -175,11 +175,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   },
 ];
 
-/**
- * Phase 3 density rule:
- * Keep all expandable groups closed by default.
- * The active parent group is still opened automatically by Sidebar using pathname-derived state.
- */
 export const DEFAULT_OPEN_NAVIGATION_KEYS: string[] = [];
 
 export const NAVIGATION_PAGES: NavigationPage[] = NAVIGATION_ITEMS.flatMap((item) => [
