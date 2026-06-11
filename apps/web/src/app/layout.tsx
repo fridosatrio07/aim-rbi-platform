@@ -1,10 +1,14 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AIM-RBI Platform",
+  title: {
+    default: "Assets Integrity Management Platform | SUCOFINDO",
+    template: "%s | SUCOFINDO",
+  },
   description:
-    "Website-based Asset Integrity Management Platform for Asset Registry, RBI, Inspection Management, Compliance, and Certification.",
+    "Website-based Asset Integrity Management Platform for Asset Registry, Risk-Based Inspection, Inspection Management, Compliance, Certification, Documents, Reports, Helpdesk, and Administration.",
+  applicationName: "Assets Integrity Management Platform",
 };
 
 export default function RootLayout({
