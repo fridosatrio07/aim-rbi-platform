@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { PlaceholderModulePage } from "@/components/layout/placeholder-module-page";
+import { DashboardPageContent } from "@/features/dashboard/components/dashboard-page-content";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
-  return <PlaceholderModulePage title="Dashboard" route="/dashboard" />;
+  return <DashboardPageContent />;
 }
