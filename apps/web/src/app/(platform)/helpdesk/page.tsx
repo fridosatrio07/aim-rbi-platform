@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+
+import { PlaceholderModulePage } from "@/components/layout/placeholder-module-page";
 
 export const metadata: Metadata = {
   title: "Helpdesk",
-  description:
-    "Helpdesk overview for tickets, SLA, support categories, platform issues, service requests, and knowledge base access.",
+  description: "Helpdesk workspace for SUCOFINDO Asset Integrity Management Platform.",
 };
 
 export default function HelpdeskPage() {
   return (
-    <ModulePlaceholder
+    <PlaceholderModulePage
       title="Helpdesk"
-      description="Helpdesk overview for tickets, SLA, support categories, platform issues, service requests, and knowledge base access."
+      description="This module is prepared for future development."
+      route="/helpdesk"
     />
   );
 }

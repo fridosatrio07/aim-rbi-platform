@@ -16,7 +16,7 @@ import {
 } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-const SIDEBAR_COLLAPSED_KEY = "assetIntegritySidebarCollapsed";
+const SIDEBAR_COLLAPSED_KEY = "assetIntegritySidebarCollapsedPhase4";
 const SIDEBAR_COLLAPSED_CHANGE_EVENT = "assetIntegritySidebarCollapsedChange";
 const THEME_CHANGE_EVENT = "assetIntegrityThemeChange";
 

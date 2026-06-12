@@ -1,24 +1,24 @@
 import { PlaceholderModulePage } from "@/components/layout/placeholder-module-page";
 
-type ModulePlaceholderProps = {
+interface ModulePlaceholderProps {
   title: string;
-  eyebrow?: string;
+  description?: string;
   parentLabel?: string;
   route?: string;
-  description?: string;
-  status?: string;
-};
+  [key: string]: unknown;
+}
 
 export function ModulePlaceholder({
   title,
-  eyebrow,
+  description,
   parentLabel,
   route,
 }: ModulePlaceholderProps) {
   return (
     <PlaceholderModulePage
       title={title}
-      parentLabel={parentLabel ?? eyebrow}
+      description={description}
+      parentLabel={parentLabel}
       route={route}
     />
   );
