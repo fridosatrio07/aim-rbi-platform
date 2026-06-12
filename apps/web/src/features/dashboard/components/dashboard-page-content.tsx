@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
@@ -54,7 +54,6 @@ import type {
   DashboardCertificateFilter,
   DashboardDocumentFilter,
   DashboardFilterState,
-  DashboardInspectionFilter,
   DashboardAnomalyFilter,
   DashboardRiskFilter,
 } from "../services/dashboard-filter-state";
@@ -213,12 +212,12 @@ export function DashboardPageContent() {
     <div
       className={cn(
         "relative transition-[padding] duration-300 ease-out",
-        rightToolsOpen ? "xl:pr-[376px]" : "xl:pr-16",
+        rightToolsOpen ? "lg:pr-[364px] 2xl:pr-[384px]" : "lg:pr-16",
       )}
     >
       <div
         id="dashboard-snapshot-area"
-        className="space-y-3 bg-slate-50 pb-1 text-slate-950 dark:bg-slate-950 dark:text-slate-100"
+        className="space-y-4 bg-slate-50 pb-1 text-slate-950 dark:bg-slate-950 dark:text-slate-100"
       >
         <div className="min-w-0">
           <nav
@@ -236,8 +235,9 @@ export function DashboardPageContent() {
           </h1>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6 xl:grid-cols-12 2xl:grid-cols-[repeat(6,minmax(0,1fr))_minmax(240px,1.35fr)]">
           <KpiCard
+            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={Database}
             label="Total Assets"
             value={kpis.totalAssets}
@@ -245,6 +245,7 @@ export function DashboardPageContent() {
             tone="blue"
           />
           <KpiCard
+            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={ShieldAlert}
             label="High-Risk Assets"
             value={kpis.highRiskAssets}
@@ -252,6 +253,7 @@ export function DashboardPageContent() {
             tone="red"
           />
           <KpiCard
+            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={CalendarDays}
             label="Overdue Inspections"
             value={kpis.overdueInspections}
@@ -259,6 +261,7 @@ export function DashboardPageContent() {
             tone="orange"
           />
           <KpiCard
+            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={FileCheck2}
             label="Certificates Due ≤180 Days"
             value={kpis.certificatesDueWithin180Days}
@@ -266,6 +269,7 @@ export function DashboardPageContent() {
             tone="cyan"
           />
           <KpiCard
+            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={AlertTriangle}
             label="Active Anomalies"
             value={kpis.activeAnomalies}
@@ -273,13 +277,19 @@ export function DashboardPageContent() {
             tone="violet"
           />
           <KpiCard
+            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={ClipboardCheck}
             label="Open Recommendations"
             value={kpis.openRecommendations}
             microText={`${kpis.waitingClientClarification} waiting client clarification`}
             tone="blue"
           />
-          <ReadinessCard score={kpis.readinessScore} target={kpis.readinessTarget} delta={kpis.readinessDelta} />
+          <ReadinessCard
+            className="lg:col-span-6 xl:col-span-6 2xl:col-span-1"
+            score={kpis.readinessScore}
+            target={kpis.readinessTarget}
+            delta={kpis.readinessDelta}
+          />
         </div>
 
         <div className="grid gap-3 xl:grid-cols-12">
@@ -288,15 +298,8 @@ export function DashboardPageContent() {
             riskFilter={filters.riskLevel}
             riskSummary={riskSummary}
             totalAssets={getTotalAssetCount(data)}
-            onRiskFilterChange={(riskLevel) => setFilters((current) => ({ ...current, riskLevel }))}
           />
-          <InspectionTrendPanel
-            className="xl:col-span-4"
-            activeStatus={filters.inspectionDueStatus}
-            onStatusChange={(inspectionDueStatus) =>
-              setFilters((current) => ({ ...current, inspectionDueStatus }))
-            }
-          />
+          <InspectionTrendPanel className="xl:col-span-4" />
           <CertificationTimelinePanel
             className="xl:col-span-4"
             certificateStatusFilter={filters.certificateStatus}
@@ -312,7 +315,7 @@ export function DashboardPageContent() {
             documentStatusFilter={filters.documentCompletenessStatus}
           />
           <CriticalAttentionPanel
-            className="xl:col-span-3"
+            className="xl:col-span-12"
             rows={data.criticalAttention}
             onSelectRow={setSelectedCriticalItem}
           />
@@ -343,12 +346,14 @@ export function DashboardPageContent() {
 }
 
 function KpiCard({
+  className,
   icon: Icon,
   label,
   value,
   microText,
   tone,
 }: {
+  className?: string;
   icon: LucideIcon;
   label: string;
   value: number | string;
@@ -356,13 +361,13 @@ function KpiCard({
   tone: keyof typeof KPI_TONE_STYLES;
 }) {
   return (
-    <Card className="h-full rounded-2xl transition hover:border-blue-200 dark:hover:border-blue-500/30">
-      <CardContent className="flex h-full items-center gap-3 p-4">
-        <div className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-2xl ring-1", KPI_TONE_STYLES[tone])}>
-          <Icon className="h-6 w-6" aria-hidden="true" />
+    <Card className={cn("h-full cursor-default rounded-2xl", className)}>
+      <CardContent className="flex h-full min-h-[112px] items-center gap-3 p-3.5">
+        <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl ring-1", KPI_TONE_STYLES[tone])}>
+          <Icon className="h-5 w-5" aria-hidden="true" />
         </div>
         <div className="min-w-0">
-          <p className="truncate text-xs font-extrabold text-slate-500 dark:text-slate-400">{label}</p>
+          <p className="text-[11px] font-extrabold leading-4 text-slate-500 dark:text-slate-400">{label}</p>
           <p className="mt-1 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">{value}</p>
           <p className="mt-1 truncate text-xs font-semibold text-slate-500 dark:text-slate-400">{microText}</p>
         </div>
@@ -371,25 +376,35 @@ function KpiCard({
   );
 }
 
-function ReadinessCard({ score, target, delta }: { score: number; target: number; delta: number }) {
+function ReadinessCard({
+  className,
+  score,
+  target,
+  delta,
+}: {
+  className?: string;
+  score: number;
+  target: number;
+  delta: number;
+}) {
   const radius = 33;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference - (score / 100) * circumference;
 
   return (
-    <Card className="overflow-hidden rounded-2xl border-blue-700 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 text-white shadow-[0_18px_45px_rgba(37,99,235,0.28)]">
-      <CardContent className="flex h-full items-center justify-between gap-3 p-4">
+    <Card className={cn("cursor-default overflow-hidden rounded-2xl border-blue-700 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 text-white shadow-[0_18px_45px_rgba(37,99,235,0.28)]", className)}>
+      <CardContent className="flex h-full min-h-[112px] items-center justify-between gap-3 p-3.5">
         <div className="min-w-0">
           <p className="text-xs font-extrabold text-blue-100">Overall Integrity Readiness Score</p>
-          <p className="mt-2 text-4xl font-black tracking-tight">{score}%</p>
+          <p className="mt-1 text-4xl font-black tracking-tight">{score}%</p>
           <p className="mt-1 text-xs font-bold text-blue-100">Target ≥{target}%</p>
           <p className="mt-1 flex items-center gap-1 text-xs font-bold text-emerald-200">
             <TrendingUp className="h-3.5 w-3.5" aria-hidden="true" />
             {delta}% vs last 30 days
           </p>
         </div>
-        <div className="relative grid h-24 w-24 shrink-0 place-items-center">
-          <svg className="h-24 w-24 -rotate-90" viewBox="0 0 88 88" aria-hidden="true">
+        <div className="relative grid h-20 w-20 shrink-0 place-items-center">
+          <svg className="h-20 w-20 -rotate-90" viewBox="0 0 88 88" aria-hidden="true">
             <circle cx="44" cy="44" r={radius} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="10" />
             <circle
               cx="44"
@@ -448,13 +463,11 @@ function RiskMatrixPanel({
   riskFilter,
   riskSummary,
   totalAssets,
-  onRiskFilterChange,
 }: {
   className?: string;
   riskFilter: DashboardRiskFilter;
   riskSummary: Record<RiskLevel, number>;
   totalAssets: number;
-  onRiskFilterChange: (value: DashboardRiskFilter) => void;
 }) {
   const cellsByKey = new Map(
     DASHBOARD_SEED_DATA.riskMatrix.map((cell) => [`${cell.likelihood}-${cell.consequence}`, cell]),
@@ -462,11 +475,11 @@ function RiskMatrixPanel({
 
   return (
     <DashboardPanel title="Risk Matrix" subtitle="Likelihood vs Consequence" className={className}>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_138px]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_132px]">
         <div className="min-w-0">
-          <div className="mb-2 grid grid-cols-[72px_repeat(5,minmax(44px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
+          <div className="mb-2 grid grid-cols-[78px_repeat(5,minmax(36px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
             <div />
-            <div className="col-span-5 rounded-xl bg-slate-50 py-1 dark:bg-slate-950">Consequence</div>
+            <div className="col-span-5 rounded-lg bg-slate-50 py-1 dark:bg-slate-950">Consequence</div>
             <div />
             {CONSEQUENCE_LABELS.map((label, index) => (
               <div key={label} className="truncate rounded-lg bg-slate-50 px-1 py-1 dark:bg-slate-950" title={label}>
@@ -476,47 +489,44 @@ function RiskMatrixPanel({
             ))}
           </div>
 
-          <div className="grid grid-cols-[72px_repeat(5,minmax(44px,1fr))] gap-1">
+          <div className="grid grid-cols-[78px_repeat(5,minmax(36px,1fr))] gap-1">
             {[5, 4, 3, 2, 1].map((likelihood) => (
               <RiskMatrixRow
                 key={likelihood}
                 likelihood={likelihood}
                 cellsByKey={cellsByKey}
                 riskFilter={riskFilter}
-                onRiskFilterChange={onRiskFilterChange}
               />
             ))}
           </div>
 
-          <div className="mt-2 flex items-center justify-between text-[11px] font-bold text-slate-500 dark:text-slate-400">
+          <div className="mt-2 flex items-center justify-between gap-3 text-[11px] font-bold text-slate-500 dark:text-slate-400">
             <span>Likelihood</span>
-            <span>1 Low consequence to 5 catastrophic</span>
+            <span className="text-right">1 low consequence to 5 catastrophic</span>
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
           {(["high", "medium-high", "medium", "low"] as RiskLevel[]).map((level) => (
-            <button
+            <div
               key={level}
-              type="button"
-              onClick={() => onRiskFilterChange(riskFilter === level ? "all" : level)}
               className={cn(
-                "flex w-full items-center justify-between rounded-xl border px-3 py-2 text-sm font-extrabold transition",
+                "flex h-12 items-center justify-between gap-2 rounded-xl border px-3 text-sm font-extrabold transition",
                 RISK_LEVEL_STYLES[level].badge,
-                riskFilter === level && "ring-4 ring-blue-500/10",
+                riskFilter !== "all" && riskFilter !== level && "opacity-40",
               )}
             >
-              <span className="flex items-center gap-2">
+              <span className="flex min-w-0 items-center gap-2">
                 <span className={cn("h-2.5 w-2.5 rounded-full", RISK_LEVEL_STYLES[level].dot)} />
-                {RISK_LEVEL_LABELS[level]}
+                <span className="truncate">{RISK_LEVEL_LABELS[level]}</span>
               </span>
-              <span>{riskSummary[level]}</span>
-            </button>
+              <span className="shrink-0">{riskSummary[level]}</span>
+            </div>
           ))}
 
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
-            <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Total Assets</p>
-            <p className="mt-1 text-3xl font-black text-slate-950 dark:text-white">{totalAssets}</p>
+          <div className="flex h-12 items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 dark:border-slate-800 dark:bg-slate-950">
+            <p className="text-xs font-extrabold text-slate-500 dark:text-slate-400">Total Assets</p>
+            <p className="text-xl font-black text-slate-950 dark:text-white">{totalAssets}</p>
           </div>
         </div>
       </div>
@@ -528,12 +538,10 @@ function RiskMatrixRow({
   likelihood,
   cellsByKey,
   riskFilter,
-  onRiskFilterChange,
 }: {
   likelihood: number;
   cellsByKey: Map<string, (typeof DASHBOARD_SEED_DATA.riskMatrix)[number]>;
   riskFilter: DashboardRiskFilter;
-  onRiskFilterChange: (value: DashboardRiskFilter) => void;
 }) {
   return (
     <>
@@ -550,34 +558,26 @@ function RiskMatrixRow({
         const dimmed = riskFilter !== "all" && riskFilter !== cell.level;
 
         return (
-          <button
+          <div
             key={consequence}
-            type="button"
-            onClick={() => onRiskFilterChange(riskFilter === cell.level ? "all" : cell.level)}
             className={cn(
-              "grid min-h-12 place-items-center rounded-xl text-sm font-black transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-500/20",
+              "grid aspect-square min-h-10 place-items-center rounded-lg text-sm font-black transition",
               RISK_LEVEL_STYLES[cell.level].cell,
               dimmed && "opacity-35 grayscale",
             )}
-            aria-label={`${RISK_LEVEL_LABELS[cell.level]} risk: likelihood ${likelihood}, consequence ${consequence}, ${cell.count} assets`}
+            title={`${RISK_LEVEL_LABELS[cell.level]} risk: likelihood ${likelihood}, consequence ${consequence}, ${cell.count} assets`}
           >
             {cell.count}
-          </button>
+          </div>
         );
       })}
     </>
   );
 }
 
-function InspectionTrendPanel({
-  className,
-  activeStatus,
-  onStatusChange,
-}: {
-  className?: string;
-  activeStatus: DashboardInspectionFilter;
-  onStatusChange: (status: InspectionDueStatus) => void;
-}) {
+function InspectionTrendPanel({ className }: { className?: string }) {
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<InspectionDueStatus | null>(null);
   const maxTotal = Math.max(
     ...DASHBOARD_SEED_DATA.inspectionTrend.map((point) =>
       INSPECTION_STATUS_ORDER.reduce((total, status) => total + point.statuses[status], 0),
@@ -585,20 +585,40 @@ function InspectionTrendPanel({
   );
   const latest = DASHBOARD_SEED_DATA.inspectionTrend[DASHBOARD_SEED_DATA.inspectionTrend.length - 1];
 
+  useEffect(() => {
+    if (!selectedStatus) return undefined;
+
+    function clearSelectionOnOutsidePointerDown(event: PointerEvent) {
+      if (!panelRef.current?.contains(event.target as Node)) {
+        setSelectedStatus(null);
+      }
+    }
+
+    document.addEventListener("pointerdown", clearSelectionOnOutsidePointerDown);
+
+    return () => document.removeEventListener("pointerdown", clearSelectionOnOutsidePointerDown);
+  }, [selectedStatus]);
+
+  function toggleStatus(status: InspectionDueStatus) {
+    setSelectedStatus((current) => (current === status ? null : status));
+  }
+
   return (
     <DashboardPanel title="Inspection Due Trend" subtitle="By due status" className={className}>
+      <div ref={panelRef}>
       <div className="mb-3 flex flex-wrap gap-2">
         {INSPECTION_STATUS_ORDER.map((status) => (
           <button
             key={status}
             type="button"
-            onClick={() => onStatusChange(status)}
+            onClick={() => toggleStatus(status)}
+            aria-pressed={selectedStatus === status}
             className={cn(
               "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-extrabold transition",
               INSPECTION_STATUS_STYLES[status].bg,
               INSPECTION_STATUS_STYLES[status].text,
               INSPECTION_STATUS_STYLES[status].border,
-              activeStatus === status && "ring-4 ring-blue-500/10",
+              selectedStatus === status && "ring-4 ring-blue-500/10",
             )}
           >
             <span className={cn("h-2 w-2 rounded-full", INSPECTION_STATUS_STYLES[status].segment)} />
@@ -620,12 +640,12 @@ function InspectionTrendPanel({
                       <button
                         key={status}
                         type="button"
-                        onClick={() => onStatusChange(status)}
+                        onClick={() => toggleStatus(status)}
                         title={`${point.label} ${INSPECTION_STATUS_LABELS[status]}: ${point.statuses[status]}`}
                         className={cn(
                           "w-full transition hover:brightness-110",
                           INSPECTION_STATUS_STYLES[status].segment,
-                          activeStatus !== "all" && activeStatus !== status && "opacity-45",
+                          selectedStatus && selectedStatus !== status && "opacity-45",
                         )}
                         style={{ height: `${Math.max(4, (point.statuses[status] / total) * 100)}%` }}
                         aria-label={`${point.label} ${INSPECTION_STATUS_LABELS[status]} ${point.statuses[status]}`}
@@ -638,6 +658,7 @@ function InspectionTrendPanel({
             );
           })}
         </div>
+      </div>
       </div>
     </DashboardPanel>
   );
@@ -958,7 +979,7 @@ function CriticalAttentionPanel({
       }
     >
       <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div className="grid grid-cols-[minmax(0,1fr)_96px_112px_120px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+        <div className="grid grid-cols-[minmax(0,1fr)_116px_148px_168px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
           <div className="px-3 py-2">Item / Issue</div>
           <div className="px-2 py-2 text-center">Severity</div>
           <div className="px-2 py-2 text-center">Status</div>
@@ -969,7 +990,7 @@ function CriticalAttentionPanel({
             key={row.id}
             type="button"
             onClick={() => onSelectRow(row)}
-            className="grid w-full grid-cols-[minmax(0,1fr)_96px_112px_120px] border-t border-slate-200 text-left text-sm transition hover:bg-blue-50/60 dark:border-slate-800 dark:hover:bg-blue-500/10"
+            className="grid min-h-[58px] w-full grid-cols-[minmax(0,1fr)_116px_148px_168px] border-t border-slate-200 text-left text-sm transition hover:bg-blue-50/60 dark:border-slate-800 dark:hover:bg-blue-500/10"
           >
             <div className="min-w-0 px-3 py-2">
               <p className="truncate font-extrabold text-slate-900 dark:text-white">{row.assetTag}</p>
@@ -1003,7 +1024,7 @@ function SeverityBadge({ severity }: { severity: CriticalAttentionRecord["severi
         : RISK_LEVEL_STYLES.medium.badge;
 
   return (
-    <span className={cn("inline-flex h-7 min-w-[76px] items-center justify-center whitespace-nowrap rounded-full border px-2 text-[11px] font-extrabold", className)}>
+    <span className={cn("inline-flex h-7 min-w-[90px] items-center justify-center whitespace-nowrap rounded-full border px-3 text-[11px] font-extrabold", className)}>
       {label}
     </span>
   );
@@ -1024,7 +1045,7 @@ function StatusBadge({ status }: { status: CriticalAttentionRecord["status"] }) 
         : "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-200";
 
   return (
-    <span className={cn("inline-flex h-7 min-w-[92px] items-center justify-center whitespace-nowrap rounded-full border px-2 text-[11px] font-extrabold", className)}>
+    <span className={cn("inline-flex h-7 min-w-[128px] items-center justify-center whitespace-nowrap rounded-full border px-3 text-[11px] font-extrabold", className)}>
       {label}
     </span>
   );

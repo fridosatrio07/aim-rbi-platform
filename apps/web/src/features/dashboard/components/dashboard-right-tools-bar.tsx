@@ -23,6 +23,7 @@ import {
 import {
   DASHBOARD_DATE_PRESETS,
   DEFAULT_DASHBOARD_FILTERS,
+  DEFAULT_DASHBOARD_DATE_RANGE,
   type DashboardDateRange,
   type DashboardFilterState,
   INSPECTION_STATUS_ORDER,
@@ -115,7 +116,7 @@ export function DashboardRightToolsBar({
 
   if (!open) {
     return (
-      <aside className="fixed bottom-4 right-3 top-[calc(var(--app-header-height)+12px)] z-30 hidden w-14 flex-col items-center rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_18px_45px_rgba(15,23,42,0.16)] backdrop-blur xl:flex dark:border-slate-800 dark:bg-slate-900/95">
+      <aside className="fixed bottom-4 right-3 top-[calc(var(--app-header-height)+12px)] z-[35] hidden w-14 flex-col items-center rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_18px_45px_rgba(15,23,42,0.16)] backdrop-blur lg:flex dark:border-slate-800 dark:bg-slate-900/95">
         <RailButton icon={ChevronLeft} label="Open Dashboard tools" onClick={() => onOpenChange(true)} />
         <div className="my-2 h-px w-full bg-slate-200 dark:bg-slate-800" />
         <RailButton icon={CalendarDays} label="Open date range" onClick={() => onOpenChange(true)} />
@@ -126,7 +127,7 @@ export function DashboardRightToolsBar({
   }
 
   return (
-    <aside className="fixed bottom-4 right-3 top-[calc(var(--app-header-height)+12px)] z-30 hidden w-[360px] flex-col rounded-2xl border border-slate-200 bg-white/95 shadow-[0_18px_45px_rgba(15,23,42,0.18)] backdrop-blur xl:flex dark:border-slate-800 dark:bg-slate-900/95">
+    <aside className="fixed bottom-4 right-3 top-[calc(var(--app-header-height)+12px)] z-[35] hidden w-[348px] flex-col rounded-2xl border border-slate-200 bg-white/95 shadow-[0_18px_45px_rgba(15,23,42,0.18)] backdrop-blur lg:flex 2xl:w-[368px] dark:border-slate-800 dark:bg-slate-900/95">
       <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 dark:border-slate-800">
         <div>
           <p className="text-xs font-extrabold uppercase tracking-wide text-blue-700 dark:text-blue-300">
@@ -153,7 +154,7 @@ export function DashboardRightToolsBar({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 p-3 pt-0">
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {DASHBOARD_DATE_PRESETS.map((preset) => (
                 <button
                   key={preset.id}
@@ -193,10 +194,13 @@ export function DashboardRightToolsBar({
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => setDraftDateRange({ presetId: null, startDate: "", endDate: "" })}
+                onClick={() => {
+                  setDraftDateRange(DEFAULT_DASHBOARD_DATE_RANGE);
+                  onDateRangeChange(DEFAULT_DASHBOARD_DATE_RANGE);
+                }}
                 className="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
               >
-                Clear
+                Reset
               </button>
               <button
                 type="button"

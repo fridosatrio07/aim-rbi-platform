@@ -23,7 +23,7 @@ export interface DashboardFilterState {
 }
 
 export interface DashboardDateRange {
-  presetId: "last-30" | "last-90" | "campaign" | "custom" | null;
+  presetId: "last-30" | "last-90" | "campaign" | "ytd" | "custom" | null;
   startDate: string;
   endDate: string;
 }
@@ -50,9 +50,15 @@ export const DASHBOARD_DATE_PRESETS: DashboardDatePreset[] = [
   },
   {
     id: "campaign",
-    label: "Renewal Campaign",
+    label: "Current Campaign",
     startDate: "2026-04-01",
     endDate: "2026-09-30",
+  },
+  {
+    id: "ytd",
+    label: "YTD",
+    startDate: "2026-01-01",
+    endDate: "2026-06-12",
   },
 ];
 
