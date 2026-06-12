@@ -13,3 +13,16 @@ storage/local-dev/processed/**
 storage/local-dev/temp/**
 !storage/local-dev/**/.gitkeep
 apps/web/.next/
+
+# Local generated build/cache
+
+# Local temporary backup files
+*.bak
+*.bak.*
+*.bak-*
+*.bak_*
+*.backup
+*.backup.*
+*.orig
+*.old
+*~
