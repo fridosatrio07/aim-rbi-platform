@@ -23,9 +23,14 @@ export const APP_ROUTES = {
     evidencePack: "/compliance-certification/evidence-pack",
   },
   rbi: {
+    overview: "/integrity-rbi",
     assessments: "/integrity-rbi/assessments",
     riskRegister: "/integrity-rbi/risk-register",
     riskAnalytics: "/integrity-rbi/risk-analytics",
+    revalidation: "/integrity-rbi/revalidation",
+    iowMocTriggers: "/integrity-rbi/iow-moc-triggers",
+    ffsRla: "/integrity-rbi/ffs-rla",
+    methodologyGovernance: "/integrity-rbi/methodology-governance",
   },
   documents: {
     register: "/documents-reports/documents",
