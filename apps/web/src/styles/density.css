@@ -2,6 +2,9 @@
   --aim-card-padding: 0.75rem;
   --aim-panel-gap: 0.75rem;
   --aim-row-height: 2rem;
+  --aim-dense-table-row-height: 2.75rem;
+  --aim-dense-table-header-height: 2.25rem;
+  --aim-dense-control-height: 2.25rem;
 }
 
 .aim-density-compact table th,
@@ -12,4 +15,21 @@
 
 .aim-density-compact .aim-compact-row {
   min-height: var(--aim-row-height);
+}
+
+.aim-density-compact .aim-compact-table th {
+  height: var(--aim-dense-table-header-height);
+}
+
+.aim-density-compact .aim-compact-table td {
+  height: var(--aim-dense-table-row-height);
+}
+
+.aim-density-compact .aim-compact-control {
+  min-height: var(--aim-dense-control-height);
+}
+
+.aim-density-compact .aim-viewport-panel {
+  min-height: 0;
+  overflow: hidden;
 }

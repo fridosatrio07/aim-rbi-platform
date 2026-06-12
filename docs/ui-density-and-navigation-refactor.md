@@ -28,15 +28,14 @@ This refactor keeps the existing platform shell, route structure, and navigation
   - Collapsed sidebar is now 64px.
   - Sidebar rows, nested rows, topbar buttons, footer spacing, and card defaults use tighter spacing.
 - `src/styles/density.css` provides opt-in compact density hooks for tables and rows.
-- `components/data-display/compact-primitives.tsx` adds reusable compact building blocks:
-  - `CompactCard`
-  - `SectionPanel`
-  - `MetricCard`
-  - `StatusBadge`
-  - `ProgressMiniBar`
-  - `BreadcrumbTrail`
-  - `PageHeader`
-  - `ToolbarButton`
+- `components/data-display/compact-primitives.tsx` now provides a reusable compact enterprise cockpit foundation:
+  - Page structure: `CompactPageShell`, `CompactPageHeader`, `BreadcrumbTrail`, `SplitPanel`
+  - Dense surfaces: `DenseCard`, `CompactCard`, `DenseSection`, `SectionPanel`
+  - KPI and metric primitives: `CompactKpiStrip`, `CompactKpiCard`, `MetricTile`, `MetricCard`, `MiniTrend`
+  - Data display primitives: `DenseTable`, `DenseTableHeader`, `DenseTableRow`, `DenseTableHeadCell`, `DenseTableCell`, `ProgressCell`, `ProgressMiniBar`
+  - Filters and controls: `FilterToolbar`, `FilterSelect`, `SearchInput`, `ToolbarButton`
+  - Status language: `StatusBadge`, `RiskBadge`, `PhaseBadge`
+  - Overlay and empty states: `CompactDrawer`, `DetailDrawer`, `RightToolsRail`, `EmptyStateCompact`, `NavigationStatusCardCompact`
 
 ## Dashboard Density
 

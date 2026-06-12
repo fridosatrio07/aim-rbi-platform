@@ -1,15 +1,13 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { ArrowUpRight, Construction, Layers3 } from "lucide-react";
 
 import {
   BreadcrumbTrail,
-  CompactCard,
+  NavigationStatusCardCompact,
   PageHeader,
-  ProgressMiniBar,
   SectionPanel,
   StatusBadge,
   ToolbarButton,
@@ -87,33 +85,12 @@ export function PlaceholderModulePage({
           </div>
         </SectionPanel>
 
-        <CompactCard className="p-4">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-sm font-black text-slate-950 dark:text-white">Navigation Status</h2>
-            <StatusBadge label={status} tone="blue" />
-          </div>
-
-          <div className="mt-3 space-y-3 text-sm">
-            <StatusRow label="Route">
-              <code className="max-w-[190px] truncate rounded-lg bg-slate-100 px-2 py-1 text-xs font-extrabold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
-                {currentRoute}
-              </code>
-            </StatusRow>
-            <StatusRow label="Data Source">
-              <span className="text-right text-xs font-extrabold text-slate-700 dark:text-slate-200">{dataSource}</span>
-            </StatusRow>
-            <StatusRow label="Readiness">
-              <span className="font-extrabold text-blue-700 dark:text-blue-300">32%</span>
-            </StatusRow>
-            <ProgressMiniBar value={32} />
-          </div>
-
-          {showParentCta ? (
-            <div className="mt-4">
-              <ToolbarButton href={parent?.href}>Back to {parent?.label}</ToolbarButton>
-            </div>
-          ) : null}
-        </CompactCard>
+        <NavigationStatusCardCompact
+          currentRoute={currentRoute}
+          dataSource={dataSource}
+          status={status}
+          parentCta={showParentCta ? <ToolbarButton href={parent?.href}>Back to {parent?.label}</ToolbarButton> : null}
+        />
       </div>
     </div>
   );
@@ -143,15 +120,6 @@ function ModuleStateRow({
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-function StatusRow({ children, label }: { children: ReactNode; label: string }) {
-  return (
-    <div className="flex items-center justify-between gap-3 border-t border-slate-200 pt-3 first:border-t-0 first:pt-0 dark:border-slate-800">
-      <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</span>
-      {children}
     </div>
   );
 }
