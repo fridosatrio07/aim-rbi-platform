@@ -1,0 +1,233 @@
+import type {
+  AccessScopeItem,
+  ActivityItem,
+  NotificationItem,
+  ProfileForm,
+  ProjectAccessGroup,
+} from "../_types/profile.types";
+
+export const profileInitial: ProfileForm = {
+  title: "Mr.",
+  fullName: "Frido Satrio",
+  displayName: "Frido Satrio",
+  email: "frido.satrio@sucofindo.demo",
+  role: "RBI Engineer",
+  company: "SUCOFINDO",
+  preferredLanguage: "Bahasa Indonesia / English",
+};
+
+export const projectAccessGroups: ProjectAccessGroup[] = [
+  {
+    key: "spm01",
+    projectName: "SPM-01 Instalasi Stasiun Pengumpul Minyak",
+    description: "Primary facility workspace",
+    accessLevel: "Full Access",
+    tone: "green",
+  },
+  {
+    key: "south-cluster",
+    projectName: "South Cluster Compression Hub",
+    description: "Regional technical review",
+    accessLevel: "Reviewer",
+    tone: "blue",
+  },
+  {
+    key: "offshore-pilot",
+    projectName: "Offshore Pilot RBI Sandbox",
+    description: "Pilot RBI governance",
+    accessLevel: "Approver",
+    tone: "purple",
+  },
+];
+
+export const modulePermissions = [
+  { label: "Asset Register", enabled: true },
+  { label: "Inspection Management", enabled: true },
+  { label: "RBI & Integrity Analytics", enabled: true },
+  { label: "Certification & Evidence", enabled: true },
+  { label: "Anomalies & Recommendations", enabled: true },
+  { label: "Document Control", enabled: true },
+  { label: "Audit Trail", enabled: true },
+  { label: "Governance", enabled: true },
+  { label: "Technical Governance", enabled: true },
+];
+
+export const accessScopeItems: AccessScopeItem[] = [
+  {
+    id: "1",
+    projectKey: "spm01",
+    entity: "SPM-01 Instalasi Stasiun Pengumpul Minyak",
+    purpose: "Facility workspace",
+    level: "Full Access",
+    tone: "green",
+    enabled: true,
+    route: "/projects/spm-01",
+  },
+  {
+    id: "2",
+    projectKey: "spm01",
+    entity: "CIR-CRUDE-02",
+    purpose: "RBI reviewer access",
+    level: "RBI Review",
+    tone: "blue",
+    enabled: true,
+    route: "/integrity-rbi/risk-register",
+  },
+  {
+    id: "3",
+    projectKey: "spm01",
+    entity: "CIR-GAS-01",
+    purpose: "Integrity analytics access",
+    level: "Analytics",
+    tone: "cyan",
+    enabled: true,
+    route: "/integrity-rbi/risk-analytics",
+  },
+  {
+    id: "4",
+    projectKey: "spm01",
+    entity: "CIR-PW-05",
+    purpose: "Inspection evidence reviewer access",
+    level: "Evidence",
+    tone: "purple",
+    enabled: true,
+    route: "/inspections/history",
+  },
+  {
+    id: "5",
+    projectKey: "spm01",
+    entity: "V-101 Inlet Separator",
+    purpose: "Evidence approval access",
+    level: "Asset Evidence",
+    tone: "amber",
+    enabled: true,
+    route: "/assets/V-101",
+  },
+  {
+    id: "6",
+    projectKey: "spm01",
+    entity: "PSV-1203",
+    purpose: "Certificate renewal review access",
+    level: "Certificate",
+    tone: "red",
+    enabled: true,
+    route: "/compliance-certification/renewal-tracker",
+  },
+  {
+    id: "7",
+    projectKey: "south-cluster",
+    entity: "Compressor Reliability Review",
+    purpose: "Regional technical review",
+    level: "Reviewer",
+    tone: "blue",
+    enabled: true,
+    route: "/projects/south-cluster-compression-hub",
+  },
+  {
+    id: "8",
+    projectKey: "offshore-pilot",
+    entity: "Pilot RBI Methodology Sandbox",
+    purpose: "Workflow governance review",
+    level: "Approver",
+    tone: "purple",
+    enabled: true,
+    route: "/projects/offshore-pilot-rbi-sandbox",
+  },
+];
+
+export const approvalAuthority = [
+  "Approve inspection plan validation",
+  "Approve RBI review gate",
+  "Approve evidence pack release",
+  "Approve certificate renewal submission",
+  "Approve anomaly closure recommendation",
+];
+
+export const notificationInitial: NotificationItem[] = [
+  {
+    id: "inspection-due-alerts",
+    label: "Inspection due alerts",
+    description: "Due and overdue inspection reminders for assigned assets.",
+    enabled: true,
+    channel: "Email + in-app",
+    priority: "High",
+  },
+  {
+    id: "rbi-review-gate-reminders",
+    label: "RBI review gate reminders",
+    description: "Pending RBI review gates and approval actions.",
+    enabled: true,
+    channel: "In-app only",
+    priority: "Normal",
+  },
+  {
+    id: "certificate-renewal-alerts",
+    label: "Certificate renewal alerts",
+    description: "Certificate expiry, renewal evidence, and submission reminders.",
+    enabled: true,
+    channel: "Email + in-app",
+    priority: "High",
+  },
+  {
+    id: "anomaly-close-out-escalation",
+    label: "Anomaly close-out escalation",
+    description: "Escalations for overdue anomaly and recommendation closure.",
+    enabled: true,
+    channel: "Email + in-app",
+    priority: "Escalation",
+  },
+  {
+    id: "document-validation-requests",
+    label: "Document validation requests",
+    description: "Requests for NDT report, calibration, P&ID, and evidence validation.",
+    enabled: true,
+    channel: "In-app only",
+    priority: "Normal",
+  },
+  {
+    id: "weekly-governance-digest",
+    label: "Weekly governance digest",
+    description: "Weekly summary for access, workflow, audit, and governance status.",
+    enabled: false,
+    channel: "Email only",
+    priority: "Normal",
+  },
+];
+
+export const activityLog: ActivityItem[] = [
+  {
+    title: "Logged in from Jakarta office network",
+    subtitle: "Secure session started",
+    timestamp: "12 Jun 2026, 08:14 WIB",
+    tone: "green",
+    route: "/administration/audit-trail",
+  },
+  {
+    title: "Approved RBI review for CIR-CRUDE-02",
+    subtitle: "RBI review gate",
+    timestamp: "11 Jun 2026, 16:42 WIB",
+    tone: "blue",
+    route: "/integrity-rbi/risk-register",
+  },
+  {
+    title: "Commented on overdue NDT report validation for V-101 Inlet Separator",
+    subtitle: "Inspection evidence validation",
+    timestamp: "11 Jun 2026, 14:18 WIB",
+    tone: "amber",
+    route: "/inspections/history",
+  },
+  {
+    title: "Updated notification preferences",
+    subtitle: "Account notification settings",
+    timestamp: "10 Jun 2026, 09:30 WIB",
+    tone: "purple",
+    route: "/account-settings",
+  },
+  {
+    title: "Reviewed certificate evidence package for PSV-1203",
+    subtitle: "Certificate renewal evidence",
+    timestamp: "09 Jun 2026, 15:20 WIB",
+    tone: "cyan",
+    route: "/compliance-certification/evidence-pack",
+  },
+];
