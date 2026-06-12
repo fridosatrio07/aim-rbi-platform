@@ -12,6 +12,8 @@ export default function RBIUpdateRevalidationPage() {
     <ModulePlaceholder
       title="RBI Update & Revalidation"
       description="Time-based and event-based RBI update control triggered by inspection findings, IOW exceedance, MOC, repair, replacement, incident, or operating changes."
+      parentLabel="Integrity / RBI"
+      parentHref="/integrity-rbi"
     />
   );
 }

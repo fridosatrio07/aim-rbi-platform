@@ -1,0 +1,15 @@
+.aim-density-compact {
+  --aim-card-padding: 0.75rem;
+  --aim-panel-gap: 0.75rem;
+  --aim-row-height: 2rem;
+}
+
+.aim-density-compact table th,
+.aim-density-compact table td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.aim-density-compact .aim-compact-row {
+  min-height: var(--aim-row-height);
+}

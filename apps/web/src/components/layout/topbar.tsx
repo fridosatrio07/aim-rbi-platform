@@ -78,18 +78,18 @@ export function Topbar({
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-30 h-[var(--app-header-height)] border-b transition-colors duration-300",
-        sidebarCollapsed ? "lg:left-20" : "lg:left-[280px]",
+        sidebarCollapsed ? "lg:left-16" : "lg:left-[248px]",
         isDark
           ? "border-slate-800 bg-slate-950/95 text-slate-100"
           : "border-slate-200 bg-white/95 text-slate-950",
       )}
     >
-      <div className="flex h-full items-center gap-3 px-3 sm:px-4 lg:px-5">
+      <div className="flex h-full items-center gap-2.5 px-3 sm:px-4">
         <button
           type="button"
           onClick={onMobileMenuClick}
           className={cn(
-            "grid h-11 w-11 place-items-center rounded-xl border lg:hidden",
+            "grid h-10 w-10 place-items-center rounded-xl border lg:hidden",
             isDark
               ? "border-slate-700 bg-slate-900 text-slate-200"
               : "border-slate-200 bg-white text-slate-700",
@@ -103,7 +103,7 @@ export function Topbar({
           <button
             type="button"
             className={cn(
-              "flex h-14 w-[380px] max-w-[38vw] items-center gap-3 rounded-2xl border px-4 text-left transition-colors",
+              "flex h-10 w-[360px] max-w-[38vw] items-center gap-2.5 rounded-xl border px-3 text-left transition-colors",
               isDark
                 ? "border-slate-700 bg-slate-900/90 hover:bg-slate-900"
                 : "border-slate-200 bg-slate-50 hover:bg-white",
@@ -116,10 +116,10 @@ export function Topbar({
             aria-expanded={projectOpen}
             aria-label={`Project / Site: ${selectedProject}`}
           >
-            <Building2 className="h-6 w-6 shrink-0 text-slate-500" aria-hidden="true" />
+            <Building2 className="h-5 w-5 shrink-0 text-slate-500" aria-hidden="true" />
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-slate-500">Project / Site</p>
-              <p className="truncate text-base font-bold">{selectedProject}</p>
+              <p className="text-[11px] font-semibold text-slate-500">Project / Site</p>
+              <p className="truncate text-sm font-bold">{selectedProject}</p>
             </div>
             <ChevronDown className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
           </button>
@@ -143,7 +143,7 @@ export function Topbar({
           ) : null}
         </div>
 
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
           <div className="relative">
             <button
               type="button"
@@ -153,14 +153,14 @@ export function Topbar({
                 setUserOpen(false);
               }}
               className={cn(
-                "relative grid h-12 w-12 place-items-center rounded-xl transition-colors",
+                "relative grid h-10 w-10 place-items-center rounded-xl transition-colors",
                 isDark ? "hover:bg-slate-900" : "hover:bg-slate-100",
               )}
               aria-expanded={notificationOpen}
               aria-label="Notifications"
             >
-              <Bell className="h-6 w-6" aria-hidden="true" />
-              <span className="absolute right-2 top-1 grid h-6 min-w-6 place-items-center rounded-full bg-red-600 px-1 text-xs font-bold text-white">
+              <Bell className="h-5 w-5" aria-hidden="true" />
+              <span className="absolute right-1.5 top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">
                 12
               </span>
             </button>
@@ -186,12 +186,12 @@ export function Topbar({
             type="button"
             onClick={onThemeToggle}
             className={cn(
-              "grid h-12 w-12 place-items-center rounded-xl transition-colors",
+              "grid h-10 w-10 place-items-center rounded-xl transition-colors",
               isDark ? "hover:bg-slate-900" : "hover:bg-slate-100",
             )}
             aria-label="Toggle theme"
           >
-            {theme === "dark" ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
 
           <div className="relative">
@@ -203,7 +203,7 @@ export function Topbar({
                 setNotificationOpen(false);
               }}
               className={cn(
-                "flex h-14 items-center gap-3 rounded-2xl px-2 pr-3 transition-colors",
+                "flex h-11 items-center gap-2 rounded-xl px-2 pr-2.5 transition-colors",
                 isDark ? "hover:bg-slate-900" : "hover:bg-slate-100",
               )}
               aria-expanded={userOpen}
@@ -211,11 +211,11 @@ export function Topbar({
             >
               <div
                 className={cn(
-                  "grid h-12 w-12 place-items-center rounded-full border",
+                  "grid h-9 w-9 place-items-center rounded-full border",
                   isDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-white",
                 )}
               >
-                <UserCircle className="h-8 w-8 text-slate-500" aria-hidden="true" />
+                <UserCircle className="h-6 w-6 text-slate-500" aria-hidden="true" />
               </div>
               <div className="hidden min-w-0 text-left md:block">
                 <p className="truncate text-sm font-bold">{appInfo.user.name}</p>

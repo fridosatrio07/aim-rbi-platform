@@ -178,7 +178,7 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
   return (
     <div
       className={cn(
-        "min-h-screen overflow-hidden transition-colors duration-300",
+        "aim-density-compact min-h-screen overflow-hidden transition-colors duration-300",
         theme === "dark"
           ? "app-theme-dark bg-slate-950 text-slate-200"
           : "app-theme-light bg-slate-50 text-slate-950",
@@ -202,16 +202,16 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
 
       <main
         className={cn(
-          "min-w-0 pt-[var(--app-header-height)] transition-[padding] duration-300 ease-out lg:pl-[280px]",
+          "min-w-0 pt-[var(--app-header-height)] transition-[padding] duration-300 ease-out lg:pl-[248px]",
           theme === "dark"
             ? "main-theme-dark bg-slate-950 text-slate-200"
             : "main-theme-light bg-slate-50 text-slate-950",
-          sidebarCollapsed && "lg:pl-20",
+          sidebarCollapsed && "lg:pl-16",
         )}
       >
         <div
           className={cn(
-            "mx-auto flex min-h-[calc(100vh-var(--app-header-height))] w-full max-w-[1760px] min-w-0 flex-col px-3 py-3 sm:px-4 lg:px-4 2xl:px-5",
+            "mx-auto flex min-h-[calc(100vh-var(--app-header-height))] w-full max-w-[1760px] min-w-0 flex-col px-3 py-3 sm:px-4 lg:px-4",
             contentClassName,
           )}
         >
@@ -219,7 +219,7 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
 
           <footer
             className={cn(
-              "mt-8 border-t py-4 text-sm",
+              "mt-4 border-t py-3 text-xs",
               theme === "dark" ? "border-slate-800 text-slate-400" : "border-slate-200 text-slate-600",
             )}
           >

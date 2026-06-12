@@ -1,3 +1,5 @@
+@import "../styles/density.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,12 +34,12 @@
   --ring: 221 83% 53%;
 
   --radius: 0.75rem;
-  --app-header-height: 72px;
+  --app-header-height: 60px;
 }
 
 @media (min-width: 640px) {
   :root {
-    --app-header-height: 96px;
+    --app-header-height: 64px;
   }
 }
 

@@ -189,7 +189,7 @@ export function DashboardPageContent() {
   const riskSummary = useMemo(() => getRiskSummary(data), [data]);
   const [dateRange, setDateRange] = useState(DEFAULT_DASHBOARD_DATE_RANGE);
   const [filters, setFilters] = useState<DashboardFilterState>(DEFAULT_DASHBOARD_FILTERS);
-  const [rightToolsOpen, setRightToolsOpen] = useState(true);
+  const [rightToolsOpen, setRightToolsOpen] = useState(false);
   const [snapshotStatus, setSnapshotStatus] = useState<SnapshotStatus>("idle");
   const [snapshotMessage, setSnapshotMessage] = useState<string | null>(null);
   const [selectedCriticalItem, setSelectedCriticalItem] = useState<CriticalAttentionRecord | null>(null);
@@ -209,12 +209,7 @@ export function DashboardPageContent() {
   }
 
   return (
-    <div
-      className={cn(
-        "relative transition-[padding] duration-300 ease-out",
-        rightToolsOpen ? "lg:pr-[364px] 2xl:pr-[384px]" : "lg:pr-16",
-      )}
-    >
+    <div className="relative">
       <div
         id="dashboard-snapshot-area"
         className="space-y-4 bg-slate-50 pb-1 text-slate-950 dark:bg-slate-950 dark:text-slate-100"
@@ -235,9 +230,8 @@ export function DashboardPageContent() {
           </h1>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6 xl:grid-cols-12 2xl:grid-cols-[repeat(6,minmax(0,1fr))_minmax(240px,1.35fr)]">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
           <KpiCard
-            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={Database}
             label="Total Assets"
             value={kpis.totalAssets}
@@ -245,7 +239,6 @@ export function DashboardPageContent() {
             tone="blue"
           />
           <KpiCard
-            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={ShieldAlert}
             label="High-Risk Assets"
             value={kpis.highRiskAssets}
@@ -253,7 +246,6 @@ export function DashboardPageContent() {
             tone="red"
           />
           <KpiCard
-            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={CalendarDays}
             label="Overdue Inspections"
             value={kpis.overdueInspections}
@@ -261,7 +253,6 @@ export function DashboardPageContent() {
             tone="orange"
           />
           <KpiCard
-            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={FileCheck2}
             label="Certificates Due ≤180 Days"
             value={kpis.certificatesDueWithin180Days}
@@ -269,7 +260,6 @@ export function DashboardPageContent() {
             tone="cyan"
           />
           <KpiCard
-            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={AlertTriangle}
             label="Active Anomalies"
             value={kpis.activeAnomalies}
@@ -277,7 +267,6 @@ export function DashboardPageContent() {
             tone="violet"
           />
           <KpiCard
-            className="lg:col-span-2 xl:col-span-3 2xl:col-span-1"
             icon={ClipboardCheck}
             label="Open Recommendations"
             value={kpis.openRecommendations}
@@ -285,7 +274,6 @@ export function DashboardPageContent() {
             tone="blue"
           />
           <ReadinessCard
-            className="lg:col-span-6 xl:col-span-6 2xl:col-span-1"
             score={kpis.readinessScore}
             target={kpis.readinessTarget}
             delta={kpis.readinessDelta}
@@ -315,7 +303,7 @@ export function DashboardPageContent() {
             documentStatusFilter={filters.documentCompletenessStatus}
           />
           <CriticalAttentionPanel
-            className="xl:col-span-12"
+            className="xl:col-span-3"
             rows={data.criticalAttention}
             onSelectRow={setSelectedCriticalItem}
           />

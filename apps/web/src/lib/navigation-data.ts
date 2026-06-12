@@ -29,6 +29,7 @@ export interface NavigationPage {
   label: string;
   href: string;
   parentLabel?: string;
+  parentHref?: string;
 }
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
@@ -162,19 +163,121 @@ export const NAVIGATION_PAGES: NavigationPage[] = NAVIGATION_ITEMS.flatMap((item
     label: child.label,
     href: child.href,
     parentLabel: item.label,
+    parentHref: item.href,
   })),
 ]);
 
 export function isNavigationHrefActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
+  const normalizedPathname = normalizeNavigationPath(pathname);
+  const normalizedHref = normalizeNavigationPath(href);
+
+  return normalizedPathname === normalizedHref || normalizedPathname.startsWith(`${normalizedHref}/`);
 }
 
 export function getNavigationPageByPath(pathname: string) {
   const sortedPages = [...NAVIGATION_PAGES].sort((a, b) => b.href.length - a.href.length);
 
-  return sortedPages.find((page) => isNavigationHrefActive(pathname, page.href));
+  return sortedPages.find((page) => isNavigationHrefActive(normalizeNavigationPath(pathname), page.href));
+}
+
+export function getNavigationParentByPath(pathname: string) {
+  const normalizedPathname = normalizeNavigationPath(pathname);
+  const currentPage = getNavigationPageByPath(normalizedPathname);
+
+  if (currentPage?.parentHref) {
+    return {
+      href: currentPage.parentHref,
+      label: currentPage.parentLabel ?? getNavigationLabelByHref(currentPage.parentHref) ?? "Parent Module",
+    };
+  }
+
+  const derivedParentPath = getParentRouteByPath(normalizedPathname);
+
+  if (derivedParentPath && isProtectedNavigationPath(derivedParentPath)) {
+    return {
+      href: derivedParentPath,
+      label: getNavigationLabelByHref(derivedParentPath) ?? getReadableRouteSegment(derivedParentPath),
+    };
+  }
+
+  if (normalizedPathname !== "/dashboard") {
+    return {
+      href: "/dashboard",
+      label: "Dashboard",
+    };
+  }
+
+  return undefined;
+}
+
+export function getNavigationBreadcrumbsByPath(pathname: string) {
+  const normalizedPathname = normalizeNavigationPath(pathname);
+  const page = getNavigationPageByPath(normalizedPathname);
+  const parent = getNavigationParentByPath(normalizedPathname);
+  const breadcrumbs: NavigationPage[] = [];
+
+  if (parent && parent.href !== normalizedPathname) {
+    breadcrumbs.push({ href: parent.href, label: parent.label });
+  }
+
+  breadcrumbs.push({
+    href: page?.href ?? normalizedPathname,
+    label: page?.label ?? getReadableRouteSegment(normalizedPathname),
+    parentHref: parent?.href,
+    parentLabel: parent?.label,
+  });
+
+  return breadcrumbs;
+}
+
+export function getParentRouteByPath(pathname: string) {
+  const normalizedPathname = normalizeNavigationPath(pathname);
+  const segments = normalizedPathname.split("/").filter(Boolean);
+
+  if (segments.length <= 1) return undefined;
+
+  return `/${segments.slice(0, -1).join("/")}`;
+}
+
+export function getModuleRootByPath(pathname: string) {
+  const normalizedPathname = normalizeNavigationPath(pathname);
+
+  return NAVIGATION_ITEMS.find((item) => isNavigationHrefActive(normalizedPathname, item.href));
+}
+
+function getNavigationLabelByHref(href: string) {
+  const normalizedHref = normalizeNavigationPath(href);
+  const item = NAVIGATION_ITEMS.find((navigationItem) => normalizeNavigationPath(navigationItem.href) === normalizedHref);
+
+  if (item) return item.label;
+
+  return NAVIGATION_ITEMS.flatMap((navigationItem) => navigationItem.children ?? []).find(
+    (child) => normalizeNavigationPath(child.href) === normalizedHref,
+  )?.label;
 }
 
 export function isProtectedNavigationPath(pathname: string) {
-  return NAVIGATION_ITEMS.some((item) => isNavigationHrefActive(pathname, item.href));
+  const normalizedPathname = normalizeNavigationPath(pathname);
+
+  return NAVIGATION_ITEMS.some((item) => isNavigationHrefActive(normalizedPathname, item.href));
+}
+
+function normalizeNavigationPath(pathname: string) {
+  const [pathWithoutQuery] = pathname.split("?");
+  const trimmedPath = pathWithoutQuery.split("#")[0]?.replace(/\/+$/, "") || "/";
+
+  return trimmedPath === "" ? "/" : trimmedPath;
+}
+
+function getReadableRouteSegment(pathname: string) {
+  const normalizedPathname = normalizeNavigationPath(pathname);
+  const segment = normalizedPathname.split("/").filter(Boolean).at(-1);
+
+  if (!segment) return "Dashboard";
+
+  return segment
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
