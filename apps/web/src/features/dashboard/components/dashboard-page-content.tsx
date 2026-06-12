@@ -7,20 +7,14 @@ import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
   ArrowRight,
-  BadgeCheck,
   CalendarDays,
-  ChevronDown,
   CircleAlert,
   ClipboardCheck,
   Clock3,
   Database,
-  Download,
   ExternalLink,
   FileCheck2,
   FileWarning,
-  Filter,
-  Gauge,
-  Layers3,
   ShieldAlert,
   TrendingUp,
   X,
@@ -30,7 +24,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { APP_ROUTES } from "@/lib/app-routes";
 import { cn } from "@/lib/utils";
 
+import { DashboardRightToolsBar } from "./dashboard-right-tools-bar";
+import {
+  DEFAULT_DASHBOARD_DATE_RANGE,
+  DEFAULT_DASHBOARD_FILTERS,
+  INSPECTION_STATUS_ORDER,
+} from "../services/dashboard-filter-state";
 import { DASHBOARD_SEED_DATA } from "../services/dashboard-seed-data";
+import { exportDashboardSnapshot } from "../services/dashboard-snapshot-export";
 import {
   ANOMALY_SEVERITY_LABELS,
   INSPECTION_STATUS_LABELS,
@@ -44,37 +45,21 @@ import {
 } from "../services/dashboard-selectors";
 import type {
   AnomalySeverity,
-  AssetClassSummary,
   CertificateRecord,
   CriticalAttentionRecord,
   InspectionDueStatus,
   RiskLevel,
 } from "../services/dashboard-types";
+import type {
+  DashboardCertificateFilter,
+  DashboardDocumentFilter,
+  DashboardFilterState,
+  DashboardInspectionFilter,
+  DashboardAnomalyFilter,
+  DashboardRiskFilter,
+} from "../services/dashboard-filter-state";
 
-type RiskFilter = RiskLevel | "all";
-type AssetClassFilter = string | "all";
-
-const DATE_RANGE_OPTIONS = [
-  { id: "30d", label: "May 13 - Jun 12, 2026" },
-  { id: "90d", label: "Mar 15 - Jun 12, 2026" },
-  { id: "campaign", label: "Renewal Campaign 2026" },
-] as const;
-
-const RISK_FILTER_OPTIONS: Array<{ value: RiskFilter; label: string }> = [
-  { value: "all", label: "All risk levels" },
-  { value: "high", label: "High" },
-  { value: "medium-high", label: "Medium-High" },
-  { value: "medium", label: "Medium" },
-  { value: "low", label: "Low" },
-];
-
-const INSPECTION_STATUS_ORDER: InspectionDueStatus[] = [
-  "overdue",
-  "due-30",
-  "due-90",
-  "current",
-  "pending-validation",
-];
+type SnapshotStatus = "idle" | "capturing" | "success" | "error";
 
 const RISK_LEVEL_STYLES: Record<
   RiskLevel,
@@ -203,25 +188,43 @@ export function DashboardPageContent() {
   const data = DASHBOARD_SEED_DATA;
   const kpis = useMemo(() => getDashboardKpis(data), [data]);
   const riskSummary = useMemo(() => getRiskSummary(data), [data]);
-  const [dateRange, setDateRange] = useState<(typeof DATE_RANGE_OPTIONS)[number]["id"]>("30d");
-  const [riskFilter, setRiskFilter] = useState<RiskFilter>("all");
-  const [assetClassFilter, setAssetClassFilter] = useState<AssetClassFilter>("all");
-  const [inspectionStatus, setInspectionStatus] = useState<InspectionDueStatus>("overdue");
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const [exportOpen, setExportOpen] = useState(false);
-  const [exportNotice, setExportNotice] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState(DEFAULT_DASHBOARD_DATE_RANGE);
+  const [filters, setFilters] = useState<DashboardFilterState>(DEFAULT_DASHBOARD_FILTERS);
+  const [rightToolsOpen, setRightToolsOpen] = useState(true);
+  const [snapshotStatus, setSnapshotStatus] = useState<SnapshotStatus>("idle");
+  const [snapshotMessage, setSnapshotMessage] = useState<string | null>(null);
   const [selectedCriticalItem, setSelectedCriticalItem] = useState<CriticalAttentionRecord | null>(null);
 
-  function notifyExportWorkflow(label: string) {
-    setExportOpen(false);
-    setExportNotice(`${label} export workflow will be connected to Evidence Pack / Reports.`);
+  async function handleExportSnapshot() {
+    setSnapshotStatus("capturing");
+    setSnapshotMessage("Capturing Dashboard main content...");
+
+    try {
+      await exportDashboardSnapshot();
+      setSnapshotStatus("success");
+      setSnapshotMessage("Dashboard Snapshot exported as PNG.");
+    } catch (error) {
+      setSnapshotStatus("error");
+      setSnapshotMessage(error instanceof Error ? error.message : "Dashboard Snapshot export failed.");
+    }
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
+    <div
+      className={cn(
+        "relative transition-[padding] duration-300 ease-out",
+        rightToolsOpen ? "xl:pr-[376px]" : "xl:pr-16",
+      )}
+    >
+      <div
+        id="dashboard-snapshot-area"
+        className="space-y-3 bg-slate-50 pb-1 text-slate-950 dark:bg-slate-950 dark:text-slate-100"
+      >
         <div className="min-w-0">
-          <nav className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+          <nav
+            className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400"
+            aria-label="Breadcrumb"
+          >
             <Link href={APP_ROUTES.dashboard} className="transition hover:text-blue-700 dark:hover:text-blue-200">
               Home
             </Link>
@@ -233,324 +236,108 @@ export function DashboardPageContent() {
           </h1>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <label className="relative inline-flex min-w-[220px] items-center">
-            <span className="sr-only">Date range</span>
-            <CalendarDays className="pointer-events-none absolute left-3 h-4 w-4 text-slate-500" aria-hidden="true" />
-            <select
-              value={dateRange}
-              onChange={(event) => setDateRange(event.target.value as (typeof DATE_RANGE_OPTIONS)[number]["id"])}
-              className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white pl-9 pr-9 text-sm font-semibold text-slate-700 shadow-sm outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
-            >
-              {DATE_RANGE_OPTIONS.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 h-4 w-4 text-slate-500" aria-hidden="true" />
-          </label>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+          <KpiCard
+            icon={Database}
+            label="Total Assets"
+            value={kpis.totalAssets}
+            microText="+12 vs last 30 days"
+            tone="blue"
+          />
+          <KpiCard
+            icon={ShieldAlert}
+            label="High-Risk Assets"
+            value={kpis.highRiskAssets}
+            microText={`${kpis.highRiskPercent.toFixed(1)}% of total assets`}
+            tone="red"
+          />
+          <KpiCard
+            icon={CalendarDays}
+            label="Overdue Inspections"
+            value={kpis.overdueInspections}
+            microText={`${kpis.inspectionsDueWithin90Days} due within 90 days`}
+            tone="orange"
+          />
+          <KpiCard
+            icon={FileCheck2}
+            label="Certificates Due ≤180 Days"
+            value={kpis.certificatesDueWithin180Days}
+            microText={`${kpis.expiredOrUrgentCertificates} expired / urgent evidence`}
+            tone="cyan"
+          />
+          <KpiCard
+            icon={AlertTriangle}
+            label="Active Anomalies"
+            value={kpis.activeAnomalies}
+            microText={`${kpis.overdueCorrectiveActions} overdue corrective actions`}
+            tone="violet"
+          />
+          <KpiCard
+            icon={ClipboardCheck}
+            label="Open Recommendations"
+            value={kpis.openRecommendations}
+            microText={`${kpis.waitingClientClarification} waiting client clarification`}
+            tone="blue"
+          />
+          <ReadinessCard score={kpis.readinessScore} target={kpis.readinessTarget} delta={kpis.readinessDelta} />
+        </div>
 
-          <button
-            type="button"
-            onClick={() => setFiltersOpen((current) => !current)}
-            className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-xl border px-4 text-sm font-bold shadow-sm transition",
-              filtersOpen
-                ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-200"
-                : "border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500/30",
-            )}
-            aria-expanded={filtersOpen}
-          >
-            <Filter className="h-4 w-4" aria-hidden="true" />
-            Filter
-          </button>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setExportOpen((current) => !current)}
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-700 shadow-sm transition hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500/30"
-              aria-expanded={exportOpen}
-            >
-              <Download className="h-4 w-4" aria-hidden="true" />
-              Export
-              <ChevronDown className="h-4 w-4" aria-hidden="true" />
-            </button>
-
-            {exportOpen ? (
-              <div className="absolute right-0 top-[calc(100%+8px)] z-20 w-72 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_18px_45px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-slate-900">
-                {["Dashboard Snapshot", "Evidence Pack Queue", "Reports Dataset"].map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => notifyExportWorkflow(label)}
-                    className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-700 transition hover:bg-blue-50 hover:text-blue-700 dark:text-slate-200 dark:hover:bg-blue-500/10 dark:hover:text-blue-200"
-                  >
-                    {label}
-                    <span className="text-xs font-bold text-slate-400">Planned</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
-          </div>
+        <div className="grid gap-3 xl:grid-cols-12">
+          <RiskMatrixPanel
+            className="xl:col-span-4"
+            riskFilter={filters.riskLevel}
+            riskSummary={riskSummary}
+            totalAssets={getTotalAssetCount(data)}
+            onRiskFilterChange={(riskLevel) => setFilters((current) => ({ ...current, riskLevel }))}
+          />
+          <InspectionTrendPanel
+            className="xl:col-span-4"
+            activeStatus={filters.inspectionDueStatus}
+            onStatusChange={(inspectionDueStatus) =>
+              setFilters((current) => ({ ...current, inspectionDueStatus }))
+            }
+          />
+          <CertificationTimelinePanel
+            className="xl:col-span-4"
+            certificateStatusFilter={filters.certificateStatus}
+            certificates={data.certificates}
+          />
+          <AnomalyDistributionPanel
+            className="xl:col-span-3"
+            anomalySeverityFilter={filters.anomalySeverity}
+          />
+          <RbiProgressPanel className="xl:col-span-3" />
+          <DocumentCompletenessPanel
+            className="xl:col-span-3"
+            documentStatusFilter={filters.documentCompletenessStatus}
+          />
+          <CriticalAttentionPanel
+            className="xl:col-span-3"
+            rows={data.criticalAttention}
+            onSelectRow={setSelectedCriticalItem}
+          />
         </div>
       </div>
 
-      {exportNotice ? (
-        <div className="flex items-start justify-between gap-3 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-800 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-200">
-          <span>{exportNotice}</span>
-          <button type="button" onClick={() => setExportNotice(null)} className="rounded-lg p-1 hover:bg-blue-100 dark:hover:bg-blue-500/20" aria-label="Dismiss export notice">
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
-      ) : null}
-
-      {filtersOpen ? (
-        <Card className="rounded-2xl">
-          <CardContent className="grid gap-3 p-4 md:grid-cols-3">
-            <SelectControl
-              label="Risk level"
-              icon={ShieldAlert}
-              value={riskFilter}
-              onChange={(value) => setRiskFilter(value as RiskFilter)}
-              options={RISK_FILTER_OPTIONS}
-            />
-            <SelectControl
-              label="Asset class"
-              icon={Layers3}
-              value={assetClassFilter}
-              onChange={(value) => setAssetClassFilter(value)}
-              options={[
-                { value: "all", label: "All asset classes" },
-                ...data.assetClasses.map((assetClass) => ({ value: assetClass.id, label: assetClass.label })),
-              ]}
-            />
-            <SelectControl
-              label="Inspection status"
-              icon={ClipboardCheck}
-              value={inspectionStatus}
-              onChange={(value) => setInspectionStatus(value as InspectionDueStatus)}
-              options={INSPECTION_STATUS_ORDER.map((status) => ({
-                value: status,
-                label: INSPECTION_STATUS_LABELS[status],
-              }))}
-            />
-          </CardContent>
-        </Card>
-      ) : null}
-
-      <FacilityContextStrip
-        assetClassFilter={assetClassFilter}
+      <DashboardRightToolsBar
+        key={[
+          dateRange.presetId,
+          dateRange.startDate,
+          dateRange.endDate,
+          ...Object.values(filters),
+        ].join(":")}
         assetClasses={data.assetClasses}
-        facility={data.facility}
-        onAssetClassFilterChange={setAssetClassFilter}
+        dateRange={dateRange}
+        filters={filters}
+        open={rightToolsOpen}
+        snapshotMessage={snapshotMessage}
+        snapshotStatus={snapshotStatus}
+        onDateRangeChange={setDateRange}
+        onExportSnapshot={handleExportSnapshot}
+        onFiltersChange={setFilters}
+        onOpenChange={setRightToolsOpen}
       />
-
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-7">
-        <KpiCard
-          icon={Database}
-          label="Total Assets"
-          value={kpis.totalAssets}
-          microText="+12 vs last 30 days"
-          tone="blue"
-          active={assetClassFilter === "all"}
-          onClick={() => setAssetClassFilter("all")}
-        />
-        <KpiCard
-          icon={ShieldAlert}
-          label="High-Risk Assets"
-          value={kpis.highRiskAssets}
-          microText={`${kpis.highRiskPercent.toFixed(1)}% of total assets`}
-          tone="red"
-          active={riskFilter === "high"}
-          onClick={() => setRiskFilter("high")}
-        />
-        <KpiCard
-          icon={CalendarDays}
-          label="Overdue Inspections"
-          value={kpis.overdueInspections}
-          microText={`${kpis.inspectionsDueWithin90Days} due within 90 days`}
-          tone="orange"
-          active={inspectionStatus === "overdue"}
-          onClick={() => setInspectionStatus("overdue")}
-        />
-        <KpiCard
-          icon={FileCheck2}
-          label="Certificates Due ≤180 Days"
-          value={kpis.certificatesDueWithin180Days}
-          microText={`${kpis.expiredOrUrgentCertificates} expired / urgent evidence`}
-          tone="cyan"
-        />
-        <KpiCard
-          icon={AlertTriangle}
-          label="Active Anomalies"
-          value={kpis.activeAnomalies}
-          microText={`${kpis.overdueCorrectiveActions} overdue corrective actions`}
-          tone="violet"
-        />
-        <KpiCard
-          icon={ClipboardCheck}
-          label="Open Recommendations"
-          value={kpis.openRecommendations}
-          microText={`${kpis.waitingClientClarification} waiting client clarification`}
-          tone="blue"
-        />
-        <ReadinessCard score={kpis.readinessScore} target={kpis.readinessTarget} delta={kpis.readinessDelta} />
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-12">
-        <RiskMatrixPanel
-          className="xl:col-span-4"
-          riskFilter={riskFilter}
-          riskSummary={riskSummary}
-          totalAssets={getTotalAssetCount(data)}
-          onRiskFilterChange={setRiskFilter}
-        />
-        <InspectionTrendPanel
-          className="xl:col-span-4"
-          activeStatus={inspectionStatus}
-          onStatusChange={setInspectionStatus}
-        />
-        <CertificationTimelinePanel className="xl:col-span-4" certificates={data.certificates} />
-        <AnomalyDistributionPanel className="xl:col-span-3" />
-        <RbiProgressPanel className="xl:col-span-3" />
-        <DocumentCompletenessPanel className="xl:col-span-3" />
-        <CriticalAttentionPanel
-          className="xl:col-span-3"
-          rows={data.criticalAttention}
-          onSelectRow={setSelectedCriticalItem}
-        />
-      </div>
-
       <CriticalAttentionSheet item={selectedCriticalItem} onClose={() => setSelectedCriticalItem(null)} />
-    </div>
-  );
-}
-
-function SelectControl({
-  label,
-  icon: Icon,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  icon: LucideIcon;
-  value: string;
-  options: Array<{ value: string; label: string }>;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 flex items-center gap-2 text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        <Icon className="h-3.5 w-3.5" aria-hidden="true" />
-        {label}
-      </span>
-      <span className="relative block">
-        <select
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm font-semibold text-slate-700 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200"
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" aria-hidden="true" />
-      </span>
-    </label>
-  );
-}
-
-function FacilityContextStrip({
-  facility,
-  assetClasses,
-  assetClassFilter,
-  onAssetClassFilterChange,
-}: {
-  facility: typeof DASHBOARD_SEED_DATA.facility;
-  assetClasses: AssetClassSummary[];
-  assetClassFilter: AssetClassFilter;
-  onAssetClassFilterChange: (value: AssetClassFilter) => void;
-}) {
-  return (
-    <Card className="rounded-2xl">
-      <CardContent className="grid gap-4 p-4 xl:grid-cols-[1.2fr_1fr]">
-        <div className="min-w-0 space-y-3">
-          <div className="grid gap-3 md:grid-cols-3">
-            <ContextMetric label="Facility" value={facility.name} icon={Gauge} />
-            <ContextMetric label="Owner" value={facility.owner} icon={BadgeCheck} />
-            <ContextMetric label="Facility Type" value={facility.type} icon={Layers3} />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {facility.nominalThroughput.map((item) => (
-              <span
-                key={item}
-                className="rounded-full border border-cyan-100 bg-cyan-50 px-3 py-1 text-xs font-bold text-cyan-800 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-200"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="min-w-0">
-          <div className="mb-2 flex items-center justify-between gap-3">
-            <p className="text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              Asset population
-            </p>
-            <button
-              type="button"
-              onClick={() => onAssetClassFilterChange("all")}
-              className="text-xs font-bold text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200"
-            >
-              Reset
-            </button>
-          </div>
-          <div className="flex max-h-24 flex-wrap gap-2 overflow-y-auto pr-1 aim-shell-scrollbar">
-            {assetClasses.map((assetClass) => {
-              const selected = assetClassFilter === assetClass.id;
-
-              return (
-                <button
-                  key={assetClass.id}
-                  type="button"
-                  onClick={() => onAssetClassFilterChange(selected ? "all" : assetClass.id)}
-                  className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-bold transition",
-                    selected
-                      ? "border-blue-200 bg-blue-600 text-white shadow-sm dark:border-blue-400/40 dark:bg-blue-500"
-                      : "border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300 dark:hover:border-blue-500/30 dark:hover:text-blue-200",
-                  )}
-                >
-                  <span className={cn("rounded-full px-1.5 py-0.5 text-[10px]", selected ? "bg-white/20" : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300")}>
-                    {assetClass.iconLabel}
-                  </span>
-                  <span>{assetClass.count}</span>
-                  <span className="max-w-[180px] truncate">{assetClass.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function ContextMetric({ label, value, icon: Icon }: { label: string; value: string; icon: LucideIcon }) {
-  return (
-    <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        <Icon className="h-3.5 w-3.5 text-blue-600 dark:text-blue-300" aria-hidden="true" />
-        {label}
-      </div>
-      <p className="mt-1 truncate text-sm font-extrabold text-slate-900 dark:text-slate-100" title={value}>
-        {value}
-      </p>
     </div>
   );
 }
@@ -561,19 +348,15 @@ function KpiCard({
   value,
   microText,
   tone,
-  active,
-  onClick,
 }: {
   icon: LucideIcon;
   label: string;
   value: number | string;
   microText: string;
   tone: keyof typeof KPI_TONE_STYLES;
-  active?: boolean;
-  onClick?: () => void;
 }) {
-  const content = (
-    <Card className={cn("h-full rounded-2xl transition", active ? "border-blue-300 ring-4 ring-blue-500/10" : "hover:border-blue-200 dark:hover:border-blue-500/30")}>
+  return (
+    <Card className="h-full rounded-2xl transition hover:border-blue-200 dark:hover:border-blue-500/30">
       <CardContent className="flex h-full items-center gap-3 p-4">
         <div className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-2xl ring-1", KPI_TONE_STYLES[tone])}>
           <Icon className="h-6 w-6" aria-hidden="true" />
@@ -585,16 +368,6 @@ function KpiCard({
         </div>
       </CardContent>
     </Card>
-  );
-
-  if (!onClick) {
-    return content;
-  }
-
-  return (
-    <button type="button" onClick={onClick} className="min-w-0 text-left">
-      {content}
-    </button>
   );
 }
 
@@ -657,7 +430,7 @@ function DashboardPanel({
   children: ReactNode;
 }) {
   return (
-    <Card className={cn("min-w-0 rounded-2xl", className)}>
+    <Card className={cn("h-full min-w-0 rounded-2xl", className)}>
       <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
         <div className="min-w-0">
           <CardTitle className="truncate text-base font-extrabold text-slate-950 dark:text-white">{title}</CardTitle>
@@ -678,10 +451,10 @@ function RiskMatrixPanel({
   onRiskFilterChange,
 }: {
   className?: string;
-  riskFilter: RiskFilter;
+  riskFilter: DashboardRiskFilter;
   riskSummary: Record<RiskLevel, number>;
   totalAssets: number;
-  onRiskFilterChange: (value: RiskFilter) => void;
+  onRiskFilterChange: (value: DashboardRiskFilter) => void;
 }) {
   const cellsByKey = new Map(
     DASHBOARD_SEED_DATA.riskMatrix.map((cell) => [`${cell.likelihood}-${cell.consequence}`, cell]),
@@ -759,8 +532,8 @@ function RiskMatrixRow({
 }: {
   likelihood: number;
   cellsByKey: Map<string, (typeof DASHBOARD_SEED_DATA.riskMatrix)[number]>;
-  riskFilter: RiskFilter;
-  onRiskFilterChange: (value: RiskFilter) => void;
+  riskFilter: DashboardRiskFilter;
+  onRiskFilterChange: (value: DashboardRiskFilter) => void;
 }) {
   return (
     <>
@@ -802,7 +575,7 @@ function InspectionTrendPanel({
   onStatusChange,
 }: {
   className?: string;
-  activeStatus: InspectionDueStatus;
+  activeStatus: DashboardInspectionFilter;
   onStatusChange: (status: InspectionDueStatus) => void;
 }) {
   const maxTotal = Math.max(
@@ -852,7 +625,7 @@ function InspectionTrendPanel({
                         className={cn(
                           "w-full transition hover:brightness-110",
                           INSPECTION_STATUS_STYLES[status].segment,
-                          activeStatus !== status && "opacity-45",
+                          activeStatus !== "all" && activeStatus !== status && "opacity-45",
                         )}
                         style={{ height: `${Math.max(4, (point.statuses[status] / total) * 100)}%` }}
                         aria-label={`${point.label} ${INSPECTION_STATUS_LABELS[status]} ${point.statuses[status]}`}
@@ -872,9 +645,11 @@ function InspectionTrendPanel({
 
 function CertificationTimelinePanel({
   className,
+  certificateStatusFilter,
   certificates,
 }: {
   className?: string;
+  certificateStatusFilter: DashboardCertificateFilter;
   certificates: CertificateRecord[];
 }) {
   return (
@@ -903,41 +678,56 @@ function CertificationTimelinePanel({
           <div className="px-3 py-2">Expiry</div>
           <div className="px-3 py-2 text-right">Status</div>
         </div>
-        {certificates.map((certificate) => (
-          <div key={certificate.id} className="grid grid-cols-[1.15fr_0.9fr_0.55fr] border-t border-slate-200 text-sm dark:border-slate-800">
-            <div className="min-w-0 px-3 py-2">
-              <p className="truncate font-extrabold text-slate-900 dark:text-white">{certificate.assetTag} {certificate.assetName}</p>
-              <p className="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">{certificate.certificateType}</p>
+        {certificates.map((certificate) => {
+          const dimmed = certificateStatusFilter !== "all" && certificateStatusFilter !== certificate.status;
+
+          return (
+            <div
+              key={certificate.id}
+              className={cn(
+                "grid grid-cols-[1.15fr_0.9fr_0.55fr] border-t border-slate-200 text-sm transition dark:border-slate-800",
+                dimmed && "opacity-35",
+              )}
+            >
+              <div className="min-w-0 px-3 py-2">
+                <p className="truncate font-extrabold text-slate-900 dark:text-white">{certificate.assetTag} {certificate.assetName}</p>
+                <p className="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">{certificate.certificateType}</p>
+              </div>
+              <div className="px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+                <p>{certificate.expiryDate}</p>
+                <p className={certificate.daysLeft < 0 ? "text-red-600 dark:text-red-300" : "text-slate-500 dark:text-slate-400"}>
+                  {certificate.daysLeft < 0 ? `${certificate.daysLeft} days` : `${certificate.daysLeft} days left`}
+                </p>
+              </div>
+              <div className="flex items-center justify-end px-3 py-2">
+                <CertificateBadge status={certificate.status} />
+              </div>
             </div>
-            <div className="px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300">
-              <p>{certificate.expiryDate}</p>
-              <p className={certificate.daysLeft < 0 ? "text-red-600 dark:text-red-300" : "text-slate-500 dark:text-slate-400"}>
-                {certificate.daysLeft < 0 ? `${certificate.daysLeft} days` : `${certificate.daysLeft} days left`}
-              </p>
-            </div>
-            <div className="flex items-center justify-end px-3 py-2">
-              <CertificateBadge status={certificate.status} />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="mt-4 rounded-2xl bg-slate-50 px-3 py-3 dark:bg-slate-950">
         <div className="relative h-9">
           <div className="absolute left-0 right-0 top-4 h-1 rounded-full bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500" />
-          {certificates.map((certificate) => (
-            <Link
-              key={certificate.id}
-              href={certificate.route}
-              title={`${certificate.assetTag} ${certificate.daysLeft < 0 ? "expired" : `${certificate.daysLeft} days left`}`}
-              className={cn(
-                "absolute top-2 grid h-5 w-5 -translate-x-1/2 place-items-center rounded-full border-2 border-white shadow-sm dark:border-slate-950",
-                certificate.status === "expired" ? "bg-red-500" : certificate.status === "due-soon" ? "bg-amber-400" : "bg-emerald-500",
-              )}
-              style={{ left: `${getCertificateTimelinePosition(certificate.daysLeft)}%` }}
-              aria-label={`Open certificate record for ${certificate.assetTag}`}
-            />
-          ))}
+          {certificates.map((certificate) => {
+            const dimmed = certificateStatusFilter !== "all" && certificateStatusFilter !== certificate.status;
+
+            return (
+              <Link
+                key={certificate.id}
+                href={certificate.route}
+                title={`${certificate.assetTag} ${certificate.daysLeft < 0 ? "expired" : `${certificate.daysLeft} days left`}`}
+                className={cn(
+                  "absolute top-2 grid h-5 w-5 -translate-x-1/2 place-items-center rounded-full border-2 border-white shadow-sm transition dark:border-slate-950",
+                  certificate.status === "expired" ? "bg-red-500" : certificate.status === "due-soon" ? "bg-amber-400" : "bg-emerald-500",
+                  dimmed && "opacity-35",
+                )}
+                style={{ left: `${getCertificateTimelinePosition(certificate.daysLeft)}%` }}
+                aria-label={`Open certificate record for ${certificate.assetTag}`}
+              />
+            );
+          })}
         </div>
         <div className="flex justify-between text-[10px] font-bold text-slate-500 dark:text-slate-400">
           <span>Now</span>
@@ -970,7 +760,13 @@ function getCertificateTimelinePosition(daysLeft: number) {
   return ((clamped - min) / (max - min)) * 100;
 }
 
-function AnomalyDistributionPanel({ className }: { className?: string }) {
+function AnomalyDistributionPanel({
+  className,
+  anomalySeverityFilter,
+}: {
+  className?: string;
+  anomalySeverityFilter: DashboardAnomalyFilter;
+}) {
   const total = DASHBOARD_SEED_DATA.anomalyDistribution.reduce((sum, segment) => sum + segment.count, 0);
   const gradient = getAnomalyGradient(DASHBOARD_SEED_DATA.anomalyDistribution, total);
 
@@ -986,17 +782,21 @@ function AnomalyDistributionPanel({ className }: { className?: string }) {
           </div>
         </div>
         <div className="min-w-0 flex-1 space-y-2">
-          {DASHBOARD_SEED_DATA.anomalyDistribution.map((segment) => (
-            <div key={segment.severity} className="flex items-center justify-between gap-3 text-sm">
-              <span className="flex min-w-0 items-center gap-2 font-bold text-slate-600 dark:text-slate-300">
-                <span className={cn("h-2.5 w-2.5 rounded-full", ANOMALY_SEVERITY_STYLES[segment.severity].dot)} />
-                {ANOMALY_SEVERITY_LABELS[segment.severity]}
-              </span>
-              <span className="font-extrabold text-slate-950 dark:text-white">
-                {segment.count} <span className="text-xs font-bold text-slate-500">({getPercent(segment.count, total)}%)</span>
-              </span>
-            </div>
-          ))}
+          {DASHBOARD_SEED_DATA.anomalyDistribution.map((segment) => {
+            const dimmed = anomalySeverityFilter !== "all" && anomalySeverityFilter !== segment.severity;
+
+            return (
+              <div key={segment.severity} className={cn("flex items-center justify-between gap-3 text-sm transition", dimmed && "opacity-35")}>
+                <span className="flex min-w-0 items-center gap-2 font-bold text-slate-600 dark:text-slate-300">
+                  <span className={cn("h-2.5 w-2.5 rounded-full", ANOMALY_SEVERITY_STYLES[segment.severity].dot)} />
+                  {ANOMALY_SEVERITY_LABELS[segment.severity]}
+                </span>
+                <span className="font-extrabold text-slate-950 dark:text-white">
+                  {segment.count} <span className="text-xs font-bold text-slate-500">({getPercent(segment.count, total)}%)</span>
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -1066,15 +866,22 @@ function RbiProgressPanel({ className }: { className?: string }) {
   );
 }
 
-function DocumentCompletenessPanel({ className }: { className?: string }) {
+function DocumentCompletenessPanel({
+  className,
+  documentStatusFilter,
+}: {
+  className?: string;
+  documentStatusFilter: DashboardDocumentFilter;
+}) {
   const total = getDocumentCompletenessTotal(DASHBOARD_SEED_DATA);
 
   return (
-    <DashboardPanel title="Document Completeness Overview" className={className}>
+    <DashboardPanel title="Document Completeness" className={className}>
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
         <div className="flex h-12 w-full overflow-hidden">
           {DASHBOARD_SEED_DATA.documentCompleteness.map((segment) => {
             const percent = getPercent(segment.count, total);
+            const dimmed = documentStatusFilter !== "all" && documentStatusFilter !== segment.status;
             const color =
               segment.status === "complete"
                 ? "bg-emerald-500"
@@ -1083,19 +890,27 @@ function DocumentCompletenessPanel({ className }: { className?: string }) {
                   : "bg-red-500 text-white";
 
             return (
-              <div key={segment.status} className={cn("grid place-items-center text-xs font-black text-white", color)} style={{ width: `${percent}%` }}>
+              <div
+                key={segment.status}
+                className={cn("grid place-items-center text-xs font-black text-white transition", color, dimmed && "opacity-35")}
+                style={{ width: `${percent}%` }}
+              >
                 {segment.count} ({percent}%)
               </div>
             );
           })}
         </div>
         <div className="flex flex-wrap gap-2 p-3 text-xs font-bold">
-          {DASHBOARD_SEED_DATA.documentCompleteness.map((segment) => (
-            <span key={segment.status} className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-300">
-              <span className={cn("h-2.5 w-2.5 rounded-full", segment.status === "complete" ? "bg-emerald-500" : segment.status === "partial" ? "bg-amber-400" : "bg-red-500")} />
-              {segment.label}
-            </span>
-          ))}
+          {DASHBOARD_SEED_DATA.documentCompleteness.map((segment) => {
+            const dimmed = documentStatusFilter !== "all" && documentStatusFilter !== segment.status;
+
+            return (
+              <span key={segment.status} className={cn("inline-flex items-center gap-2 text-slate-600 transition dark:text-slate-300", dimmed && "opacity-35")}>
+                <span className={cn("h-2.5 w-2.5 rounded-full", segment.status === "complete" ? "bg-emerald-500" : segment.status === "partial" ? "bg-amber-400" : "bg-red-500")} />
+                {segment.label}
+              </span>
+            );
+          })}
         </div>
       </div>
 
@@ -1143,9 +958,10 @@ function CriticalAttentionPanel({
       }
     >
       <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div className="grid grid-cols-[1fr_86px_98px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+        <div className="grid grid-cols-[minmax(0,1fr)_96px_112px_120px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
           <div className="px-3 py-2">Item / Issue</div>
-          <div className="px-3 py-2">Severity</div>
+          <div className="px-2 py-2 text-center">Severity</div>
+          <div className="px-2 py-2 text-center">Status</div>
           <div className="px-3 py-2 text-right">Due / Status</div>
         </div>
         {rows.map((row) => (
@@ -1153,17 +969,20 @@ function CriticalAttentionPanel({
             key={row.id}
             type="button"
             onClick={() => onSelectRow(row)}
-            className="grid w-full grid-cols-[1fr_86px_98px] border-t border-slate-200 text-left text-sm transition hover:bg-blue-50/60 dark:border-slate-800 dark:hover:bg-blue-500/10"
+            className="grid w-full grid-cols-[minmax(0,1fr)_96px_112px_120px] border-t border-slate-200 text-left text-sm transition hover:bg-blue-50/60 dark:border-slate-800 dark:hover:bg-blue-500/10"
           >
             <div className="min-w-0 px-3 py-2">
               <p className="truncate font-extrabold text-slate-900 dark:text-white">{row.assetTag}</p>
               <p className="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">{row.issue}</p>
             </div>
-            <div className="flex items-center px-3 py-2">
+            <div className="flex items-center justify-center px-2 py-2">
               <SeverityBadge severity={row.severity} />
             </div>
+            <div className="flex items-center justify-center px-2 py-2">
+              <StatusBadge status={row.status} />
+            </div>
             <div className="flex items-center justify-end px-3 py-2 text-right">
-              <span className={cn("text-xs font-extrabold", row.dueStatus.toLowerCase().includes("overdue") ? "text-red-600 dark:text-red-300" : "text-orange-600 dark:text-orange-300")}>
+              <span className={cn("whitespace-nowrap text-xs font-extrabold", row.dueStatus.toLowerCase().includes("overdue") ? "text-red-600 dark:text-red-300" : "text-orange-600 dark:text-orange-300")}>
                 {row.dueStatus}
               </span>
             </div>
@@ -1183,7 +1002,11 @@ function SeverityBadge({ severity }: { severity: CriticalAttentionRecord["severi
         ? RISK_LEVEL_STYLES["medium-high"].badge
         : RISK_LEVEL_STYLES.medium.badge;
 
-  return <span className={cn("rounded-full border px-2 py-1 text-[11px] font-extrabold", className)}>{label}</span>;
+  return (
+    <span className={cn("inline-flex h-7 min-w-[76px] items-center justify-center whitespace-nowrap rounded-full border px-2 text-[11px] font-extrabold", className)}>
+      {label}
+    </span>
+  );
 }
 
 function StatusBadge({ status }: { status: CriticalAttentionRecord["status"] }) {
@@ -1200,7 +1023,11 @@ function StatusBadge({ status }: { status: CriticalAttentionRecord["status"] }) 
         ? "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
         : "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-200";
 
-  return <span className={cn("rounded-full border px-2 py-1 text-xs font-extrabold", className)}>{label}</span>;
+  return (
+    <span className={cn("inline-flex h-7 min-w-[92px] items-center justify-center whitespace-nowrap rounded-full border px-2 text-[11px] font-extrabold", className)}>
+      {label}
+    </span>
+  );
 }
 
 function CriticalAttentionSheet({
