@@ -11,34 +11,37 @@ interface PlaceholderModulePageProps {
 
 export function PlaceholderModulePage({ title, parentLabel, route }: PlaceholderModulePageProps) {
   return (
-    <div className="grid min-w-0 gap-3 lg:grid-cols-12">
-      <Card className="lg:col-span-8">
-        <CardHeader className="pb-4">
-          <div className="flex min-w-0 items-start gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300">
+    <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px]">
+      <Card>
+        <CardHeader>
+          <div className="flex items-start gap-4">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-700">
               <Layers3 className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="min-w-0">
               {parentLabel ? (
-                <p className="mb-1 text-xs font-semibold uppercase text-blue-700 dark:text-blue-300">{parentLabel}</p>
+                <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-blue-700">
+                  {parentLabel}
+                </p>
               ) : null}
-              <CardTitle className="text-xl">{title}</CardTitle>
-              <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+              <CardTitle className="text-2xl">{title}</CardTitle>
+              <p className="mt-3 text-base leading-7 text-slate-600">
                 This module is prepared for future development.
               </p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/45">
-            <div className="flex min-w-0 items-start gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-white text-slate-600 shadow-sm dark:bg-slate-900 dark:text-slate-300">
-                <Construction className="h-4 w-4" aria-hidden="true" />
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <div className="flex gap-4">
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-slate-700 shadow-sm">
+                <Construction className="h-5 w-5" aria-hidden="true" />
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-slate-950 dark:text-slate-100">Module workspace</p>
-                <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                  Future screens, workflows, approval states, registers, and report views will be added here while preserving the same authenticated application shell.
+              <div>
+                <h2 className="text-lg font-semibold text-slate-950">Module workspace</h2>
+                <p className="mt-2 leading-7 text-slate-600">
+                  Future screens, workflows, approval states, registers, and report views will be
+                  added here while preserving the same authenticated application shell.
                 </p>
               </div>
             </div>
@@ -46,35 +49,37 @@ export function PlaceholderModulePage({ title, parentLabel, route }: Placeholder
         </CardContent>
       </Card>
 
-      <Card className="lg:col-span-4">
+      <Card>
         <CardHeader>
           <CardTitle>Navigation Status</CardTitle>
         </CardHeader>
-        <CardContent>
-          <dl className="space-y-3 text-sm">
-            {route ? (
-              <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3 dark:border-slate-800">
-                <dt className="text-slate-500 dark:text-slate-400">Route</dt>
-                <dd className="min-w-0 truncate font-semibold text-slate-950 dark:text-slate-100">{route}</dd>
-              </div>
-            ) : null}
-            <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3 dark:border-slate-800">
-              <dt className="text-slate-500 dark:text-slate-400">Status</dt>
-              <dd className="rounded-md bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700 dark:bg-blue-500/10 dark:text-blue-200">
-                Prepared
-              </dd>
+        <CardContent className="space-y-5 text-base">
+          {route ? (
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-slate-600">Route</span>
+              <code className="rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-800">
+                {route}
+              </code>
             </div>
-            <div className="flex items-center justify-between gap-3">
-              <dt className="text-slate-500 dark:text-slate-400">Data Source</dt>
-              <dd className="font-semibold text-slate-950 dark:text-slate-100">Prototype</dd>
-            </div>
-          </dl>
+          ) : null}
+
+          <div className="flex items-center justify-between gap-4 border-t border-slate-200 pt-5 first:border-t-0 first:pt-0">
+            <span className="text-slate-600">Status</span>
+            <span className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-bold text-blue-700">
+              Prepared
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between gap-4 border-t border-slate-200 pt-5">
+            <span className="text-slate-600">Data Source</span>
+            <span className="font-semibold text-slate-950">Prototype</span>
+          </div>
+
           <Link
-            href="/risk-based-inspection/rbi-information"
-            prefetch={false}
-            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200"
+            href="/dashboard"
+            className="inline-flex items-center gap-2 font-semibold text-blue-700 hover:text-blue-800"
           >
-            Back to RBI Information
+            Dashboard
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </CardContent>

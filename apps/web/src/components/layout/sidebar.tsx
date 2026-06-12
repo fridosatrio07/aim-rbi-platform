@@ -113,7 +113,7 @@ function SidebarContent({
   return (
     <div
       className={cn(
-        "flex min-h-0 w-full flex-col transition-colors duration-300",
+        "flex h-full min-h-0 w-full flex-col transition-colors duration-300",
         isDark
           ? "bg-slate-950 text-slate-200"
           : "bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-200",
@@ -135,20 +135,37 @@ function SidebarContent({
         >
           {!effectiveCollapsed ? (
             <>
-              <div className="flex shrink-0 flex-col items-center gap-1">
+              <Link
+                href="/dashboard"
+                onClick={onNavigate}
+                className="flex shrink-0 flex-col items-center gap-1 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70"
+                aria-label="Go to Dashboard"
+              >
                 <SucofindoLogo />
                 <p className="max-w-[112px] text-center text-[9px] font-semibold leading-3 text-blue-50/90">
                   Assuring Quality, Protecting Trust
                 </p>
-              </div>
+              </Link>
               <div className="h-14 w-px shrink-0 bg-white/35" aria-hidden="true" />
-              <div className="min-w-0 text-white">
+              <Link
+                href="/dashboard"
+                onClick={onNavigate}
+                className="min-w-0 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/70"
+                aria-label="Go to Dashboard"
+              >
                 <p className="truncate text-[13px] font-bold leading-5">ASSET INTEGRITY</p>
                 <p className="truncate text-[13px] font-bold leading-5">MANAGEMENT</p>
-              </div>
+              </Link>
             </>
           ) : (
-            <SucofindoLogo compact />
+            <Link
+              href="/dashboard"
+              onClick={onNavigate}
+              className="rounded-xl focus:outline-none focus:ring-2 focus:ring-white/70"
+              aria-label="Go to Dashboard"
+            >
+              <SucofindoLogo compact />
+            </Link>
           )}
         </div>
       </div>

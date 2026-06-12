@@ -2,13 +2,11 @@ import type { LucideIcon } from "lucide-react";
 
 import {
   AlertTriangle,
-  Building2,
   ClipboardCheck,
   ClipboardList,
   Database,
   FileText,
   FolderKanban,
-  Headphones,
   Home,
   Settings,
   ShieldCheck,
@@ -133,19 +131,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     ],
   },
   {
-    key: "helpdesk",
-    label: "Helpdesk",
-    href: "/helpdesk",
-    icon: Headphones,
-    children: [
-      { label: "Overview", href: "/helpdesk" },
-      { label: "Create Ticket", href: "/helpdesk/create-ticket" },
-      { label: "Tickets", href: "/helpdesk/tickets" },
-      { label: "SLA Dashboard", href: "/helpdesk/sla-dashboard" },
-      { label: "Knowledge Base", href: "/helpdesk/knowledge-base" },
-    ],
-  },
-  {
     key: "administration",
     label: "Administration",
     href: "/administration",
@@ -166,12 +151,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
       { label: "Audit Trail", href: "/administration/audit-trail" },
       { label: "System Logs", href: "/administration/system-logs" },
     ],
-  },
-  {
-    key: "about-sucofindo",
-    label: "About SUCOFINDO",
-    href: "/about-sucofindo",
-    icon: Building2,
   },
 ];
 

@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import { ModulePlaceholder } from "@/components/layout/module-placeholder";
+
+import { PlaceholderModulePage } from "@/components/layout/placeholder-module-page";
 
 export const metadata: Metadata = {
-  title: {
-    absolute: "Assets Integrity Management Platform | SUCOFINDO",
-  },
-  description:
-    "Portfolio dashboard for asset integrity, RBI exposure, inspection status, certification, open actions, and data quality.",
+  title: "Dashboard",
+  description: "Dashboard overview for SUCOFINDO Asset Integrity Management Platform.",
 };
 
-export default function AssetsIntegrityManagementPlatformSUCOFINDOPage() {
-  return (
-    <ModulePlaceholder
-      title="Assets Integrity Management Platform | SUCOFINDO"
-      description="Portfolio dashboard for asset integrity, RBI exposure, inspection status, certification, open actions, and data quality."
-    />
-  );
+export default function DashboardPage() {
+  return <PlaceholderModulePage title="Dashboard" route="/dashboard" />;
 }

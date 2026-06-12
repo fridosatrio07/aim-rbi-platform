@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 
 import { Sidebar } from "@/components/layout/sidebar";
@@ -115,6 +116,29 @@ function notifyThemeChange() {
   window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
 }
 
+function getFooterDateParts() {
+  const now = new Date();
+
+  const footerYear = new Intl.DateTimeFormat("id-ID", {
+    year: "numeric",
+    timeZone: "Asia/Jakarta",
+  }).format(now);
+
+  const footerDateIndonesia = new Intl.DateTimeFormat("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    timeZone: "Asia/Jakarta",
+  }).format(now);
+
+  return {
+    footerYear,
+    footerDateIndonesia,
+    footerDateTime: now.toISOString(),
+  };
+}
+
 export function AppLayout({ children, contentClassName }: AppLayoutProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -132,6 +156,8 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
 
   const { theme, source: themeSource } =
     parseThemePreferenceSnapshot(themePreferenceSnapshot);
+
+  const { footerYear, footerDateIndonesia, footerDateTime } = getFooterDateParts();
 
   useEffect(() => {
     applyTheme(theme, themeSource);
@@ -185,11 +211,42 @@ export function AppLayout({ children, contentClassName }: AppLayoutProps) {
       >
         <div
           className={cn(
-            "mx-auto w-full max-w-[1760px] min-w-0 px-3 py-3 sm:px-4 lg:px-4 2xl:px-5",
+            "mx-auto flex min-h-[calc(100vh-var(--app-header-height))] w-full max-w-[1760px] min-w-0 flex-col px-3 py-3 sm:px-4 lg:px-4 2xl:px-5",
             contentClassName,
           )}
         >
-          {children}
+          <div className="min-w-0 flex-1">{children}</div>
+
+          <footer
+            className={cn(
+              "mt-8 border-t py-4 text-sm",
+              theme === "dark" ? "border-slate-800 text-slate-400" : "border-slate-200 text-slate-600",
+            )}
+          >
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+                <span suppressHydrationWarning>
+                  {"\u00A9"} {footerYear} SUCOFINDO Asset Integrity Management Platform. All Rights Reserved.
+                </span>
+                <span className="hidden sm:inline" aria-hidden="true">
+                  |
+                </span>
+                <time dateTime={footerDateTime} suppressHydrationWarning>
+                  {footerDateIndonesia}
+                </time>
+              </div>
+
+              <Link
+                href="/about-sucofindo"
+                className={cn(
+                  "font-semibold transition-colors",
+                  theme === "dark" ? "text-blue-300 hover:text-blue-200" : "text-blue-700 hover:text-blue-800",
+                )}
+              >
+                About SUCOFINDO
+              </Link>
+            </div>
+          </footer>
         </div>
       </main>
     </div>
