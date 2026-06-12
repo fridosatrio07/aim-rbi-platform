@@ -1,35 +1,40 @@
 {
-  "name": "@aim-rbi/web",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint ."
-  },
-  "dependencies": {
-    "class-variance-authority": "0.7.0",
-    "clsx": "2.1.1",
-    "lucide-react": "0.468.0",
-    "next": "16.2.9",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "tailwind-merge": "2.5.4"
-  },
-  "devDependencies": {
-    "@types/node": "22.9.0",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "19.2.3",
-    "autoprefixer": "10.4.20",
-    "eslint": "9.39.4",
-    "eslint-config-next": "16.2.9",
-    "postcss": "8.5.15",
-    "tailwindcss": "3.4.15",
-    "tailwindcss-animate": "1.0.7",
-    "typescript": "5.6.3"
-  },
-  "overrides": {
-    "postcss": "8.5.15"
-  }
+    "name":  "@aim-rbi/web",
+    "version":  "0.1.0",
+    "private":  true,
+    "scripts":  {
+                    "dev":  "next dev",
+                    "start":  "next start",
+                    "lint":  "eslint .",
+                    "build:fast":  "next build",
+                    "clean:next":  "node ./scripts/clean-next-cache.mjs",
+                    "prebuild":  "npm run clean:next",
+                    "build":  "next build",
+                    "postbuild":  "node ./scripts/normalize-next-env.mjs",
+                    "validate":  "npm run lint \u0026\u0026 npm run build"
+                },
+    "dependencies":  {
+                         "class-variance-authority":  "0.7.0",
+                         "clsx":  "2.1.1",
+                         "lucide-react":  "0.468.0",
+                         "next":  "16.2.9",
+                         "react":  "19.2.7",
+                         "react-dom":  "19.2.7",
+                         "tailwind-merge":  "2.5.4"
+                     },
+    "devDependencies":  {
+                            "@types/node":  "22.9.0",
+                            "@types/react":  "19.2.17",
+                            "@types/react-dom":  "19.2.3",
+                            "autoprefixer":  "10.4.20",
+                            "eslint":  "9.39.4",
+                            "eslint-config-next":  "16.2.9",
+                            "postcss":  "8.5.15",
+                            "tailwindcss":  "3.4.15",
+                            "tailwindcss-animate":  "1.0.7",
+                            "typescript":  "5.6.3"
+                        },
+    "overrides":  {
+                      "postcss":  "8.5.15"
+                  }
 }

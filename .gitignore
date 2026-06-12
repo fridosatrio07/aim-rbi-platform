@@ -1,4 +1,4 @@
-﻿node_modules/
+node_modules/
 .next/
 dist/
 build/
@@ -12,4 +12,4 @@ storage/local-dev/raw-uploads/**
 storage/local-dev/processed/**
 storage/local-dev/temp/**
 !storage/local-dev/**/.gitkeep
-
+apps/web/.next/
