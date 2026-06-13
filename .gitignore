@@ -11,6 +11,20 @@ __pycache__/
 storage/local-dev/raw-uploads/**
 storage/local-dev/processed/**
 storage/local-dev/temp/**
+storage/local-dev/standards/uploads/**
+storage/local-dev/standards/parsed-text/**
+storage/local-dev/standards/chunks/**
+storage/local-dev/standards/embeddings/**
+storage/local-dev/evidence-packs/**
+*.embedding
+*.embeddings
+*.vector
+*.vectors
+*.faiss
+*.pkl
+*.pickle
+*.pdf.txt
+*.docx.txt
 !storage/local-dev/**/.gitkeep
 apps/web/.next/
 

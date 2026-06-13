@@ -1,0 +1,202 @@
+openapi: 3.1.0
+info:
+  title: AIM RBI Standards & Regulatory Knowledge Layer
+  version: 0.1.0
+  description: >
+    Contract surface for controlled standards metadata, private document ingestion,
+    draft requirement extraction, human review, rule activation, and assistive
+    engineering analysis. This contract never exposes licensed full text or final
+    engineering authority outputs.
+servers:
+  - url: http://localhost:3001
+    description: NestJS governance API
+  - url: http://localhost:8000
+    description: FastAPI engineering and extraction service
+tags:
+  - name: Standards
+  - name: Documents
+  - name: Jobs
+  - name: Requirements
+  - name: Rules
+  - name: Analysis
+  - name: Evidence
+paths:
+  /standards:
+    get:
+      tags: [Standards]
+      summary: Search standards library metadata
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: publisher
+          schema: { $ref: "#/components/schemas/StandardPublisher" }
+        - in: query
+          name: status
+          schema: { $ref: "#/components/schemas/DocumentStatus" }
+      responses:
+        "200":
+          description: Matching metadata records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/StandardDocument" }
+    post:
+      tags: [Standards]
+      summary: Register standards metadata
+      description: Metadata-only registration. Binary standards remain in private storage.
+      responses:
+        "201": { description: Created }
+  /standards/{standardId}:
+    get:
+      tags: [Standards]
+      summary: Get one standard metadata record
+      parameters:
+        - $ref: "#/components/parameters/StandardId"
+      responses:
+        "200": { description: Standard metadata }
+  /documents/standards/upload-metadata:
+    post:
+      tags: [Documents]
+      summary: Register private upload metadata
+      description: >
+        Accepts metadata and storage URI only. Raw uploaded standard files must be
+        stored in private object/local storage and must not be committed to Git.
+      responses:
+        "201": { description: Upload metadata accepted }
+  /ai-orchestration/parsing-jobs:
+    post:
+      tags: [Jobs]
+      summary: Start document parsing job
+      responses:
+        "202": { description: Parsing job queued }
+  /ai-orchestration/parsing-jobs/{jobId}:
+    get:
+      tags: [Jobs]
+      summary: Poll parsing job status
+      parameters:
+        - $ref: "#/components/parameters/JobId"
+      responses:
+        "200": { description: Parsing status }
+  /ai-orchestration/extraction-jobs:
+    post:
+      tags: [Jobs, Requirements]
+      summary: Start draft requirement extraction
+      description: Extracted requirements are always draft and require review before activation.
+      responses:
+        "202": { description: Extraction job queued }
+  /reviews/requirements/{requirementId}:
+    post:
+      tags: [Requirements]
+      summary: SME/legal/admin review of extracted requirement
+      responses:
+        "200": { description: Requirement review recorded }
+  /rules/activate:
+    post:
+      tags: [Rules]
+      summary: Convert approved requirement into rule
+      description: Fails if requirement is not approved or if authority level is prohibited.
+      responses:
+        "201": { description: Rule created or activated }
+        "409": { description: Requirement is not approved for activation }
+  /rules/applicability:
+    post:
+      tags: [Rules]
+      summary: Evaluate rule applicability for an asset context
+      responses:
+        "200": { description: Applicable standards and rule IDs }
+  /analysis/applicable-standards:
+    post:
+      tags: [Analysis]
+      summary: Determine applicable standards/regulations
+      responses:
+        "200": { description: Assistive applicability result }
+  /analysis/document-completeness:
+    post:
+      tags: [Analysis]
+      summary: Check evidence/document completeness
+      responses:
+        "200": { description: Completeness result with warnings }
+  /analysis/corrosion-rate:
+    post:
+      tags: [Analysis]
+      summary: Calculate simple corrosion rate
+      responses:
+        "200": { description: Preliminary corrosion rate }
+  /analysis/due-date:
+    post:
+      tags: [Analysis]
+      summary: Calculate conservative due date
+      responses:
+        "200": { description: Earliest valid due date and conflict warnings }
+  /analysis/preliminary-risk:
+    post:
+      tags: [Analysis]
+      summary: Generate preliminary qualitative risk ranking
+      responses:
+        "200": { description: Preliminary risk ranking requiring engineer review }
+  /analysis/draft-inspection-plan:
+    post:
+      tags: [Analysis]
+      summary: Generate draft inspection plan
+      responses:
+        "200": { description: Draft-only inspection plan }
+  /analysis/draft-finding-recommendation:
+    post:
+      tags: [Analysis]
+      summary: Generate draft finding and recommendation
+      responses:
+        "200": { description: Draft finding and recommendation requiring engineer review }
+  /evidence/pack-draft:
+    post:
+      tags: [Evidence]
+      summary: Generate draft evidence pack
+      responses:
+        "200": { description: Draft evidence pack without final PLO/FFS/certification conclusion }
+components:
+  parameters:
+    StandardId:
+      in: path
+      name: standardId
+      required: true
+      schema: { type: string, format: uuid }
+    JobId:
+      in: path
+      name: jobId
+      required: true
+      schema: { type: string }
+  schemas:
+    StandardPublisher:
+      type: string
+      enum: [API, ISO, ASME, IEC, AMPP_NACE, ESDM, MIGAS, KEMNAKER, internal, client, other]
+    DocumentStatus:
+      type: string
+      enum: [uploaded, parsing, parsed, extraction_pending, extracted, review_pending, approved, active, superseded, rejected, archived]
+    RequirementStatus:
+      type: string
+      enum: [draft, SME_review_pending, legal_review_pending, approved, active, rejected, superseded]
+    RuleStatus:
+      type: string
+      enum: [draft, validation_pending, approved, active, retired]
+    AutomationAuthorityLevel:
+      type: string
+      enum: [automatic_allowed, draft_only, human_approval_required, prohibited]
+    StandardDocument:
+      type: object
+      required: [id, code, normalizedCode, title, publisher, status, metadataOnly]
+      properties:
+        id: { type: string }
+        code: { type: string }
+        normalizedCode: { type: string }
+        title: { type: string }
+        publisher: { $ref: "#/components/schemas/StandardPublisher" }
+        status: { $ref: "#/components/schemas/DocumentStatus" }
+        metadataOnly: { type: boolean }
+        documentStorageUri:
+          type: string
+          description: Private URI/path only; never raw file content.

@@ -40,5 +40,10 @@ export const APP_ROUTES = {
   governance: {
     auditTrail: "/administration/audit-trail",
     regulatoryLibrary: "/administration/regulatory-standard-library",
+    standardsKnowledge: "/administration/standards",
+    standardsUpload: "/administration/standards/upload",
+    rules: "/administration/rules",
+    evidenceRequirements: "/administration/evidence-requirements",
+    analysisSandbox: "/administration/analysis-sandbox",
   },
 } as const;
