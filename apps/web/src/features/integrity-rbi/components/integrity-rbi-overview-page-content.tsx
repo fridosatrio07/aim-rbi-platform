@@ -144,16 +144,16 @@ export function IntegrityRbiOverviewPageContent() {
   }
 
   return (
-    <div className="space-y-4 text-slate-950 dark:text-slate-100">
+    <div className="space-y-3 text-slate-950 dark:text-slate-100">
       <header className="min-w-0">
-        <nav className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <nav className="flex items-center gap-2 text-xs font-extrabold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
           <Link href={APP_ROUTES.rbi.overview} className="transition hover:text-blue-700 dark:hover:text-blue-200">
             Integrity / RBI
           </Link>
           <span aria-hidden="true">/</span>
           <span className="text-slate-700 dark:text-slate-200">Overview</span>
         </nav>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
           Integrity / RBI Overview
         </h1>
       </header>
@@ -162,7 +162,7 @@ export function IntegrityRbiOverviewPageContent() {
       <KpiCards kpis={data.kpis} />
       <ChildPageCards pages={data.childPages} />
 
-      <div className="grid gap-4 xl:grid-cols-12">
+      <div className="grid gap-3 xl:grid-cols-12">
         <RiskDistributionCard
           className="xl:col-span-4"
           selectedRiskLevel={selectedRiskLevel}
@@ -214,11 +214,11 @@ function FacilityContextCard() {
 
   return (
     <Card className="overflow-hidden rounded-2xl">
-      <CardContent className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)_minmax(360px,0.9fr)]">
+      <CardContent className="grid gap-3 p-3 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)_minmax(320px,0.9fr)]">
         <div className="min-w-0">
           <p className="text-[11px] font-extrabold uppercase tracking-wide text-blue-700 dark:text-blue-300">Facility Context</p>
-          <h2 className="mt-1 text-lg font-black leading-6 text-slate-950 dark:text-white">{facility.name}</h2>
-          <div className="mt-3 grid gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300">
+          <h2 className="mt-1 text-base font-black leading-6 text-slate-950 dark:text-white">{facility.name}</h2>
+          <div className="mt-2 grid gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300">
             <span>Owner: {facility.owner}</span>
             <span>Facility Type: {facility.type}</span>
           </div>
@@ -257,14 +257,14 @@ function KpiCards({ kpis }: { kpis: IntegrityRbiKpi[] }) {
 
         return (
           <Link key={kpi.id} href={kpi.href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
-            <Card className="h-full rounded-2xl transition group-hover:-translate-y-0.5 group-hover:border-blue-200 group-hover:shadow-lg group-hover:shadow-blue-950/5 dark:group-hover:border-blue-500/30">
-              <CardContent className="flex min-h-[112px] items-center gap-3 p-3.5">
-                <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl border", TONE_STYLES[kpi.tone])}>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+            <Card className="h-full rounded-2xl transition group-hover:border-blue-200 group-hover:shadow-md group-hover:shadow-blue-950/5 dark:group-hover:border-blue-500/30">
+              <CardContent className="flex min-h-[84px] items-center gap-2.5 p-3">
+                <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", TONE_STYLES[kpi.tone])}>
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">{kpi.label}</p>
-                  <p className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
+                  <p className="mt-0.5 text-2xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
                   <p className="mt-1 truncate text-xs font-bold text-slate-500 dark:text-slate-400">{kpi.marker}</p>
                 </div>
               </CardContent>
@@ -284,16 +284,16 @@ function ChildPageCards({ pages }: { pages: IntegrityRbiChildPage[] }) {
 
         return (
           <Link key={page.id} href={page.href} className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
-            <Card className="h-full rounded-2xl transition group-hover:-translate-y-0.5 group-hover:border-blue-200 group-hover:bg-blue-50/40 dark:group-hover:border-blue-500/30 dark:group-hover:bg-blue-500/10">
-              <CardContent className="flex h-full min-h-[126px] flex-col justify-between p-3.5">
+            <Card className="h-full rounded-2xl transition group-hover:border-blue-200 group-hover:bg-blue-50/40 dark:group-hover:border-blue-500/30 dark:group-hover:bg-blue-500/10">
+              <CardContent className="flex h-full min-h-[104px] flex-col justify-between p-3">
                 <div>
-                  <div className={cn("mb-3 grid h-9 w-9 place-items-center rounded-xl border", TONE_STYLES[page.tone])}>
+                  <div className={cn("mb-2 grid h-8 w-8 place-items-center rounded-xl border", TONE_STYLES[page.tone])}>
                     <Icon className="h-4 w-4" aria-hidden="true" />
                   </div>
                   <p className="text-sm font-black text-slate-950 dark:text-white">{page.name}</p>
                   <p className="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-slate-500 dark:text-slate-400">{page.descriptor}</p>
                 </div>
-                <span className="mt-3 inline-flex items-center gap-1 text-xs font-extrabold text-blue-700 dark:text-blue-300">
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-extrabold text-blue-700 dark:text-blue-300">
                   Open
                   <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" aria-hidden="true" />
                 </span>
@@ -323,7 +323,7 @@ function OverviewPanel({
 }) {
   return (
     <Card className={cn("h-full min-w-0 rounded-2xl", className)}>
-      <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
         <div className="flex min-w-0 items-start gap-2.5">
           {Icon ? (
             <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-blue-100 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
@@ -331,13 +331,13 @@ function OverviewPanel({
             </div>
           ) : null}
           <div className="min-w-0">
-            <CardTitle className="truncate text-base font-extrabold text-slate-950 dark:text-white">{title}</CardTitle>
+            <CardTitle className="truncate text-sm font-black text-slate-950 dark:text-white">{title}</CardTitle>
             {subtitle ? <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{subtitle}</p> : null}
           </div>
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </CardHeader>
-      <CardContent className="p-4 pt-0">{children}</CardContent>
+      <CardContent className="px-3 pb-3 pt-0">{children}</CardContent>
     </Card>
   );
 }
@@ -365,17 +365,17 @@ function RiskDistributionCard({
       subtitle="Asset risk portfolio by category"
       action={<LinkArrow href={APP_ROUTES.rbi.riskRegister} label="Register" />}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <button
           type="button"
-          className="relative grid h-36 w-36 shrink-0 place-items-center rounded-full outline-none ring-offset-2 transition hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-blue-300"
+          className="relative grid h-28 w-28 shrink-0 place-items-center rounded-full outline-none ring-offset-2 transition hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-blue-300"
           style={{ background: gradient }}
           onClick={() => onSelectedRiskLevelChange("all")}
           aria-label="Clear risk distribution selection"
         >
-          <div className="grid h-20 w-20 place-items-center rounded-full bg-white text-center shadow-inner dark:bg-slate-900">
+          <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-center shadow-inner dark:bg-slate-900">
             <div>
-              <p className="text-3xl font-black text-slate-950 dark:text-white">{total}</p>
+              <p className="text-2xl font-black text-slate-950 dark:text-white">{total}</p>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Assets</p>
             </div>
           </div>
@@ -390,7 +390,7 @@ function RiskDistributionCard({
                 type="button"
                 onClick={() => onSelectedRiskLevelChange(selectedRiskLevel === segment.level ? "all" : segment.level)}
                 className={cn(
-                  "flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2 text-left text-sm transition hover:border-blue-200 hover:bg-blue-50/50 dark:border-slate-800 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10",
+                  "flex w-full items-center justify-between gap-3 rounded-xl border px-2.5 py-1.5 text-left text-sm transition hover:border-blue-200 hover:bg-blue-50/50 dark:border-slate-800 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10",
                   selectedRiskLevel === segment.level && "border-blue-200 bg-blue-50 dark:border-blue-500/30 dark:bg-blue-500/10",
                   !selected && "opacity-45",
                 )}
@@ -405,7 +405,7 @@ function RiskDistributionCard({
           })}
         </div>
       </div>
-      <div className="mt-4 rounded-2xl border border-orange-100 bg-orange-50 px-3 py-2 text-sm font-bold text-orange-800 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200">
+      <div className="mt-3 rounded-2xl border border-orange-100 bg-orange-50 px-3 py-2 text-sm font-bold text-orange-800 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200">
         High + Medium-High: {highSummary.count} assets, {highSummary.percent}%
       </div>
     </OverviewPanel>
@@ -430,7 +430,7 @@ function RiskMatrixCard({
 
   return (
     <OverviewPanel className={className} icon={Radar} title="PoF / CoF Summary" subtitle="Compact RBI-style 5x5 matrix">
-      <div className="mb-2 grid grid-cols-[86px_repeat(5,minmax(40px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
+      <div className="mb-1.5 grid grid-cols-[72px_repeat(5,minmax(34px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
         <div />
         <div className="col-span-5 rounded-lg bg-slate-50 py-1 dark:bg-slate-950">Consequence of Failure</div>
         <div />
@@ -438,7 +438,7 @@ function RiskMatrixCard({
           <div key={label} className="rounded-lg bg-slate-50 px-1 py-1 dark:bg-slate-950">{label}</div>
         ))}
       </div>
-      <div className="grid grid-cols-[86px_repeat(5,minmax(40px,1fr))] gap-1">
+      <div className="grid grid-cols-[72px_repeat(5,minmax(34px,1fr))] gap-1">
         {[5, 4, 3, 2, 1].map((probability) => (
           <MatrixRow
             key={probability}
@@ -449,7 +449,7 @@ function RiskMatrixCard({
           />
         ))}
       </div>
-      <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600 dark:bg-slate-950 dark:text-slate-300">
+      <div className="mt-2.5 flex items-center justify-between gap-3 rounded-2xl bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600 dark:bg-slate-950 dark:text-slate-300">
         <span>Probability of Failure</span>
         <span className="text-right font-black text-slate-950 dark:text-white">{selectedSummary}</span>
       </div>
@@ -470,7 +470,7 @@ function MatrixRow({
 }) {
   return (
     <>
-      <div className="flex min-w-0 items-center gap-2 rounded-xl bg-slate-50 px-2 py-1 dark:bg-slate-950">
+      <div className="flex min-w-0 items-center gap-1.5 rounded-lg bg-slate-50 px-2 py-1 dark:bg-slate-950">
         <span className="text-sm font-black text-slate-950 dark:text-white">{probability}</span>
         <span className="truncate text-[10px] font-bold text-slate-500 dark:text-slate-400">{getProbabilityLabel(probability)}</span>
       </div>
@@ -485,7 +485,7 @@ function MatrixRow({
             type="button"
             onClick={() => onSelectCell(selected ? null : cell)}
             className={cn(
-              "grid aspect-square min-h-12 place-items-center rounded-xl text-sm font-black transition hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300",
+              "grid aspect-square min-h-9 place-items-center rounded-lg text-xs font-black transition hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300",
               MATRIX_ZONE_STYLES[cell.zone],
               selected && "ring-2 ring-blue-400 ring-offset-2 dark:ring-offset-slate-950",
             )}
@@ -666,8 +666,8 @@ function TopHighRiskAssetsTable({
       title="Top High-Risk Assets"
       action={<LinkArrow href={APP_ROUTES.rbi.riskRegister} label="View Full Risk Register" />}
     >
-      <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div className="grid grid-cols-[110px_minmax(0,1fr)_104px_82px_minmax(0,1.2fr)] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 aim-shell-scrollbar dark:border-slate-800">
+        <div className="grid min-w-[700px] grid-cols-[96px_minmax(0,1fr)_92px_64px_minmax(0,1.2fr)] bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
           <div className="px-3 py-2">Asset Tag</div>
           <div className="px-3 py-2">Equipment/System</div>
           <SortableMiniHeader active={sortKey === "riskScore"} direction={sortDirection} label="Risk Score" onClick={() => onSort("riskScore")} />
@@ -678,7 +678,7 @@ function TopHighRiskAssetsTable({
           <Link
             key={asset.id}
             href={asset.href}
-            className="grid min-h-[52px] grid-cols-[110px_minmax(0,1fr)_104px_82px_minmax(0,1.2fr)] items-center border-t border-slate-200 text-sm transition hover:bg-blue-50/50 dark:border-slate-800 dark:hover:bg-blue-500/10"
+            className="grid min-h-[44px] min-w-[700px] grid-cols-[96px_minmax(0,1fr)_92px_64px_minmax(0,1.2fr)] items-center border-t border-slate-200 text-sm transition hover:bg-blue-50/50 dark:border-slate-800 dark:hover:bg-blue-500/10"
           >
             <div className="px-3 py-2 font-black text-slate-950 dark:text-white">{asset.assetTag}</div>
             <div className="min-w-0 px-3 py-2 font-bold text-slate-700 dark:text-slate-200">
@@ -708,12 +708,12 @@ function IntegrityIssuesCard({ className }: { className?: string }) {
       title="Integrity Issues & Alerts"
       action={<LinkArrow href={APP_ROUTES.anomalies.register} label="View All Issues" />}
     >
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {INTEGRITY_RBI_OVERVIEW_DATA.integrityIssues.map((issue) => (
           <Link
             key={issue.id}
             href={issue.href}
-            className="block rounded-2xl border border-slate-200 p-3 text-sm transition hover:border-blue-200 hover:bg-blue-50/50 dark:border-slate-800 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10"
+            className="block rounded-2xl border border-slate-200 p-2.5 text-sm transition hover:border-blue-200 hover:bg-blue-50/50 dark:border-slate-800 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10"
           >
             <div className="mb-2 flex items-center justify-between gap-2">
               <IssueSeverityBadge severity={issue.severity} />
@@ -747,8 +747,8 @@ function RecentAssessmentsTable({
       title="Recent Assessments"
       action={<LinkArrow href={APP_ROUTES.rbi.assessments} label="View All Assessments" />}
     >
-      <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div className="grid grid-cols-[82px_minmax(0,1fr)_90px_64px_92px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 aim-shell-scrollbar dark:border-slate-800">
+        <div className="grid min-w-[520px] grid-cols-[74px_minmax(0,1fr)_82px_56px_86px] bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
           <div className="px-3 py-2">Asset</div>
           <div className="px-3 py-2">Method</div>
           <SortableMiniHeader active={sortKey === "assessmentDate"} direction={sortDirection} label="Date" onClick={() => onSort("assessmentDate")} />
@@ -759,7 +759,7 @@ function RecentAssessmentsTable({
           <Link
             key={assessment.id}
             href={assessment.href}
-            className="grid min-h-[52px] grid-cols-[82px_minmax(0,1fr)_90px_64px_92px] items-center border-t border-slate-200 text-sm transition hover:bg-blue-50/50 dark:border-slate-800 dark:hover:bg-blue-500/10"
+            className="grid min-h-[44px] min-w-[520px] grid-cols-[74px_minmax(0,1fr)_82px_56px_86px] items-center border-t border-slate-200 text-sm transition hover:bg-blue-50/50 dark:border-slate-800 dark:hover:bg-blue-500/10"
           >
             <div className="px-3 py-2 font-black text-slate-950 dark:text-white">{assessment.assetTag}</div>
             <div className="min-w-0 px-3 py-2 font-bold text-slate-700 dark:text-slate-200">
@@ -782,12 +782,12 @@ function WorkflowSection({ stages }: { stages: WorkflowStageSummary[] }) {
 
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="flex-row items-center justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-center justify-between gap-3 px-3 py-2.5">
         <div>
-          <CardTitle className="text-base font-extrabold text-slate-950 dark:text-white">Integrity / RBI Workflow</CardTitle>
+          <CardTitle className="text-sm font-black text-slate-950 dark:text-white">Integrity / RBI Workflow</CardTitle>
           <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Assessment to mitigation planning workstream status</p>
         </div>
-        <div className="min-w-[180px] rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-2 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-200">
+        <div className="min-w-[168px] rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-2 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-200">
           <div className="flex items-center justify-between gap-3">
             <span className="text-xs font-extrabold uppercase tracking-wide">Workflow Health</span>
             <span className="text-lg font-black">{workflow.healthPercent}%</span>
@@ -798,21 +798,21 @@ function WorkflowSection({ stages }: { stages: WorkflowStageSummary[] }) {
           <p className="mt-1 text-xs font-bold">Status: {workflow.status}</p>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-0">
+      <CardContent className="px-3 pb-3 pt-0">
         <div className="grid gap-3 lg:grid-cols-5">
           {stages.map((stage) => (
             <Link
               key={stage.id}
               href={stage.href}
-              className="rounded-2xl border border-slate-200 bg-slate-50 p-3 transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-50/50 hover:shadow-lg hover:shadow-blue-950/5 dark:border-slate-800 dark:bg-slate-950 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10"
+              className="rounded-2xl border border-slate-200 bg-slate-50 p-2.5 transition hover:border-blue-200 hover:bg-blue-50/50 hover:shadow-md hover:shadow-blue-950/5 dark:border-slate-800 dark:bg-slate-950 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10"
             >
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <p className="font-black text-slate-950 dark:text-white">{stage.label}</p>
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <p className="text-sm font-black text-slate-950 dark:text-white">{stage.label}</p>
                 <ArrowRight className="h-4 w-4 text-blue-600 dark:text-blue-300" aria-hidden="true" />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {stage.metrics.map((metric) => (
-                  <div key={metric.label} className="flex items-center justify-between gap-2 rounded-xl bg-white px-3 py-2 text-sm dark:bg-slate-900">
+                  <div key={metric.label} className="flex items-center justify-between gap-2 rounded-xl bg-white px-2.5 py-1.5 text-xs dark:bg-slate-900">
                     <span className="truncate font-bold text-slate-600 dark:text-slate-300">{metric.label}</span>
                     <span className={cn("font-black", getToneTextClass(metric.tone))}>{metric.value}</span>
                   </div>

@@ -189,9 +189,9 @@ export function RiskRegisterPageContent() {
   }
 
   return (
-    <div className="space-y-4 text-slate-950 dark:text-slate-100">
+    <div className="space-y-3 text-slate-950 dark:text-slate-100">
       <header className="min-w-0">
-        <nav className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <nav className="flex items-center gap-2 text-xs font-extrabold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
           <Link href={APP_ROUTES.dashboard} className="transition hover:text-blue-700 dark:hover:text-blue-200">
             Home
           </Link>
@@ -202,7 +202,7 @@ export function RiskRegisterPageContent() {
           <span aria-hidden="true">/</span>
           <span className="text-slate-700 dark:text-slate-200">Risk Register</span>
         </nav>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
           Risk Register
         </h1>
       </header>
@@ -251,15 +251,15 @@ function RiskKpiCards() {
 
         return (
           <Card key={kpi.id} className="rounded-2xl">
-            <CardContent className="flex min-h-[112px] items-center gap-3 p-3.5">
-              <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl border", KPI_TONE_STYLES[kpi.tone])}>
-                <Icon className="h-5 w-5" aria-hidden="true" />
+            <CardContent className="flex min-h-[84px] items-center gap-2.5 p-3">
+              <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", KPI_TONE_STYLES[kpi.tone])}>
+                <Icon className="h-4 w-4" aria-hidden="true" />
               </div>
               <div className="min-w-0">
                 <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   {kpi.label}
                 </p>
-                <p className="mt-1 text-3xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
+                <p className="mt-0.5 text-2xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
                 <p className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">SPM-01 portfolio register</p>
               </div>
             </CardContent>
@@ -338,15 +338,15 @@ function RiskRegisterFilters({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardContent className="space-y-3 p-3.5">
-        <div className="grid gap-3 xl:grid-cols-12">
+      <CardContent className="space-y-2.5 p-3">
+        <div className="grid gap-2.5 xl:grid-cols-12">
           <label className="relative xl:col-span-3">
             <span className="mb-1 block text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Search
             </span>
-            <Search className="pointer-events-none absolute bottom-3 left-3 h-4 w-4 text-slate-400" aria-hidden="true" />
+            <Search className="pointer-events-none absolute bottom-2.5 left-3 h-4 w-4 text-slate-400" aria-hidden="true" />
             <input
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm font-bold text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+              className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs font-bold text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
               placeholder="Search asset, system, risk driver, mechanism..."
               value={filters.search}
               onChange={(event) => onFilterChange("search", event.target.value)}
@@ -382,7 +382,7 @@ function RiskRegisterFilters({
           />
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-slate-200 pt-3 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-2.5 border-t border-slate-200 pt-2.5 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-extrabold text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
               <Filter className="h-3.5 w-3.5" aria-hidden="true" />
@@ -413,9 +413,9 @@ function RiskRegisterFilters({
 
           <div className="flex flex-wrap gap-2">
             <label className="relative">
-              <Eye className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" aria-hidden="true" />
+              <Eye className="pointer-events-none absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" aria-hidden="true" />
               <select
-                className="h-10 rounded-xl border border-slate-200 bg-white pl-9 pr-8 text-xs font-extrabold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+                className="h-9 rounded-xl border border-slate-200 bg-white pl-8 pr-8 text-xs font-extrabold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
                 value={filters.savedView}
                 onChange={(event) => onSavedViewChange(event.target.value as RiskRegisterSavedView)}
               >
@@ -431,7 +431,7 @@ function RiskRegisterFilters({
               <button
                 type="button"
                 onClick={() => onColumnsOpenChange(!columnsOpen)}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
               >
                 <Layout className="h-4 w-4" aria-hidden="true" />
                 Columns
@@ -467,7 +467,7 @@ function RiskRegisterFilters({
             <button
               type="button"
               onClick={onExportCsv}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-blue-600 px-3 text-xs font-extrabold text-white shadow-sm transition hover:bg-blue-700"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-xl bg-blue-600 px-3 text-xs font-extrabold text-white shadow-sm transition hover:bg-blue-700"
             >
               <Download className="h-4 w-4" aria-hidden="true" />
               Export CSV
@@ -498,7 +498,7 @@ function FilterSelect({
         {label}
       </span>
       <select
-        className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+        className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       >
@@ -533,9 +533,9 @@ function RiskRegisterTable({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="flex-row items-center justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-center justify-between gap-3 px-3 py-2.5">
         <div>
-          <CardTitle className="text-base font-extrabold text-slate-950 dark:text-white">Asset-Level RBI Risk Records</CardTitle>
+          <CardTitle className="text-sm font-black text-slate-950 dark:text-white">Asset-Level RBI Risk Records</CardTitle>
           <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
             Showing {records.length} of {totalRenderedRecords} modeled rows from {totalPortfolioRecords} portfolio risk records
           </p>
@@ -545,11 +545,11 @@ function RiskRegisterTable({
           Highlighted records require priority review
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-0">
+      <CardContent className="px-3 pb-3 pt-0">
         <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-          <div className="overflow-x-auto">
+          <div className="max-h-[min(520px,calc(100vh-24rem))] overflow-auto aim-shell-scrollbar">
             <table className="min-w-[1660px] border-separate border-spacing-0 text-left text-sm">
-              <thead className="sticky top-0 z-10 bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+              <thead className="sticky top-0 z-10 bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
                 <tr>
                   {visibleColumns.assetTag ? (
                     <SortableHeader className="w-[150px]" label="Asset Tag" sortDirection={sortDirection} sortKey="assetTag" activeSortKey={sortKey} onSort={onSort} />
@@ -586,7 +586,7 @@ function RiskRegisterTable({
                     )}
                   >
                     {visibleColumns.assetTag ? (
-                      <td className={cn("border-t border-slate-200 px-3 py-3 dark:border-slate-800", record.priorityHighlight && "border-l-4 border-l-red-500")}>
+                      <td className={cn("border-t border-slate-200 px-3 py-2 dark:border-slate-800", record.priorityHighlight && "border-l-4 border-l-red-500")}>
                         <div className="flex items-center gap-2">
                           {record.priorityHighlight ? (
                             <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-red-500 shadow-sm shadow-red-500/30" />
@@ -602,25 +602,25 @@ function RiskRegisterTable({
                     {visibleColumns.pof ? <ScoreCell value={record.pof} /> : null}
                     {visibleColumns.cof ? <ScoreCell value={record.cof} /> : null}
                     {visibleColumns.riskCategory ? (
-                      <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+                      <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
                         <RiskBadge risk={record.riskCategory} />
                       </td>
                     ) : null}
                     {visibleColumns.riskDriver ? <LongTextCell value={record.riskDriver} /> : null}
                     {visibleColumns.damageMechanism ? <LongTextCell value={record.damageMechanism} /> : null}
                     {visibleColumns.inspectionEffectiveness ? (
-                      <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+                      <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
                         <InspectionEffectivenessBadge effectiveness={record.inspectionEffectiveness} />
                       </td>
                     ) : null}
                     {visibleColumns.nextInspectionDue ? (
-                      <td className="whitespace-nowrap border-t border-slate-200 px-3 py-3 text-sm font-extrabold text-slate-700 dark:border-slate-800 dark:text-slate-200">
+                      <td className="whitespace-nowrap border-t border-slate-200 px-3 py-2 text-sm font-extrabold text-slate-700 dark:border-slate-800 dark:text-slate-200">
                         {record.nextInspectionDueLabel}
                       </td>
                     ) : null}
                     {visibleColumns.mitigationRecommendation ? <LongTextCell value={record.mitigationRecommendation} /> : null}
                     {visibleColumns.actions ? (
-                      <td className="border-t border-slate-200 px-3 py-3 text-right dark:border-slate-800">
+                      <td className="border-t border-slate-200 px-3 py-2 text-right dark:border-slate-800">
                         <button
                           type="button"
                           onClick={(event) => {
@@ -656,7 +656,7 @@ function RiskRegisterTable({
 
 function TableHeader({ className, label }: { className?: string; label: string }) {
   return (
-    <th className={cn("border-b border-slate-200 px-3 py-3 dark:border-slate-800", className)}>
+    <th className={cn("border-b border-slate-200 px-3 py-2 dark:border-slate-800", className)}>
       {label}
     </th>
   );
@@ -680,7 +680,7 @@ function SortableHeader({
   const active = activeSortKey === sortKey;
 
   return (
-    <th className={cn("border-b border-slate-200 px-3 py-3 dark:border-slate-800", className)}>
+    <th className={cn("border-b border-slate-200 px-3 py-2 dark:border-slate-800", className)}>
       <button
         type="button"
         onClick={() => onSort(sortKey)}
@@ -698,7 +698,7 @@ function SortableHeader({
 
 function TextCell({ value }: { value: string }) {
   return (
-    <td className="border-t border-slate-200 px-3 py-3 text-sm font-bold text-slate-700 dark:border-slate-800 dark:text-slate-200">
+    <td className="border-t border-slate-200 px-3 py-2 text-sm font-bold text-slate-700 dark:border-slate-800 dark:text-slate-200">
       <span className="line-clamp-2">{value}</span>
     </td>
   );
@@ -706,7 +706,7 @@ function TextCell({ value }: { value: string }) {
 
 function LongTextCell({ value }: { value: string }) {
   return (
-    <td className="border-t border-slate-200 px-3 py-3 text-sm font-semibold leading-5 text-slate-600 dark:border-slate-800 dark:text-slate-300">
+    <td className="border-t border-slate-200 px-3 py-2 text-sm font-semibold leading-5 text-slate-600 dark:border-slate-800 dark:text-slate-300">
       <span className="line-clamp-2">{value}</span>
     </td>
   );
@@ -714,7 +714,7 @@ function LongTextCell({ value }: { value: string }) {
 
 function ScoreCell({ value }: { value: number }) {
   return (
-    <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+    <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
       <div className="flex min-w-[72px] items-center gap-2">
         <span className="w-8 text-sm font-black text-slate-950 dark:text-white">{value.toFixed(1)}</span>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
@@ -774,20 +774,20 @@ function RiskRecordDrawer({ record, onClose }: { record: RiskRegisterRecord | nu
     <div className="fixed inset-x-0 bottom-0 top-[var(--app-header-height)] z-40 flex justify-end bg-slate-950/35 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-labelledby="risk-record-drawer-title">
       <button type="button" className="absolute inset-0 cursor-default" onClick={onClose} aria-label="Close risk record detail" />
       <aside className="relative flex h-full w-full max-w-[540px] flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 dark:border-slate-800">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-4 dark:border-slate-800">
           <div className="min-w-0">
             <p className="text-xs font-extrabold uppercase tracking-wide text-blue-700 dark:text-blue-300">Risk Register Detail</p>
-            <h2 id="risk-record-drawer-title" className="mt-1 text-2xl font-black text-slate-950 dark:text-white">
+            <h2 id="risk-record-drawer-title" className="mt-1 text-xl font-black text-slate-950 dark:text-white">
               {record.assetTag}
             </h2>
             <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">{record.system} - {record.equipmentClass}</p>
           </div>
-          <button type="button" onClick={onClose} className="grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Close details">
-            <X className="h-5 w-5" aria-hidden="true" />
+          <button type="button" onClick={onClose} className="grid h-9 w-9 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Close details">
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4 aim-shell-scrollbar">
           <div className="flex flex-wrap gap-2">
             <RiskBadge risk={record.riskCategory} />
             <InspectionEffectivenessBadge effectiveness={record.inspectionEffectiveness} />
@@ -836,7 +836,7 @@ function RiskRecordDrawer({ record, onClose }: { record: RiskRegisterRecord | nu
 
 function DrawerMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-2.5 dark:border-slate-800 dark:bg-slate-900">
       <p className="text-xs font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</p>
       <p className="mt-1 text-lg font-black text-slate-950 dark:text-white">{value}</p>
     </div>

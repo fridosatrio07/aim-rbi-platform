@@ -11,7 +11,7 @@ export const profileInitial: ProfileForm = {
   fullName: "Frido Satrio",
   displayName: "Frido Satrio",
   email: "frido.satrio@sucofindo.demo",
-  role: "RBI Engineer",
+  role: "Superadmin",
   company: "SUCOFINDO",
   preferredLanguage: "Bahasa Indonesia / English",
 };

@@ -223,24 +223,24 @@ export function AssessmentsPageContent() {
   }
 
   return (
-    <div className="space-y-4 text-slate-950 dark:text-slate-100">
+    <div className="space-y-3 text-slate-950 dark:text-slate-100">
       <header className="min-w-0">
-        <nav className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <nav className="flex items-center gap-2 text-xs font-extrabold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
           <Link href={APP_ROUTES.rbi.overview} className="transition hover:text-blue-700 dark:hover:text-blue-200">
             Integrity / RBI
           </Link>
           <span aria-hidden="true">/</span>
           <span className="text-slate-700 dark:text-slate-200">Assessments</span>
         </nav>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
           Assessments
         </h1>
       </header>
 
       <AssessmentKpiCards filters={filters} onKpiClick={handleKpiClick} />
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="min-w-0 space-y-4">
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="min-w-0 space-y-3">
           <AssessmentFilters
             activeFilterLabels={activeFilterLabels}
             columnsOpen={columnsOpen}
@@ -304,14 +304,14 @@ function AssessmentKpiCards({
               active && "ring-2 ring-blue-200 dark:ring-blue-500/30",
             )}
           >
-            <Card className="h-full rounded-2xl transition group-hover:-translate-y-0.5 group-hover:border-blue-200 group-hover:shadow-lg group-hover:shadow-blue-950/5 dark:group-hover:border-blue-500/30">
-              <CardContent className="flex min-h-[112px] items-center gap-3 p-3.5">
-                <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl border", TONE_STYLES[kpi.tone])}>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+            <Card className="h-full rounded-2xl transition group-hover:border-blue-200 group-hover:shadow-md group-hover:shadow-blue-950/5 dark:group-hover:border-blue-500/30">
+              <CardContent className="flex min-h-[84px] items-center gap-2.5 p-3">
+                <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", TONE_STYLES[kpi.tone])}>
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">{kpi.label}</p>
-                  <p className="mt-1 text-3xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
+                  <p className="mt-0.5 text-2xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
                   <p className="mt-1 truncate text-xs font-bold text-slate-500 dark:text-slate-400">{kpi.marker}</p>
                 </div>
               </CardContent>
@@ -350,13 +350,13 @@ function AssessmentFilters({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardContent className="space-y-3 p-3.5">
-        <div className="grid gap-3 xl:grid-cols-12">
+      <CardContent className="space-y-2.5 p-3">
+        <div className="grid gap-2.5 xl:grid-cols-12">
           <label className="relative xl:col-span-4">
             <span className="mb-1 block text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">Search Assessments</span>
-            <Search className="pointer-events-none absolute bottom-3 left-3 h-4 w-4 text-slate-400" aria-hidden="true" />
+            <Search className="pointer-events-none absolute bottom-2.5 left-3 h-4 w-4 text-slate-400" aria-hidden="true" />
             <input
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm font-bold text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+              className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs font-bold text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
               placeholder="Search ID, asset, assessor, status, evidence..."
               value={filters.search}
               onChange={(event) => onFilterChange("search", event.target.value)}
@@ -392,7 +392,7 @@ function AssessmentFilters({
           />
         </div>
 
-        <div className="flex flex-wrap gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
+        <div className="flex flex-wrap gap-2 border-t border-slate-200 pt-2.5 dark:border-slate-800">
           {FILTER_CHIPS.map((chip) => {
             const active = filters.chips.includes(chip);
 
@@ -414,7 +414,7 @@ function AssessmentFilters({
           })}
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-slate-200 pt-3 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-2.5 border-t border-slate-200 pt-2.5 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-extrabold text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
               <Filter className="h-3.5 w-3.5" aria-hidden="true" />
@@ -437,7 +437,7 @@ function AssessmentFilters({
             <label className="relative">
               <Eye className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" aria-hidden="true" />
               <select
-                className="h-10 rounded-xl border border-slate-200 bg-white pl-9 pr-8 text-xs font-extrabold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+                className="h-9 rounded-xl border border-slate-200 bg-white pl-8 pr-8 text-xs font-extrabold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
                 value={filters.savedView}
                 onChange={(event) => onSavedViewChange(event.target.value as AssessmentSavedView)}
               >
@@ -453,7 +453,7 @@ function AssessmentFilters({
               <button
                 type="button"
                 onClick={() => onColumnsOpenChange(!columnsOpen)}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
               >
                 <ListChecks className="h-4 w-4" aria-hidden="true" />
                 Columns
@@ -507,7 +507,7 @@ function FilterSelect({
     <label className={cn("min-w-0", className)}>
       <span className="mb-1 block text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">{label}</span>
       <select
-        className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+        className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       >
@@ -557,9 +557,9 @@ function AssessmentTable({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="flex-row items-center justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-center justify-between gap-3 px-3 py-2.5">
         <div>
-          <CardTitle className="text-base font-extrabold text-slate-950 dark:text-white">RBI Assessment List</CardTitle>
+          <CardTitle className="text-sm font-black text-slate-950 dark:text-white">RBI Assessment List</CardTitle>
           <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
             Showing {records.length} of {totalCount} filtered assessments from {RBI_ASSESSMENTS_DATA.totalPortfolioAssessments} portfolio assessments
           </p>
@@ -569,11 +569,11 @@ function AssessmentTable({
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </CardHeader>
-      <CardContent className="p-4 pt-0">
+      <CardContent className="px-3 pb-3 pt-0">
         <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-          <div className="overflow-x-auto">
+          <div className="max-h-[min(500px,calc(100vh-25rem))] overflow-auto aim-shell-scrollbar">
             <table className="min-w-[1420px] border-separate border-spacing-0 text-left text-sm">
-              <thead className="sticky top-0 z-10 bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+              <thead className="sticky top-0 z-10 bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
                 <tr>
                   {visibleColumns.assessmentId ? <SortableHeader activeSortKey={sortKey} className="w-[145px]" label="Assessment ID" sortDirection={sortDirection} sortKey="assessmentId" onSort={onSort} /> : null}
                   {visibleColumns.assetSystem ? <SortableHeader activeSortKey={sortKey} className="w-[240px]" label="Asset / System" sortDirection={sortDirection} sortKey="assetSystem" onSort={onSort} /> : null}
@@ -668,12 +668,12 @@ function AssessmentRow({
   return (
     <tr className={cn("group border-t border-slate-200 align-top transition hover:bg-blue-50/50 dark:border-slate-800 dark:hover:bg-blue-500/10", record.overdue && "bg-red-50/50 dark:bg-red-500/10")}>
       {visibleColumns.assessmentId ? (
-        <td className={cn("border-t border-slate-200 px-3 py-3 font-black text-slate-950 dark:border-slate-800 dark:text-white", record.overdue && "border-l-4 border-l-red-500")}>
+        <td className={cn("border-t border-slate-200 px-3 py-2 font-black text-slate-950 dark:border-slate-800 dark:text-white", record.overdue && "border-l-4 border-l-red-500")}>
           {record.assessmentId}
         </td>
       ) : null}
       {visibleColumns.assetSystem ? (
-        <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+        <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
           <Link href={record.linkedRoutes.assetProfile} className="font-extrabold text-slate-950 transition hover:text-blue-700 dark:text-white dark:hover:text-blue-200">
             {record.assetSystem}
           </Link>
@@ -681,31 +681,31 @@ function AssessmentRow({
         </td>
       ) : null}
       {visibleColumns.status ? (
-        <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+        <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
           <StatusBadge status={record.status} />
         </td>
       ) : null}
       {visibleColumns.assessor ? <TextCell value={record.assessor} /> : null}
       {visibleColumns.reviewStage ? <TextCell value={record.reviewStage} /> : null}
       {visibleColumns.riskLevel ? (
-        <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+        <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
           <RiskBadge risk={record.riskLevel} />
         </td>
       ) : null}
       {visibleColumns.lastModified ? <TextCell value={record.lastModifiedLabel} nowrap /> : null}
       {visibleColumns.approvalStatus ? (
-        <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+        <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
           <ApprovalBadge status={record.approvalStatus} />
         </td>
       ) : null}
       {visibleColumns.nextAction ? (
-        <td className="border-t border-slate-200 px-3 py-3 dark:border-slate-800">
+        <td className="border-t border-slate-200 px-3 py-2 dark:border-slate-800">
           <p className="line-clamp-2 text-sm font-bold leading-5 text-slate-700 dark:text-slate-200">{record.nextAction}</p>
           <p className="mt-1 line-clamp-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{record.primaryDamageMechanism}</p>
         </td>
       ) : null}
       {visibleColumns.actions ? (
-        <td className="relative border-t border-slate-200 px-3 py-3 text-right dark:border-slate-800">
+        <td className="relative border-t border-slate-200 px-3 py-2 text-right dark:border-slate-800">
           <button
             type="button"
             onClick={() => onOpenActionChange(open ? null : record.id)}
@@ -743,7 +743,7 @@ function ActionLink({ href, label }: { href: string; label: string }) {
 
 function AssessmentSidePanel() {
   return (
-    <aside className="space-y-4">
+    <aside className="space-y-3">
       <WorkflowSummaryPanel />
       <ReviewBacklogPanel />
       <HighRiskAttentionPanel />
@@ -805,7 +805,7 @@ function HighRiskAttentionPanel() {
           <Link
             key={item.id}
             href={item.href}
-            className="block rounded-2xl border border-red-100 bg-red-50/70 p-3 transition hover:border-red-200 hover:bg-red-50 dark:border-red-500/20 dark:bg-red-500/10 dark:hover:bg-red-500/15"
+            className="block rounded-2xl border border-red-100 bg-red-50/70 p-2.5 transition hover:border-red-200 hover:bg-red-50 dark:border-red-500/20 dark:bg-red-500/10 dark:hover:bg-red-500/15"
           >
             <p className="font-black text-slate-950 dark:text-white">{item.assetSystem}</p>
             <p className="mt-1 text-xs font-bold leading-5 text-red-700 dark:text-red-200">{item.issue}</p>
@@ -829,22 +829,22 @@ function SidePanel({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
         <div className="flex min-w-0 items-center gap-2">
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-blue-100 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
             <Icon className="h-4 w-4" aria-hidden="true" />
           </div>
-          <CardTitle className="text-base font-extrabold text-slate-950 dark:text-white">{title}</CardTitle>
+          <CardTitle className="text-sm font-black text-slate-950 dark:text-white">{title}</CardTitle>
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </CardHeader>
-      <CardContent className="p-4 pt-0">{children}</CardContent>
+      <CardContent className="px-3 pb-3 pt-0">{children}</CardContent>
     </Card>
   );
 }
 
 function TableHeader({ className, label }: { className?: string; label: string }) {
-  return <th className={cn("border-b border-slate-200 px-3 py-3 dark:border-slate-800", className)}>{label}</th>;
+  return <th className={cn("border-b border-slate-200 px-3 py-2 dark:border-slate-800", className)}>{label}</th>;
 }
 
 function SortableHeader({
@@ -865,7 +865,7 @@ function SortableHeader({
   const active = activeSortKey === sortKey;
 
   return (
-    <th className={cn("border-b border-slate-200 px-3 py-3 dark:border-slate-800", className)}>
+    <th className={cn("border-b border-slate-200 px-3 py-2 dark:border-slate-800", className)}>
       <button
         type="button"
         onClick={() => onSort(sortKey)}
@@ -880,7 +880,7 @@ function SortableHeader({
 
 function TextCell({ nowrap, value }: { nowrap?: boolean; value: string }) {
   return (
-    <td className={cn("border-t border-slate-200 px-3 py-3 text-sm font-bold text-slate-700 dark:border-slate-800 dark:text-slate-200", nowrap && "whitespace-nowrap")}>
+    <td className={cn("border-t border-slate-200 px-3 py-2 text-sm font-bold text-slate-700 dark:border-slate-800 dark:text-slate-200", nowrap && "whitespace-nowrap")}>
       {value}
     </td>
   );

@@ -220,16 +220,16 @@ export function RiskAnalyticsPageContent() {
   }
 
   return (
-    <div className="space-y-4 text-slate-950 dark:text-slate-100">
+    <div className="space-y-3 text-slate-950 dark:text-slate-100">
       <header className="min-w-0">
-        <nav className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <nav className="flex items-center gap-2 text-xs font-extrabold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
           <Link href={APP_ROUTES.rbi.assessments} className="transition hover:text-blue-700 dark:hover:text-blue-200">
             Integrity / RBI
           </Link>
           <span aria-hidden="true">/</span>
           <span className="text-slate-700 dark:text-slate-200">Risk Analytics</span>
         </nav>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
           Risk Analytics
         </h1>
       </header>
@@ -248,7 +248,7 @@ export function RiskAnalyticsPageContent() {
 
       <RiskKpiCards />
 
-      <div className="grid gap-4 xl:grid-cols-12">
+      <div className="grid gap-3 xl:grid-cols-12">
         <RiskMatrixCard
           assets={filteredAssets}
           className="xl:col-span-8"
@@ -349,8 +349,8 @@ function RiskAnalyticsFiltersBar({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardContent className="space-y-3 p-3.5">
-        <div className="grid gap-3 lg:grid-cols-12">
+      <CardContent className="space-y-2.5 p-3">
+        <div className="grid gap-2.5 lg:grid-cols-12">
           <FilterSelect
             className="lg:col-span-3"
             label="Facility"
@@ -394,7 +394,7 @@ function RiskAnalyticsFiltersBar({
                   type="button"
                   onClick={() => onModeChange(option)}
                   className={cn(
-                    "rounded-lg px-2 py-2 text-xs font-extrabold transition",
+                    "rounded-lg px-2 py-1.5 text-xs font-extrabold transition",
                     mode === option
                       ? "bg-blue-600 text-white shadow-sm"
                       : "text-slate-600 hover:bg-white hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white",
@@ -407,7 +407,7 @@ function RiskAnalyticsFiltersBar({
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-slate-200 pt-3 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-2.5 border-t border-slate-200 pt-2.5 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
             <span className="inline-flex items-center gap-1 rounded-full border border-blue-100 bg-blue-50 px-2.5 py-1 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
               <Filter className="h-3.5 w-3.5" aria-hidden="true" />
@@ -433,14 +433,14 @@ function RiskAnalyticsFiltersBar({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
+              className="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 px-3 text-xs font-extrabold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
             >
               Reset
             </button>
             <button
               type="button"
               onClick={onExport}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-3 py-2 text-xs font-extrabold text-white shadow-sm transition hover:bg-blue-700"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-xl bg-blue-600 px-3 text-xs font-extrabold text-white shadow-sm transition hover:bg-blue-700"
             >
               <Download className="h-4 w-4" aria-hidden="true" />
               Export
@@ -471,7 +471,7 @@ function FilterSelect({
         {label}
       </span>
       <select
-        className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
+        className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 shadow-sm outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/60 dark:focus:ring-blue-500/20"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       >
@@ -497,16 +497,16 @@ function RiskKpiCards() {
             href={kpi.href}
             className="group rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
-            <Card className="h-full rounded-2xl transition group-hover:-translate-y-0.5 group-hover:border-blue-200 group-hover:shadow-lg group-hover:shadow-blue-950/5 dark:group-hover:border-blue-500/30">
-              <CardContent className="flex min-h-[116px] items-center gap-3 p-3.5">
-                <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl border", KPI_TONES[kpi.tone])}>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+            <Card className="h-full rounded-2xl transition group-hover:border-blue-200 group-hover:shadow-md group-hover:shadow-blue-950/5 dark:group-hover:border-blue-500/30">
+              <CardContent className="flex min-h-[84px] items-center gap-2.5 p-3">
+                <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", KPI_TONES[kpi.tone])}>
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     {kpi.label}
                   </p>
-                  <p className="mt-1 text-3xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
+                  <p className="mt-0.5 text-2xl font-black tracking-tight text-slate-950 dark:text-white">{kpi.value}</p>
                   <p className="mt-1 truncate text-xs font-bold text-slate-500 dark:text-slate-400">{kpi.delta}</p>
                 </div>
               </CardContent>
@@ -535,7 +535,7 @@ function AnalyticsPanel({
 }) {
   return (
     <Card className={cn("h-full min-w-0 rounded-2xl", className)}>
-      <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
         <div className="flex min-w-0 items-start gap-2.5">
           {Icon ? (
             <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-blue-100 bg-blue-50 text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
@@ -543,13 +543,13 @@ function AnalyticsPanel({
             </div>
           ) : null}
           <div className="min-w-0">
-            <CardTitle className="truncate text-base font-extrabold text-slate-950 dark:text-white">{title}</CardTitle>
+            <CardTitle className="truncate text-sm font-black text-slate-950 dark:text-white">{title}</CardTitle>
             {subtitle ? <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{subtitle}</p> : null}
           </div>
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </CardHeader>
-      <CardContent className="p-4 pt-0">{children}</CardContent>
+      <CardContent className="px-3 pb-3 pt-0">{children}</CardContent>
     </Card>
   );
 }
@@ -585,9 +585,9 @@ function RiskMatrixCard({
         </div>
       }
     >
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_180px]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_160px]">
         <div className="min-w-0">
-          <div className="mb-2 grid grid-cols-[86px_repeat(5,minmax(58px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
+          <div className="mb-1.5 grid grid-cols-[74px_repeat(5,minmax(48px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
             <div />
             <div className="col-span-5 rounded-lg bg-slate-50 py-1 dark:bg-slate-950">Consequence of Failure</div>
             <div />
@@ -597,7 +597,7 @@ function RiskMatrixCard({
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-[86px_repeat(5,minmax(58px,1fr))] gap-1">
+          <div className="grid grid-cols-[74px_repeat(5,minmax(48px,1fr))] gap-1">
             {[5, 4, 3, 2, 1].map((probability) => (
               <RiskMatrixRow
                 key={probability}
@@ -623,7 +623,7 @@ function RiskMatrixCard({
               <div
                 key={level}
                 className={cn(
-                  "flex h-12 items-center justify-between rounded-xl border px-3 text-sm font-extrabold",
+                  "flex h-10 items-center justify-between rounded-xl border px-2.5 text-xs font-extrabold",
                   RISK_LEVEL_STYLES[level].badge,
                 )}
               >
@@ -667,7 +667,7 @@ function RiskMatrixRow({
 
   return (
     <>
-      <div className="flex min-w-0 items-center gap-2 rounded-xl bg-slate-50 px-2 py-1 dark:bg-slate-950">
+      <div className="flex min-w-0 items-center gap-1.5 rounded-lg bg-slate-50 px-2 py-1 dark:bg-slate-950">
         <span className="text-sm font-black text-slate-950 dark:text-white">{probability}</span>
         <span className="truncate text-[10px] font-bold text-slate-500 dark:text-slate-400">
           {probabilityLabels[probability]}
@@ -693,7 +693,7 @@ function RiskMatrixRow({
           <div
             key={`${probability}-${consequence}`}
             className={cn(
-              "relative min-h-[74px] overflow-hidden rounded-xl border border-white/70 p-1.5 dark:border-slate-900",
+              "relative min-h-[56px] overflow-hidden rounded-lg border border-white/70 p-1.5 dark:border-slate-900",
               RISK_LEVEL_STYLES[level].cell,
             )}
           >
@@ -1173,8 +1173,8 @@ function TopHighRiskAssetsTable({
       className={className}
       title="Top High-Risk Assets"
     >
-      <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div className="grid grid-cols-[minmax(0,1fr)_180px_120px_150px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 aim-shell-scrollbar dark:border-slate-800">
+        <div className="grid min-w-[760px] grid-cols-[minmax(0,1fr)_160px_104px_132px] bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
           <div className="px-3 py-2">Asset</div>
           <div className="px-3 py-2">Type</div>
           <div className="px-3 py-2 text-right">Risk Score</div>
@@ -1183,7 +1183,7 @@ function TopHighRiskAssetsTable({
         {assets.map((asset) => (
           <div
             key={asset.id}
-            className="grid min-h-[58px] grid-cols-[minmax(0,1fr)_180px_120px_150px] items-center border-t border-slate-200 text-sm dark:border-slate-800"
+            className="grid min-h-[46px] min-w-[760px] grid-cols-[minmax(0,1fr)_160px_104px_132px] items-center border-t border-slate-200 text-sm dark:border-slate-800"
           >
             <button type="button" onClick={() => onSelectAsset(asset.assetId)} className="min-w-0 px-3 py-2 text-left">
               <p className="truncate font-extrabold text-slate-950 hover:text-blue-700 dark:text-white dark:hover:text-blue-200">{asset.tag}</p>
@@ -1230,28 +1230,28 @@ function RiskAssetDrawer({
     <div className="fixed inset-x-0 bottom-0 top-[var(--app-header-height)] z-40 flex justify-end bg-slate-950/35 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-labelledby="risk-asset-drawer-title">
       <button type="button" className="absolute inset-0 cursor-default" onClick={onClose} aria-label="Close asset risk detail" />
       <aside className="relative flex h-full w-full max-w-[520px] flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 dark:border-slate-800">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-4 dark:border-slate-800">
           <div className="min-w-0">
             <p className="text-xs font-extrabold uppercase tracking-wide text-blue-700 dark:text-blue-300">Asset Risk Detail</p>
-            <h2 id="risk-asset-drawer-title" className="mt-1 text-2xl font-black text-slate-950 dark:text-white">
+            <h2 id="risk-asset-drawer-title" className="mt-1 text-xl font-black text-slate-950 dark:text-white">
               {asset.tag}
             </h2>
             <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">{asset.assetType}</p>
           </div>
-          <button type="button" onClick={onClose} className="grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Close details">
-            <X className="h-5 w-5" aria-hidden="true" />
+          <button type="button" onClick={onClose} className="grid h-9 w-9 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Close details">
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5">
-          <div className={cn("rounded-2xl border p-4", RISK_LEVEL_STYLES[riskLevel].badge)}>
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4 aim-shell-scrollbar">
+          <div className={cn("rounded-2xl border p-3", RISK_LEVEL_STYLES[riskLevel].badge)}>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-extrabold uppercase tracking-wide">Selected View</p>
                 <p className="mt-1 text-sm font-bold">{mode === "baseline" ? "Baseline Risk" : "Post-Mitigation Risk"}</p>
               </div>
               <div className="text-right">
-                <p className="text-3xl font-black">{riskScore.toFixed(1)}</p>
+                <p className="text-2xl font-black">{riskScore.toFixed(1)}</p>
                 <p className="text-xs font-extrabold">{RISK_LEVEL_STYLES[riskLevel].label}</p>
               </div>
             </div>

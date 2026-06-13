@@ -212,11 +212,11 @@ export function DashboardPageContent() {
     <div className="relative">
       <div
         id="dashboard-snapshot-area"
-        className="space-y-4 bg-slate-50 pb-1 text-slate-950 dark:bg-slate-950 dark:text-slate-100"
+        className="space-y-3 bg-slate-50 pb-1 text-slate-950 dark:bg-slate-950 dark:text-slate-100"
       >
         <div className="min-w-0">
           <nav
-            className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400"
+            className="flex items-center gap-2 text-xs font-extrabold text-slate-500 dark:text-slate-400"
             aria-label="Breadcrumb"
           >
             <Link href={APP_ROUTES.dashboard} className="transition hover:text-blue-700 dark:hover:text-blue-200">
@@ -225,7 +225,7 @@ export function DashboardPageContent() {
             <span aria-hidden="true">/</span>
             <span className="text-slate-700 dark:text-slate-200">Dashboard</span>
           </nav>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+          <h1 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
             Dashboard
           </h1>
         </div>
@@ -254,7 +254,7 @@ export function DashboardPageContent() {
           />
           <KpiCard
             icon={FileCheck2}
-            label="Certificates Due ≤180 Days"
+            label="Certificates Due <=180 Days"
             value={kpis.certificatesDueWithin180Days}
             microText={`${kpis.expiredOrUrgentCertificates} expired / urgent evidence`}
             tone="cyan"
@@ -349,14 +349,14 @@ function KpiCard({
   tone: keyof typeof KPI_TONE_STYLES;
 }) {
   return (
-    <Card className={cn("h-full cursor-default rounded-2xl", className)}>
-      <CardContent className="flex h-full min-h-[112px] items-center gap-3 p-3.5">
-        <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl ring-1", KPI_TONE_STYLES[tone])}>
-          <Icon className="h-5 w-5" aria-hidden="true" />
+    <Card className={cn("h-full cursor-default rounded-2xl transition-none hover:border-slate-200 hover:shadow-sm dark:hover:border-slate-800", className)}>
+      <CardContent className="flex h-full min-h-[84px] items-center gap-2.5 p-3">
+        <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl ring-1", KPI_TONE_STYLES[tone])}>
+          <Icon className="h-4 w-4" aria-hidden="true" />
         </div>
         <div className="min-w-0">
           <p className="text-[11px] font-extrabold leading-4 text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">{value}</p>
+          <p className="mt-0.5 text-2xl font-black tracking-tight text-slate-950 dark:text-white">{value}</p>
           <p className="mt-1 truncate text-xs font-semibold text-slate-500 dark:text-slate-400">{microText}</p>
         </div>
       </CardContent>
@@ -380,19 +380,19 @@ function ReadinessCard({
   const dashOffset = circumference - (score / 100) * circumference;
 
   return (
-    <Card className={cn("cursor-default overflow-hidden rounded-2xl border-blue-700 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 text-white shadow-[0_18px_45px_rgba(37,99,235,0.28)]", className)}>
-      <CardContent className="flex h-full min-h-[112px] items-center justify-between gap-3 p-3.5">
+    <Card className={cn("cursor-default overflow-hidden rounded-2xl border-blue-700 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 text-white shadow-[0_12px_28px_rgba(37,99,235,0.22)]", className)}>
+      <CardContent className="flex h-full min-h-[84px] items-center justify-between gap-2.5 p-3">
         <div className="min-w-0">
-          <p className="text-xs font-extrabold text-blue-100">Overall Integrity Readiness Score</p>
-          <p className="mt-1 text-4xl font-black tracking-tight">{score}%</p>
-          <p className="mt-1 text-xs font-bold text-blue-100">Target ≥{target}%</p>
-          <p className="mt-1 flex items-center gap-1 text-xs font-bold text-emerald-200">
+          <p className="text-[11px] font-extrabold leading-4 text-blue-100">Overall Integrity Readiness</p>
+          <p className="mt-0.5 text-3xl font-black tracking-tight">{score}%</p>
+          <p className="mt-0.5 text-[11px] font-bold text-blue-100">Target &gt;={target}%</p>
+          <p className="mt-0.5 flex items-center gap-1 text-[11px] font-bold text-emerald-200">
             <TrendingUp className="h-3.5 w-3.5" aria-hidden="true" />
             {delta}% vs last 30 days
           </p>
         </div>
-        <div className="relative grid h-20 w-20 shrink-0 place-items-center">
-          <svg className="h-20 w-20 -rotate-90" viewBox="0 0 88 88" aria-hidden="true">
+        <div className="relative grid h-16 w-16 shrink-0 place-items-center">
+          <svg className="h-16 w-16 -rotate-90" viewBox="0 0 88 88" aria-hidden="true">
             <circle cx="44" cy="44" r={radius} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="10" />
             <circle
               cx="44"
@@ -412,7 +412,7 @@ function ReadinessCard({
               </linearGradient>
             </defs>
           </svg>
-          <span className="absolute text-xl font-black">{score}%</span>
+          <span className="absolute text-base font-black">{score}%</span>
         </div>
       </CardContent>
     </Card>
@@ -434,14 +434,14 @@ function DashboardPanel({
 }) {
   return (
     <Card className={cn("h-full min-w-0 rounded-2xl", className)}>
-      <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
         <div className="min-w-0">
-          <CardTitle className="truncate text-base font-extrabold text-slate-950 dark:text-white">{title}</CardTitle>
+          <CardTitle className="truncate text-sm font-black text-slate-950 dark:text-white">{title}</CardTitle>
           {subtitle ? <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{subtitle}</p> : null}
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </CardHeader>
-      <CardContent className="p-4 pt-0">{children}</CardContent>
+      <CardContent className="px-3 pb-3 pt-0">{children}</CardContent>
     </Card>
   );
 }
@@ -463,9 +463,9 @@ function RiskMatrixPanel({
 
   return (
     <DashboardPanel title="Risk Matrix" subtitle="Likelihood vs Consequence" className={className}>
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_132px]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_120px]">
         <div className="min-w-0">
-          <div className="mb-2 grid grid-cols-[78px_repeat(5,minmax(36px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
+          <div className="mb-1.5 grid grid-cols-[70px_repeat(5,minmax(34px,1fr))] gap-1 text-center text-[10px] font-bold text-slate-500 dark:text-slate-400">
             <div />
             <div className="col-span-5 rounded-lg bg-slate-50 py-1 dark:bg-slate-950">Consequence</div>
             <div />
@@ -477,7 +477,7 @@ function RiskMatrixPanel({
             ))}
           </div>
 
-          <div className="grid grid-cols-[78px_repeat(5,minmax(36px,1fr))] gap-1">
+          <div className="grid grid-cols-[70px_repeat(5,minmax(34px,1fr))] gap-1">
             {[5, 4, 3, 2, 1].map((likelihood) => (
               <RiskMatrixRow
                 key={likelihood}
@@ -499,7 +499,7 @@ function RiskMatrixPanel({
             <div
               key={level}
               className={cn(
-                "flex h-12 items-center justify-between gap-2 rounded-xl border px-3 text-sm font-extrabold transition",
+                "flex h-10 items-center justify-between gap-2 rounded-xl border px-2.5 text-xs font-extrabold transition",
                 RISK_LEVEL_STYLES[level].badge,
                 riskFilter !== "all" && riskFilter !== level && "opacity-40",
               )}
@@ -512,9 +512,9 @@ function RiskMatrixPanel({
             </div>
           ))}
 
-          <div className="flex h-12 items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 dark:border-slate-800 dark:bg-slate-950">
+          <div className="flex h-10 items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-2.5 dark:border-slate-800 dark:bg-slate-950">
             <p className="text-xs font-extrabold text-slate-500 dark:text-slate-400">Total Assets</p>
-            <p className="text-xl font-black text-slate-950 dark:text-white">{totalAssets}</p>
+            <p className="text-lg font-black text-slate-950 dark:text-white">{totalAssets}</p>
           </div>
         </div>
       </div>
@@ -533,7 +533,7 @@ function RiskMatrixRow({
 }) {
   return (
     <>
-      <div className="flex min-w-0 items-center gap-2 rounded-xl bg-slate-50 px-2 py-1 text-left dark:bg-slate-950">
+      <div className="flex min-w-0 items-center gap-1.5 rounded-lg bg-slate-50 px-2 py-1 text-left dark:bg-slate-950">
         <span className="text-sm font-black text-slate-900 dark:text-white">{likelihood}</span>
         <span className="min-w-0 truncate text-[10px] font-bold text-slate-500 dark:text-slate-400">
           {LIKELIHOOD_LABELS[likelihood]}
@@ -549,7 +549,7 @@ function RiskMatrixRow({
           <div
             key={consequence}
             className={cn(
-              "grid aspect-square min-h-10 place-items-center rounded-lg text-sm font-black transition",
+              "grid aspect-square min-h-9 place-items-center rounded-lg text-xs font-black transition",
               RISK_LEVEL_STYLES[cell.level].cell,
               dimmed && "opacity-35 grayscale",
             )}
@@ -966,8 +966,8 @@ function CriticalAttentionPanel({
         </Link>
       }
     >
-      <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-        <div className="grid grid-cols-[minmax(0,1fr)_116px_148px_168px] bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 aim-shell-scrollbar dark:border-slate-800">
+        <div className="grid min-w-[640px] grid-cols-[minmax(0,1fr)_92px_124px_128px] bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
           <div className="px-3 py-2">Item / Issue</div>
           <div className="px-2 py-2 text-center">Severity</div>
           <div className="px-2 py-2 text-center">Status</div>
@@ -978,7 +978,7 @@ function CriticalAttentionPanel({
             key={row.id}
             type="button"
             onClick={() => onSelectRow(row)}
-            className="grid min-h-[58px] w-full grid-cols-[minmax(0,1fr)_116px_148px_168px] border-t border-slate-200 text-left text-sm transition hover:bg-blue-50/60 dark:border-slate-800 dark:hover:bg-blue-500/10"
+            className="grid min-h-[48px] w-full min-w-[640px] grid-cols-[minmax(0,1fr)_92px_124px_128px] border-t border-slate-200 text-left text-sm transition hover:bg-blue-50/60 dark:border-slate-800 dark:hover:bg-blue-500/10"
           >
             <div className="min-w-0 px-3 py-2">
               <p className="truncate font-extrabold text-slate-900 dark:text-white">{row.assetTag}</p>
@@ -1012,7 +1012,7 @@ function SeverityBadge({ severity }: { severity: CriticalAttentionRecord["severi
         : RISK_LEVEL_STYLES.medium.badge;
 
   return (
-    <span className={cn("inline-flex h-7 min-w-[90px] items-center justify-center whitespace-nowrap rounded-full border px-3 text-[11px] font-extrabold", className)}>
+    <span className={cn("inline-flex h-6 min-w-[76px] items-center justify-center whitespace-nowrap rounded-full border px-2 text-[11px] font-extrabold", className)}>
       {label}
     </span>
   );
@@ -1033,7 +1033,7 @@ function StatusBadge({ status }: { status: CriticalAttentionRecord["status"] }) 
         : "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-200";
 
   return (
-    <span className={cn("inline-flex h-7 min-w-[128px] items-center justify-center whitespace-nowrap rounded-full border px-3 text-[11px] font-extrabold", className)}>
+    <span className={cn("inline-flex h-6 min-w-[108px] items-center justify-center whitespace-nowrap rounded-full border px-2 text-[11px] font-extrabold", className)}>
       {label}
     </span>
   );
@@ -1052,21 +1052,21 @@ function CriticalAttentionSheet({
     <div className="fixed inset-x-0 bottom-0 top-[var(--app-header-height)] z-40 flex justify-end bg-slate-950/35 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-labelledby="critical-attention-title">
       <button type="button" className="absolute inset-0 cursor-default" onClick={onClose} aria-label="Close critical attention details" />
       <aside className="relative flex h-full w-full max-w-[480px] flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 dark:border-slate-800">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-4 dark:border-slate-800">
           <div className="min-w-0">
             <p className="text-xs font-extrabold uppercase tracking-wide text-blue-700 dark:text-blue-300">Critical Attention Detail</p>
-            <h2 id="critical-attention-title" className="mt-1 text-2xl font-black text-slate-950 dark:text-white">
+            <h2 id="critical-attention-title" className="mt-1 text-xl font-black text-slate-950 dark:text-white">
               {item.assetTag}
             </h2>
             <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">{item.assetName}</p>
           </div>
-          <button type="button" onClick={onClose} className="grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Close details">
-            <X className="h-5 w-5" aria-hidden="true" />
+          <button type="button" onClick={onClose} className="grid h-9 w-9 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Close details">
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5 aim-shell-scrollbar">
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4 aim-shell-scrollbar">
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
             <p className="text-sm font-extrabold text-slate-950 dark:text-white">{item.issue}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <SeverityBadge severity={item.severity} />

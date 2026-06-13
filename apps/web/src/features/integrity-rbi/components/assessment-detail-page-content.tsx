@@ -160,9 +160,9 @@ export function AssessmentDetailPageContent() {
   }
 
   return (
-    <div className="space-y-4 text-slate-950 dark:text-slate-100">
+    <div className="space-y-3 text-slate-950 dark:text-slate-100">
       <header className="min-w-0">
-        <nav className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <nav className="flex flex-wrap items-center gap-2 text-xs font-extrabold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
           <Link href={APP_ROUTES.rbi.overview} className="transition hover:text-blue-700 dark:hover:text-blue-200">
             Integrity / RBI
           </Link>
@@ -173,21 +173,21 @@ export function AssessmentDetailPageContent() {
           <span aria-hidden="true">/</span>
           <span className="text-slate-700 dark:text-slate-200">{data.summary.assessmentId}</span>
         </nav>
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">
             RBI Assessment Workspace
           </h1>
           <div className="flex flex-wrap gap-2">
             <Link
               href={data.routes.assessmentsList}
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-extrabold text-slate-700 transition hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500/30 dark:hover:text-blue-200"
+              className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-xs font-extrabold text-slate-700 transition hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500/30 dark:hover:text-blue-200"
             >
               <ArrowRight className="h-4 w-4 rotate-180" aria-hidden="true" />
               Assessments
             </Link>
             <Link
               href={data.routes.riskRegister}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-blue-700 px-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-blue-800"
+              className="inline-flex h-9 items-center gap-2 rounded-xl bg-blue-700 px-3 text-xs font-extrabold text-white shadow-sm transition hover:bg-blue-800"
             >
               Risk Register
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -199,8 +199,8 @@ export function AssessmentDetailPageContent() {
       <AssessmentSummaryHeader />
       <KpiStrip kpis={data.kpis} />
 
-      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_360px] 2xl:grid-cols-[minmax(0,1fr)_380px]">
-        <main className="min-w-0 space-y-4">
+      <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_360px]">
+        <main className="min-w-0 space-y-3">
           <WorkflowStepper activeStepId={activeStep.id} steps={data.workflowSteps} onStepChange={setActiveStepId} />
           <StepPreviewWorkspace
             activePreview={activePreview}
@@ -216,12 +216,12 @@ export function AssessmentDetailPageContent() {
             onToggleAccordion={toggleAccordion}
           />
 
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-3 lg:grid-cols-2">
             <LinkedAssetContextCard />
             <HistoricalInspectionCard />
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
             <RiskMatrixPositionCard />
             <KeyIntegrityConcernsCard />
           </div>
@@ -251,11 +251,11 @@ function AssessmentSummaryHeader() {
 
   return (
     <Card className="overflow-hidden rounded-2xl">
-      <CardContent className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]">
+      <CardContent className="grid gap-3 p-3 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
         <div className="min-w-0">
           <div className="flex flex-wrap items-start gap-3">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-700 dark:border-blue-500/20 dark:from-blue-500/10 dark:to-cyan-500/10 dark:text-blue-200">
-              <Layers3 className="h-6 w-6" aria-hidden="true" />
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-700 dark:border-blue-500/20 dark:from-blue-500/10 dark:to-cyan-500/10 dark:text-blue-200">
+              <Layers3 className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
@@ -264,16 +264,16 @@ function AssessmentSummaryHeader() {
                 </p>
                 <Badge label={summary.status} className={TONE_STYLES.blue} minWidth="min-w-[96px]" />
               </div>
-              <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+              <h2 className="mt-1 text-xl font-black tracking-tight text-slate-950 dark:text-white">
                 {summary.assetName}
               </h2>
-              <div className="mt-3 grid gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 md:grid-cols-2">
+              <div className="mt-2 grid gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 md:grid-cols-2">
                 <InfoLine label="Asset Class" value={summary.assetClass} />
                 <InfoLine label="Assessment Type" value={summary.assessmentType} />
                 <InfoLine label="Service" value={summary.service} />
                 <InfoLine label="Location / Area" value={summary.locationArea} />
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {summary.methodologyLabels.map((label) => (
                   <span
                     key={label}
@@ -307,9 +307,9 @@ function KpiStrip({ kpis }: { kpis: AssessmentDetailKpi[] }) {
 
         return (
           <Card key={kpi.id} className="rounded-2xl">
-            <CardContent className="flex min-h-[112px] items-center gap-3 p-3.5">
-              <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-2xl border", TONE_STYLES[kpi.tone])}>
-                <Icon className="h-5 w-5" aria-hidden="true" />
+            <CardContent className="flex min-h-[84px] items-center gap-2.5 p-3">
+              <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", TONE_STYLES[kpi.tone])}>
+                <Icon className="h-4 w-4" aria-hidden="true" />
               </div>
               <div className="min-w-0">
                 <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">
@@ -337,10 +337,10 @@ function WorkflowStepper({
 }) {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="p-4 pb-2">
+      <CardHeader className="px-3 py-2.5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <CardTitle className="text-base font-black">RBI Workflow Stepper</CardTitle>
+            <CardTitle className="text-sm font-black">RBI Workflow Stepper</CardTitle>
             <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
               Container-level navigation for future detailed step workspaces.
             </p>
@@ -354,7 +354,7 @@ function WorkflowStepper({
           </Link>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-2">
+      <CardContent className="px-3 pb-3 pt-0">
         <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
           {steps.map((step, index) => {
             const Icon = STEP_ICONS[step.id] ?? ClipboardCheck;
@@ -366,7 +366,7 @@ function WorkflowStepper({
                 type="button"
                 onClick={() => onStepChange(step.id)}
                 className={cn(
-                  "group min-h-[120px] rounded-2xl border p-3 text-left transition",
+                  "group min-h-[96px] rounded-2xl border p-2.5 text-left transition",
                   active
                     ? "border-blue-300 bg-blue-50 shadow-sm shadow-blue-950/5 dark:border-blue-500/40 dark:bg-blue-500/10"
                     : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-500/30 dark:hover:bg-slate-900/80",
@@ -432,14 +432,14 @@ function StepPreviewWorkspace({
 
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="p-4 pb-3">
+      <CardHeader className="px-3 py-2.5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <StepStatusPill status={activeStep.status} />
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{activePreview.statusText}</span>
             </div>
-            <CardTitle className="mt-2 text-xl font-black">{activePreview.title}</CardTitle>
+            <CardTitle className="mt-1 text-lg font-black">{activePreview.title}</CardTitle>
           </div>
           <div className="flex flex-wrap gap-2">
             {activePreview.actions.map((action) => (
@@ -455,11 +455,11 @@ function StepPreviewWorkspace({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4 p-4 pt-0">
+      <CardContent className="space-y-3 px-3 pb-3 pt-0">
         <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.6fr)]">
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-2.5 dark:border-slate-800 dark:bg-slate-950">
             <p className="text-sm font-bold leading-6 text-slate-600 dark:text-slate-300">{activePreview.narrative}</p>
-            <ul className="mt-3 grid gap-2">
+            <ul className="mt-2 grid gap-1.5">
               {activePreview.bullets.map((bullet) => (
                 <li key={bullet} className="flex gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-300" aria-hidden="true" />
@@ -515,7 +515,7 @@ function DamageMechanismFilters({
   onMechanismSearchChange: (value: string) => void;
 }) {
   return (
-    <div className="grid gap-2 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 md:grid-cols-[180px_180px_minmax(0,1fr)]">
+    <div className="grid gap-2 rounded-2xl border border-slate-200 bg-white p-2.5 dark:border-slate-800 dark:bg-slate-900 md:grid-cols-[180px_180px_minmax(0,1fr)]">
       <FilterSelect
         label="Mechanism Category"
         value={mechanismCategory}
@@ -535,7 +535,7 @@ function DamageMechanismFilters({
           value={mechanismSearch}
           onChange={(event) => onMechanismSearchChange(event.target.value)}
           placeholder="Search mechanism, evidence, component, reviewer note..."
-          className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-sm font-semibold text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/40 dark:focus:ring-blue-500/10"
+          className="h-9 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs font-semibold text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/40 dark:focus:ring-blue-500/10"
         />
       </label>
     </div>
@@ -545,9 +545,9 @@ function DamageMechanismFilters({
 function DamageMechanismTable({ rows }: { rows: DamageMechanismReviewRow[] }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-      <div className="overflow-x-auto">
+      <div className="max-h-[360px] overflow-auto aim-shell-scrollbar">
         <table className="min-w-[1180px] w-full border-collapse text-left">
-          <thead className="bg-slate-50 text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
+          <thead className="sticky top-0 z-10 bg-slate-50 text-[10px] font-extrabold uppercase tracking-wide text-slate-500 dark:bg-slate-950 dark:text-slate-400">
             <tr>
               <TableHeader className="w-[210px]" label="Mechanism" />
               <TableHeader className="w-[160px]" label="Screening Result" />
@@ -562,20 +562,20 @@ function DamageMechanismTable({ rows }: { rows: DamageMechanismReviewRow[] }) {
           <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
             {rows.map((row) => (
               <tr key={row.id} className="align-top transition hover:bg-blue-50/50 dark:hover:bg-blue-500/5">
-                <td className="px-3 py-3 text-sm font-black text-slate-950 dark:text-white">{row.mechanism}</td>
-                <td className="px-3 py-3">
+                <td className="px-3 py-2 text-sm font-black text-slate-950 dark:text-white">{row.mechanism}</td>
+                <td className="px-3 py-2">
                   <ScreeningBadge value={row.screeningResult} />
                 </td>
-                <td className="px-3 py-3">
+                <td className="px-3 py-2">
                   <Badge label={row.confidence} className={getConfidenceStyle(row.confidence)} minWidth="min-w-[86px]" />
                 </td>
-                <td className="px-3 py-3 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.evidenceSummary}</td>
-                <td className="px-3 py-3 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.affectedComponent}</td>
-                <td className="px-3 py-3 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.severityDriver}</td>
-                <td className="px-3 py-3">
+                <td className="px-3 py-2 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.evidenceSummary}</td>
+                <td className="px-3 py-2 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.affectedComponent}</td>
+                <td className="px-3 py-2 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.severityDriver}</td>
+                <td className="px-3 py-2">
                   <Badge label={row.dataQuality} className={getDataQualityStyle(row.dataQuality)} minWidth="min-w-[72px]" />
                 </td>
-                <td className="px-3 py-3 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.reviewerNote}</td>
+                <td className="px-3 py-2 text-sm font-semibold leading-5 text-slate-600 dark:text-slate-300">{row.reviewerNote}</td>
               </tr>
             ))}
           </tbody>
@@ -632,7 +632,7 @@ function DamageMechanismAccordions({
 
 function ShellPreviewNotice({ step }: { step: AssessmentWorkflowStep }) {
   return (
-    <div className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 p-4 dark:border-blue-500/20 dark:from-blue-500/10 dark:to-cyan-500/10">
+    <div className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 p-3 dark:border-blue-500/20 dark:from-blue-500/10 dark:to-cyan-500/10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-sm font-black text-blue-900 dark:text-blue-100">Shell preview only</p>
@@ -642,7 +642,7 @@ function ShellPreviewNotice({ step }: { step: AssessmentWorkflowStep }) {
         </div>
         <Link
           href={step.href}
-          className="inline-flex h-10 items-center gap-2 rounded-xl bg-blue-700 px-3 text-sm font-extrabold text-white transition hover:bg-blue-800"
+          className="inline-flex h-9 items-center gap-2 rounded-xl bg-blue-700 px-3 text-xs font-extrabold text-white transition hover:bg-blue-800"
         >
           Open Step Route
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -655,13 +655,13 @@ function ShellPreviewNotice({ step }: { step: AssessmentWorkflowStep }) {
 function LinkedAssetContextCard() {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="p-4 pb-3">
+      <CardHeader className="px-3 py-2.5">
         <CardTitle className="flex items-center gap-2 text-base font-black">
           <Link2 className="h-4 w-4 text-blue-600 dark:text-blue-300" aria-hidden="true" />
           Linked Asset & Data Context
         </CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-2 p-4 pt-0 sm:grid-cols-2">
+      <CardContent className="grid gap-2 px-3 pb-3 pt-0 sm:grid-cols-2">
         {data.linkedAssetContext.map((item) => (
           <div key={item.label} className="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950">
             <p className="text-[11px] font-extrabold uppercase tracking-wide text-slate-500 dark:text-slate-400">{item.label}</p>
@@ -683,7 +683,7 @@ function LinkedAssetContextCard() {
 function HistoricalInspectionCard() {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
         <CardTitle className="flex items-center gap-2 text-base font-black">
           <FileSearch className="h-4 w-4 text-blue-600 dark:text-blue-300" aria-hidden="true" />
           Historical Inspection Snapshot
@@ -692,7 +692,7 @@ function HistoricalInspectionCard() {
           View records
         </Link>
       </CardHeader>
-      <CardContent className="space-y-2 p-4 pt-0">
+      <CardContent className="space-y-2 px-3 pb-3 pt-0">
         {data.historicalInspections.map((item) => (
           <Link
             key={`${item.year}-${item.title}`}
@@ -717,7 +717,7 @@ function RiskMatrixPositionCard() {
 
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="p-4 pb-3">
+      <CardHeader className="px-3 py-2.5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-base font-black">
             <Target className="h-4 w-4 text-blue-600 dark:text-blue-300" aria-hidden="true" />
@@ -728,7 +728,7 @@ function RiskMatrixPositionCard() {
           </Link>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3 p-4 pt-0">
+      <CardContent className="space-y-3 px-3 pb-3 pt-0">
         <div className="grid grid-cols-[40px_repeat(5,minmax(0,1fr))] gap-1">
           <div />
           {consequences.map((cof) => (
@@ -768,7 +768,7 @@ function RiskMatrixRow({ probability, consequences }: { probability: number; con
           <div
             key={`${probability}-${consequence}`}
             className={cn(
-              "grid h-12 place-items-center rounded-xl border text-xs font-black",
+              "grid h-10 place-items-center rounded-xl border text-xs font-black",
               getRiskCellClass(cell?.label ?? "Low"),
               isCurrent && "ring-2 ring-blue-700 ring-offset-2 ring-offset-white dark:ring-blue-300 dark:ring-offset-slate-950",
             )}
@@ -785,7 +785,7 @@ function RiskMatrixRow({ probability, consequences }: { probability: number; con
 function KeyIntegrityConcernsCard() {
   return (
     <Card className="rounded-2xl">
-      <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+      <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
         <CardTitle className="flex items-center gap-2 text-base font-black">
           <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-300" aria-hidden="true" />
           Key Integrity Concerns
@@ -794,7 +794,7 @@ function KeyIntegrityConcernsCard() {
           Recommendations
         </Link>
       </CardHeader>
-      <CardContent className="space-y-2 p-4 pt-0">
+      <CardContent className="space-y-2 px-3 pb-3 pt-0">
         {data.keyIntegrityConcerns.map((concern, index) => (
           <div key={concern} className="flex gap-3 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-orange-50 text-xs font-black text-orange-700 dark:bg-orange-500/10 dark:text-orange-200">
@@ -828,9 +828,9 @@ function AssessmentStatusPanel({
   const status = data.statusPanel;
 
   return (
-    <aside className="sticky top-4 space-y-4">
+    <aside className="sticky top-3 space-y-3">
       <Card className="overflow-hidden rounded-2xl">
-        <CardHeader className="border-b border-slate-200 bg-gradient-to-br from-blue-700 to-cyan-600 p-4 text-white dark:border-blue-500/20">
+        <CardHeader className="border-b border-slate-200 bg-gradient-to-br from-blue-700 to-cyan-600 p-3 text-white dark:border-blue-500/20">
           <div className="flex items-center justify-between gap-3">
             <CardTitle className="flex items-center gap-2 text-base font-black">
               <PanelRightOpen className="h-4 w-4" aria-hidden="true" />
@@ -841,14 +841,14 @@ function AssessmentStatusPanel({
           <div className="pt-2">
             <div className="flex items-end justify-between gap-3">
               <span className="text-xs font-bold text-white/80">Overall completeness</span>
-              <span className="text-3xl font-black">{status.overallCompleteness}%</span>
+              <span className="text-2xl font-black">{status.overallCompleteness}%</span>
             </div>
             <div className="mt-2 h-2 rounded-full bg-white/20">
               <div className="h-full rounded-full bg-white" style={{ width: `${status.overallCompleteness}%` }} />
             </div>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4 p-4">
+        <CardContent className="space-y-3 p-3">
           <PanelSection title="Section Completeness">
             <div className="space-y-2">
               {status.sectionCompleteness.map((item) => (
@@ -866,7 +866,7 @@ function AssessmentStatusPanel({
           </PanelSection>
 
           <PanelSection title="Review Stage">
-            <div className="rounded-2xl border border-blue-100 bg-blue-50 p-3 text-sm font-black text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
+            <div className="rounded-2xl border border-blue-100 bg-blue-50 p-2.5 text-sm font-black text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-200">
               {status.reviewStage}
             </div>
           </PanelSection>
@@ -899,8 +899,8 @@ function AssessmentStatusPanel({
               <ScoreBox label="Data Quality" value={`${status.dataQualityScore} / 100`} percent={status.dataQualityScore} />
               <ScoreBox label="Evidence Coverage" value={`${status.evidenceCoverageScore}%`} percent={status.evidenceCoverageScore} />
             </div>
-            <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-xs font-bold text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-              {status.documentPackage.filesLinked} files linked · {status.documentPackage.pendingValidation} pending validation · {status.documentPackage.missingCriticalAttachment} missing critical attachment
+            <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50 p-2.5 text-xs font-bold text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+              {status.documentPackage.filesLinked} files linked - {status.documentPackage.pendingValidation} pending validation - {status.documentPackage.missingCriticalAttachment} missing critical attachment
             </div>
           </PanelSection>
 
@@ -925,19 +925,19 @@ function AssessmentStatusPanel({
           ) : null}
 
           <div className="grid gap-2">
-            <button type="button" onClick={onSaveDraft} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-extrabold text-slate-700 transition hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <button type="button" onClick={onSaveDraft} className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-xs font-extrabold text-slate-700 transition hover:border-blue-200 hover:text-blue-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
               <Save className="h-4 w-4" aria-hidden="true" />
               Save Draft
             </button>
-            <button type="button" onClick={onSubmitForReview} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 text-sm font-extrabold text-white transition hover:bg-blue-800">
+            <button type="button" onClick={onSubmitForReview} className="inline-flex h-9 items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 text-xs font-extrabold text-white transition hover:bg-blue-800">
               <Send className="h-4 w-4" aria-hidden="true" />
               Submit for Review
             </button>
-            <button type="button" onClick={onRequestClarification} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 text-sm font-extrabold text-orange-800 transition hover:bg-orange-100 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200">
+            <button type="button" onClick={onRequestClarification} className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-3 text-xs font-extrabold text-orange-800 transition hover:bg-orange-100 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200">
               <MessageSquareWarning className="h-4 w-4" aria-hidden="true" />
               Request Clarification
             </button>
-            <button type="button" onClick={onEvidenceOpen} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-cyan-200 bg-cyan-50 px-3 text-sm font-extrabold text-cyan-800 transition hover:bg-cyan-100 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-200">
+            <button type="button" onClick={onEvidenceOpen} className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-cyan-200 bg-cyan-50 px-3 text-xs font-extrabold text-cyan-800 transition hover:bg-cyan-100 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-200">
               <FileText className="h-4 w-4" aria-hidden="true" />
               View Evidence Pack
             </button>
@@ -952,7 +952,7 @@ function ClarificationDialog({ onClose, onCreate }: { onClose: () => void; onCre
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/35 p-4 backdrop-blur-sm">
       <Card className="w-full max-w-lg rounded-2xl shadow-2xl">
-        <CardHeader className="flex-row items-start justify-between gap-3 p-4 pb-3">
+        <CardHeader className="flex-row items-start justify-between gap-3 px-3 py-2.5">
           <div>
             <CardTitle className="text-lg font-black">Request Clarification</CardTitle>
             <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -964,15 +964,15 @@ function ClarificationDialog({ onClose, onCreate }: { onClose: () => void; onCre
             <span className="sr-only">Close</span>
           </button>
         </CardHeader>
-        <CardContent className="space-y-3 p-4 pt-0">
+        <CardContent className="space-y-3 px-3 pb-3 pt-0">
           <div className="rounded-2xl border border-orange-100 bg-orange-50 p-3 text-sm font-bold leading-6 text-orange-800 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200">
             Proposed RFI: confirm H2S content from process chemistry and reconcile PSV-1203 set-pressure evidence mismatch.
           </div>
           <div className="grid gap-2 sm:grid-cols-2">
-            <button type="button" onClick={onClose} className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-sm font-extrabold text-slate-700 transition hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <button type="button" onClick={onClose} className="h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-extrabold text-slate-700 transition hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
               Cancel
             </button>
-            <button type="button" onClick={onCreate} className="h-10 rounded-xl bg-blue-700 px-3 text-sm font-extrabold text-white transition hover:bg-blue-800">
+            <button type="button" onClick={onCreate} className="h-9 rounded-xl bg-blue-700 px-3 text-xs font-extrabold text-white transition hover:bg-blue-800">
               Create RFI Draft
             </button>
           </div>
@@ -986,7 +986,7 @@ function EvidenceDrawer({ evidenceItems, onClose }: { evidenceItems: AssessmentE
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/35 backdrop-blur-sm">
       <Card className="h-full w-full max-w-xl overflow-y-auto rounded-none border-y-0 border-r-0 shadow-2xl">
-        <CardHeader className="sticky top-0 z-10 flex-row items-start justify-between gap-3 border-b border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+        <CardHeader className="sticky top-0 z-10 flex-row items-start justify-between gap-3 border-b border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
           <div>
             <CardTitle className="text-lg font-black">Evidence Pack</CardTitle>
             <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -998,7 +998,7 @@ function EvidenceDrawer({ evidenceItems, onClose }: { evidenceItems: AssessmentE
             <span className="sr-only">Close</span>
           </button>
         </CardHeader>
-        <CardContent className="space-y-3 p-4">
+        <CardContent className="space-y-3 p-3">
           {evidenceItems.map((item) => (
             <Link
               key={item.id}
@@ -1016,7 +1016,7 @@ function EvidenceDrawer({ evidenceItems, onClose }: { evidenceItems: AssessmentE
           ))}
           <Link
             href={data.routes.evidencePack}
-            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 text-sm font-extrabold text-white transition hover:bg-blue-800"
+            className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 text-xs font-extrabold text-white transition hover:bg-blue-800"
           >
             Open Evidence Pack Route
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -1044,7 +1044,7 @@ function FilterSelect({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-extrabold text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/40 dark:focus:ring-blue-500/10"
+        className="h-9 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-extrabold text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:focus:border-blue-500/40 dark:focus:ring-blue-500/10"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -1096,7 +1096,7 @@ function ScoreBox({ label, percent, value }: { label: string; percent: number; v
 }
 
 function TableHeader({ className, label }: { className?: string; label: string }) {
-  return <th className={cn("border-b border-slate-200 px-3 py-3 dark:border-slate-800", className)}>{label}</th>;
+  return <th className={cn("border-b border-slate-200 px-3 py-2 dark:border-slate-800", className)}>{label}</th>;
 }
 
 function ScreeningBadge({ value }: { value: DamageScreeningResult }) {
