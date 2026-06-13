@@ -603,36 +603,6 @@ export default function ProfilePage() {
     };
   }, [photoMenuOpen]);
 
-  useEffect(() => {
-    const restored: Array<{ element: HTMLElement; display: string }> = [];
-
-    function hideProfileFooter() {
-      const candidates = Array.from(
-        document.querySelectorAll<HTMLElement>("footer, [class*='footer'], [id*='footer']")
-      );
-
-      candidates.forEach((element) => {
-        const text = (element.textContent ?? "").trim();
-        if (text.includes("About SUCOFINDO") || text.includes("All Rights Reserved")) {
-          restored.push({
-            element,
-            display: element.style.display,
-          });
-          element.style.display = "none";
-        }
-      });
-    }
-
-    const timer = window.setTimeout(hideProfileFooter, 150);
-
-    return () => {
-      window.clearTimeout(timer);
-      restored.forEach(({ element, display }) => {
-        element.style.display = display;
-      });
-    };
-  }, []);
-
   function openEditProfile() {
     setDraft(profile);
     setSimilarToFullName(profile.displayName === profile.fullName);

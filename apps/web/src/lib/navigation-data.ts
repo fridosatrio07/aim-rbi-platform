@@ -183,6 +183,19 @@ export function getNavigationPageByPath(pathname: string) {
 export function getNavigationParentByPath(pathname: string) {
   const normalizedPathname = normalizeNavigationPath(pathname);
   const currentPage = getNavigationPageByPath(normalizedPathname);
+  const derivedParentPath = getParentRouteByPath(normalizedPathname);
+
+  if (
+    derivedParentPath &&
+    currentPage?.href &&
+    normalizeNavigationPath(currentPage.href) !== normalizedPathname &&
+    isProtectedNavigationPath(derivedParentPath)
+  ) {
+    return {
+      href: derivedParentPath,
+      label: getNavigationLabelByHref(derivedParentPath) ?? getReadableRouteSegment(derivedParentPath),
+    };
+  }
 
   if (currentPage?.parentHref) {
     return {
@@ -190,8 +203,6 @@ export function getNavigationParentByPath(pathname: string) {
       label: currentPage.parentLabel ?? getNavigationLabelByHref(currentPage.parentHref) ?? "Parent Module",
     };
   }
-
-  const derivedParentPath = getParentRouteByPath(normalizedPathname);
 
   if (derivedParentPath && isProtectedNavigationPath(derivedParentPath)) {
     return {

@@ -581,7 +581,7 @@ function DamageMechanismTable({ rows }: { rows: DamageMechanismReviewRow[] }) {
           </tbody>
         </table>
         {rows.length === 0 ? (
-          <div className="border-t border-slate-200 p-8 text-center text-sm font-bold text-slate-500 dark:border-slate-800 dark:text-slate-400">
+          <div className="border-t border-slate-200 p-4 text-center text-sm font-bold text-slate-500 dark:border-slate-800 dark:text-slate-400">
             No damage mechanism records match the selected filters.
           </div>
         ) : null}
